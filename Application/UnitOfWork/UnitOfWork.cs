@@ -21,8 +21,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-    private IPatient _patients;
-    private IPatient _patients;
 
     private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
@@ -139,30 +137,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-
-    public IPatient Patients
-    {
-        get
-        {
-            if(_patients == null)
-            {
-                _patients = new PatientRepository(_context);
-            }
-            return _patients;
-        }
-    }
-
-    public IPatient Patients
-    {
-        get
-        {
-            if(_patients == null)
-            {
-                _patients = new PatientRepository(_context);
-            }
-            return _patients;
-        }
-    }
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
