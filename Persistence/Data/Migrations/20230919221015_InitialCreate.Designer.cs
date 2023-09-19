@@ -64,6 +64,43 @@ namespace Persistence.Data.Migrations
                     b.ToTable("employee", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateContract")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("IdenNumber")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdenNumber")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("employee", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Medicine", b =>
                 {
                     b.Property<int>("Id")
@@ -92,6 +129,45 @@ namespace Persistence.Data.Migrations
                     b.HasIndex("ProviderId");
 
                     b.ToTable("medicine", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Patient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("IdenNumber")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("varchar(25)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdenNumber")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("patient", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
@@ -343,48 +419,6 @@ namespace Persistence.Data.Migrations
                     b.ToTable("userRol", (string)null);
                 });
 
-<<<<<<<< HEAD:Persistence/Data/Migrations/20230919225219_firstMigration.Designer.cs
-            modelBuilder.Entity("Domain.Entities.Patient", b =>
-                {
-                    b.HasBaseType("Domain.Entities.User");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("IdenNumber")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("varchar(15)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)");
-
-                    b.HasIndex("IdenNumber")
-                        .IsUnique();
-
-                    b.ToTable("patient", (string)null);
-========
-            modelBuilder.Entity("Domain.Entities.Employee", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("Employees")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
->>>>>>>> 47187ce (Modification  relations in User to employee and patient):Persistence/Data/Migrations/20230919221015_InitialCreate.Designer.cs
-                });
-
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -405,6 +439,17 @@ namespace Persistence.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Provider");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Patient", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("Patients")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
@@ -516,21 +561,6 @@ namespace Persistence.Data.Migrations
                     b.Navigation("User");
                 });
 
-<<<<<<<< HEAD:Persistence/Data/Migrations/20230919225219_firstMigration.Designer.cs
-            modelBuilder.Entity("Domain.Entities.Patient", b =>
-                {
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Patient", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-========
-            modelBuilder.Entity("Domain.Entities.Employee", b =>
-                {
-                    b.Navigation("Sales");
->>>>>>>> 47187ce (Modification  relations in User to employee and patient):Persistence/Data/Migrations/20230919221015_InitialCreate.Designer.cs
-                });
-
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.Navigation("Sales");
@@ -541,6 +571,11 @@ namespace Persistence.Data.Migrations
                     b.Navigation("PurchasedMedicines");
 
                     b.Navigation("SoldMedicines");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Patient", b =>
+                {
+                    b.Navigation("Sales");
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
@@ -572,25 +607,20 @@ namespace Persistence.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Navigation("Employees");
-
-<<<<<<<< HEAD:Persistence/Data/Migrations/20230919225219_firstMigration.Designer.cs
-========
-                    b.Navigation("Patients");
-
->>>>>>>> 47187ce (Modification  relations in User to employee and patient):Persistence/Data/Migrations/20230919221015_InitialCreate.Designer.cs
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("UsersRols");
                 });
-<<<<<<<< HEAD:Persistence/Data/Migrations/20230919225219_firstMigration.Designer.cs
+
+            modelBuilder.Entity("Domain.Entities.Employee", b =>
+                {
+                    b.Navigation("Sales");
+                });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
                     b.Navigation("Sales");
                 });
-========
->>>>>>>> 47187ce (Modification  relations in User to employee and patient):Persistence/Data/Migrations/20230919221015_InitialCreate.Designer.cs
 #pragma warning restore 612, 618
         }
     }
