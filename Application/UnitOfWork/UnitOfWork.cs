@@ -20,13 +20,16 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private IPosition _position;
     private IPatient _patients;
 =======
 >>>>>>> 5c89ca3 (delete migrations aaaaaaaa)
+=======
+    private IPatient _patients;
+>>>>>>> dcfa50b (feat: :sparkles: Add patient to UnitOfWork)
     private ISale _sales;
 
-    private IPatient _patients;
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -141,7 +144,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-      public ISale Sales
+     public ISale Sales
     {
         get
         {
