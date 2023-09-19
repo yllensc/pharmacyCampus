@@ -59,6 +59,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
+    private IPatient _patients;
 
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
     public UnitOfWork(PharmacyDbContext context)
@@ -187,6 +188,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
 
     public IPatient Patients
     {
@@ -199,6 +203,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _patients;
         }
     }
+<<<<<<< HEAD
 
     public IPatient Patients
     {
@@ -242,6 +247,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
 =======
 >>>>>>> 4f05f0f (interfaces yllen)
+=======
+>>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
