@@ -7,53 +7,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class migrationHome : Migration
+    public partial class firstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "employee",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Position = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IdenNumber = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateContract = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_employee", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "patient",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IdenNumber = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_patient", x => x.Id);
-                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -112,34 +71,6 @@ namespace Persistence.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "sale",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    DateSale = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    PatientId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_sale", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_sale_employee_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "employee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_sale_patient_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "patient",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "medicine",
                 columns: table => new
                 {
@@ -180,6 +111,57 @@ namespace Persistence.Data.Migrations
                         name: "FK_purchase_provider_ProviderId",
                         column: x => x.ProviderId,
                         principalTable: "provider",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "employee",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Position = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IdenNumber = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DateContract = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_employee", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_employee_user_Id",
+                        column: x => x.Id,
+                        principalTable: "user",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "patient",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IdenNumber = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_patient", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_patient_user_Id",
+                        column: x => x.Id,
+                        principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -236,36 +218,7 @@ namespace Persistence.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "soldMedicine",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SoldId = table.Column<int>(type: "int", nullable: false),
-                    MedicineId = table.Column<int>(type: "int", nullable: false),
-                    SoldQuantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(38,17)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_soldMedicine", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_soldMedicine_medicine_MedicineId",
-                        column: x => x.MedicineId,
-                        principalTable: "medicine",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_soldMedicine_sale_SoldId",
-                        column: x => x.SoldId,
-                        principalTable: "sale",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "medicinePurchased",
+                name: "purchasedMedicine",
                 columns: table => new
                 {
                     PurchasedId = table.Column<int>(type: "int", nullable: false),
@@ -276,17 +229,73 @@ namespace Persistence.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_medicinePurchased", x => new { x.PurchasedId, x.MedicineId });
+                    table.PrimaryKey("PK_purchasedMedicine", x => new { x.PurchasedId, x.MedicineId });
                     table.ForeignKey(
-                        name: "FK_medicinePurchased_medicine_MedicineId",
+                        name: "FK_purchasedMedicine_medicine_MedicineId",
                         column: x => x.MedicineId,
                         principalTable: "medicine",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_medicinePurchased_purchase_PurchasedId",
+                        name: "FK_purchasedMedicine_purchase_PurchasedId",
                         column: x => x.PurchasedId,
                         principalTable: "purchase",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "sale",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DateSale = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sale", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_sale_employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_sale_patient_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "patient",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "soldMedicine",
+                columns: table => new
+                {
+                    SoldId = table.Column<int>(type: "int", nullable: false),
+                    MedicineId = table.Column<int>(type: "int", nullable: false),
+                    SoldQuantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(38,17)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_soldMedicine", x => new { x.SoldId, x.MedicineId });
+                    table.ForeignKey(
+                        name: "FK_soldMedicine_medicine_MedicineId",
+                        column: x => x.MedicineId,
+                        principalTable: "medicine",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_soldMedicine_sale_SoldId",
+                        column: x => x.SoldId,
+                        principalTable: "sale",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -304,11 +313,6 @@ namespace Persistence.Data.Migrations
                 column: "ProviderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_medicinePurchased_MedicineId",
-                table: "medicinePurchased",
-                column: "MedicineId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_patient_IdenNumber",
                 table: "patient",
                 column: "IdenNumber",
@@ -324,6 +328,11 @@ namespace Persistence.Data.Migrations
                 name: "IX_purchase_ProviderId",
                 table: "purchase",
                 column: "ProviderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_purchasedMedicine_MedicineId",
+                table: "purchasedMedicine",
+                column: "MedicineId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserId",
@@ -346,11 +355,6 @@ namespace Persistence.Data.Migrations
                 column: "MedicineId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_soldMedicine_SoldId",
-                table: "soldMedicine",
-                column: "SoldId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_userRol_RolId",
                 table: "userRol",
                 column: "RolId");
@@ -360,7 +364,7 @@ namespace Persistence.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "medicinePurchased");
+                name: "purchasedMedicine");
 
             migrationBuilder.DropTable(
                 name: "RefreshToken");
@@ -384,9 +388,6 @@ namespace Persistence.Data.Migrations
                 name: "rol");
 
             migrationBuilder.DropTable(
-                name: "user");
-
-            migrationBuilder.DropTable(
                 name: "provider");
 
             migrationBuilder.DropTable(
@@ -394,6 +395,9 @@ namespace Persistence.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "patient");
+
+            migrationBuilder.DropTable(
+                name: "user");
         }
     }
 }
