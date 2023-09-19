@@ -23,9 +23,12 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
+<<<<<<< HEAD
     private IPatient _patients;
     private IPatient _patients;
 >>>>>>> 0810f6b (feat: :sparkles: Add patient to UnitOfWork)
+=======
+>>>>>>> 2a7d223 (delete migrations aaaaaaaa)
 
     private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
@@ -144,6 +147,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+<<<<<<< HEAD
 
     public IPatient Patients
     {
@@ -169,6 +173,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 >>>>>>> 0810f6b (feat: :sparkles: Add patient to UnitOfWork)
+=======
+>>>>>>> 2a7d223 (delete migrations aaaaaaaa)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
