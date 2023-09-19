@@ -19,8 +19,10 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-    private IPatient _patients;
     private ISale _sales;
+
+    private IPatient _patients;
+
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -127,18 +129,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-   
-
-    public ISale Sales
-    {
-        get{
-            if(_sales == null)
-            {
-                _sales = new SaleRepository(_context);
-            }
-            return _sales;
-        }
-    }
 
     public async Task<int> SaveAsync()
     {
