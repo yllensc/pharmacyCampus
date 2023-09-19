@@ -18,6 +18,14 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPatient _patients;
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
+<<<<<<< HEAD
+=======
+    private IPurchase _purchase;
+    private IPurchasedMedicine _purchasedMedicine;
+    private IProvider _provider;
+    private IPatient _patients;
+    private IPatient _patients;
+>>>>>>> 0810f6b (feat: :sparkles: Add patient to UnitOfWork)
 
     private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
@@ -103,6 +111,64 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _saleMedicines;
         }
     }
+<<<<<<< HEAD
+=======
+
+    public IProvider Providers {
+        get{
+            if(_provider == null)
+            {
+                _provider = new ProviderRepository(_context);
+            }
+            return _provider;
+        }
+    }
+
+    public IPurchase Purchases {
+        get{
+            if(_purchase == null)
+            {
+                _purchase = new PurchaseRepository(_context);
+            }
+            return _purchase;
+        }
+    }
+
+    public IPurchasedMedicine PurchasedMedicines {
+        get{
+            if(_purchasedMedicine == null)
+            {
+                _purchasedMedicine = new PurchasedMedicineRepository(_context);
+            }
+            return _purchasedMedicine;
+        }
+    }
+
+
+    public IPatient Patients
+    {
+        get
+        {
+            if(_patients == null)
+            {
+                _patients = new PatientRepository(_context);
+            }
+            return _patients;
+        }
+    }
+
+    public IPatient Patients
+    {
+        get
+        {
+            if(_patients == null)
+            {
+                _patients = new PatientRepository(_context);
+            }
+            return _patients;
+        }
+    }
+>>>>>>> 0810f6b (feat: :sparkles: Add patient to UnitOfWork)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
