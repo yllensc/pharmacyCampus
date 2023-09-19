@@ -22,7 +22,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IProvider _provider;
     private ISale _sales;
 
- 
 
     public UnitOfWork(PharmacyDbContext context)
     {
