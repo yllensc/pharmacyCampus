@@ -203,6 +203,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ae2622d (delete migrations aaaaaaaa)
 =======
 >>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
 =======
@@ -283,6 +286,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> c78bcf7 (feat: :sparkles: Add patient to UnitOfWork)
 =======
 >>>>>>> fdad28b (delete migrations aaaaaaaa)
+<<<<<<< HEAD
 =======
 >>>>>>> 22c976d (feat: :sparkles: Creacion Interfaces y repo)
 =======
@@ -303,6 +307,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     }
 
 >>>>>>> origin/main
+=======
+>>>>>>> ae2622d (delete migrations aaaaaaaa)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
