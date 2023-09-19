@@ -120,7 +120,9 @@ namespace Persistence.Data.Migrations
                 name: "employee",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Position = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
@@ -133,8 +135,8 @@ namespace Persistence.Data.Migrations
                 {
                     table.PrimaryKey("PK_employee", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_employee_user_Id",
-                        column: x => x.Id,
+                        name: "FK_employee_user_UserId",
+                        column: x => x.UserId,
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -306,6 +308,11 @@ namespace Persistence.Data.Migrations
                 table: "employee",
                 column: "IdenNumber",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_employee_UserId",
+                table: "employee",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_medicine_ProviderId",

@@ -27,4 +27,14 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             .Include(u => u.RefreshTokens)
             .FirstOrDefaultAsync(u => u.UserName.ToLower() == username.ToLower());
     }
+
+    public async Task<int> GetIDUserAsync(string username)
+    {
+        var user = await _context.Users
+                         .Include(u => u.Id)
+                         .FirstOrDefaultAsync(u => u.UserName.ToLower() == username.ToLower());
+        return  user.Id;
+
+    
+    }
 }
