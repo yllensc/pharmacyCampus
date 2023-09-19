@@ -14,13 +14,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IRolRepository _roles;
     private IUserRepository _users;
     private IEmployee _employees;
-    private IPatient _patients;
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-    private IPatient _patients;
 
     public UnitOfWork(PharmacyDbContext context)
     {
