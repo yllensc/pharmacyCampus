@@ -126,7 +126,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 
     public IPatient Patients
     {
-         get{
+        get
+        {
             if(_patients == null)
             {
                 _patients = new PatientRepository(_context);
@@ -134,6 +135,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _patients;
         }
     }
+
+   
 
     public ISale Sales
     {
