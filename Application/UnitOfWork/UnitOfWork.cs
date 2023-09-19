@@ -22,11 +22,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPosition _position;
     private IPatient _patients;
     private ISale _sales;
-<<<<<<< HEAD
-=======
 
 
->>>>>>> b4059eb (feat: :sparkles: Add patient to UnitOfWork)
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
