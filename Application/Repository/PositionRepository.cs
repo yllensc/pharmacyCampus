@@ -1,17 +1,16 @@
 using Domain.Entities;
 using Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-
 namespace Application.Repository;
-    public class EmployeeRepository: GenericRepository<Employee>, IEmployee
+    public class PositionRepository: GenericRepository<Position>, IPosition
 {
     private readonly PharmacyDbContext _context;
 
-    public EmployeeRepository(PharmacyDbContext context) : base(context)
+    public PositionRepository(PharmacyDbContext context) : base(context)
     {
         _context = context;
     }
+
 
 }

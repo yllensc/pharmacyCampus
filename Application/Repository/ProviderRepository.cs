@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
+<<<<<<< HEAD
+=======
+using Microsoft.EntityFrameworkCore;
+>>>>>>> origin/main
 using Persistence;
 
 namespace Application.Repository;
@@ -16,4 +20,15 @@ namespace Application.Repository;
         _context = context;
 
     }
+<<<<<<< HEAD
+=======
+
+    public async Task<Provider> GetByIdProviderAsync(int id)
+    {
+        return await _context.Providers
+                .Include(p=>p.Purchases)
+                .Include(p=>p.Medicines)
+                .FirstOrDefaultAsync(p => p.Id == id);
+    }
+>>>>>>> origin/main
 }

@@ -8,9 +8,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Repository;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Domain.Entities;
 =======
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
+=======
+>>>>>>> origin/main
 using Domain.Interfaces;
 using Persistence;
 
@@ -22,6 +25,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IRolRepository _roles;
     private IUserRepository _users;
     private IEmployee _employees;
+<<<<<<< HEAD
     private IPatient _patients;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -55,6 +59,15 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IProvider _provider;
 >>>>>>> 4f05f0f (interfaces yllen)
 
+=======
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
+    private IPurchase _purchase;
+    private IPurchasedMedicine _purchasedMedicine;
+    private IProvider _provider;
+    private IPosition _position;
+    private IPatient _patients;
+>>>>>>> origin/main
     private ISale _sales;
 =======
 =======
@@ -105,27 +118,15 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _employees;
         }
     }
-
-    public IPatient Patients
+        public IPosition Positions
     {
         get
         {
-            if(_patients == null)
+            if (_position == null)
             {
-                _patients = new PatientRepository(_context);
+                _position = new PositionRepository(_context);
             }
-            return _patients;
-        }
-    }
-
-    public ISale Sales
-    {
-        get{
-            if(_sales == null)
-            {
-                _sales = new SaleRepository(_context);
-            }
-            return _sales;
+            return _position;
         }
     }
 
@@ -153,11 +154,14 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
 =======
 >>>>>>> 4f05f0f (interfaces yllen)
+=======
+>>>>>>> origin/main
 
     public IProvider Providers {
         get{
@@ -198,6 +202,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
 =======
@@ -207,6 +212,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     {
         get
         {
+=======
+    public IPatient Patients
+    {
+         get{
+>>>>>>> origin/main
             if(_patients == null)
             {
                 _patients = new PatientRepository(_context);
@@ -214,6 +224,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _patients;
         }
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -278,6 +289,20 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> f3c4e88 (arreglando el bololó de mi commit :ccc)
 =======
 >>>>>>> da06d13 (interfaces yllen)
+=======
+
+    public ISale Sales
+    {
+        get{
+            if(_sales == null)
+            {
+                _sales = new SaleRepository(_context);
+            }
+            return _sales;
+        }
+    }
+
+>>>>>>> origin/main
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();

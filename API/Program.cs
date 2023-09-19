@@ -1,3 +1,4 @@
+using System.Reflection;
 using API.Extension;
 using API.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureCors();
+builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
+
 builder.Services.AddAplicacionServices();
 builder.Services.AddJwt(builder.Configuration);
 

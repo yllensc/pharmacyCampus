@@ -3,6 +3,7 @@ namespace API.Services;
 public interface IUserService
 {
     Task<string> RegisterAsync(RegisterDto model);
+<<<<<<< HEAD
     Task<string> RegisterAdmiAsync(RegisterAdmiDto model);
     Task<string> RegisterEmployeeAsync(RegisterEmployeeDto model);
 <<<<<<< HEAD
@@ -14,6 +15,8 @@ public interface IUserService
 =======
     Task<string> RegisterPatientAsync (RegisterPatientDto model);
 >>>>>>> 71f46c7 (feat: :sparkles: Register Patient!)
+=======
+>>>>>>> origin/main
     Task<DataUserDto> GetTokenAsync(LoginDto model);
     Task<string> AddRoleAsync(AddRoleDto model);
     Task<DataUserDto> RefreshTokenAsync(string refreshToken);
