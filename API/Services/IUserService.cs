@@ -5,7 +5,11 @@ public interface IUserService
     Task<string> RegisterAsync(RegisterDto model);
     Task<string> RegisterAdmiAsync(RegisterAdmiDto model);
     Task<string> RegisterEmployeeAsync(RegisterEmployeeDto model);
+<<<<<<< HEAD
     Task<string> RegisterPatientAsync (RegisterPatientDto model);
+=======
+   // Task<string> RegisterPatientAsync (RegisterPatientDto model);
+>>>>>>> a05ced1 (Modification  relations in User to employee and patient)
     Task<DataUserDto> GetTokenAsync(LoginDto model);
     Task<string> AddRoleAsync(AddRoleDto model);
     Task<DataUserDto> RefreshTokenAsync(string refreshToken);
