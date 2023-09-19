@@ -21,9 +21,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IProvider _provider;
     private IPatient _patients;
     private ISale _sales;
+<<<<<<< HEAD
+=======
 
- 
 
+>>>>>>> b4059eb (feat: :sparkles: Add patient to UnitOfWork)
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -76,10 +78,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public IPurchase Purchases => throw new NotImplementedException();
-
-    public IPurchasedMedicine PurchasedMedicines => throw new NotImplementedException();
-
     public IPurchase Purchases {
         get{
             if(_purchase == null)
@@ -99,7 +97,16 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _purchasedMedicine;
         }
     }
-
+public IProvider Providers
+    {
+        get{
+            if(_provider == null)
+            {
+                _provider = new ProviderRepository(_context);
+            }
+            return _provider;
+        }
+    }
 
     public IPatient Patients
     {
