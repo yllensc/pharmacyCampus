@@ -13,6 +13,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private readonly PharmacyDbContext _context;
     private IRolRepository _roles;
     private IUserRepository _users;
+    private IPatient _patients;
 
     public UnitOfWork(PharmacyDbContext context)
     {
@@ -39,6 +40,18 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _users = new UserRepository(_context);
             }
             return _users;
+        }
+    }
+
+    public IPatient Patients
+    {
+        get
+        {
+            if(_patients == null)
+            {
+                _patients = new PatientRepository(_context);
+            }
+            return _patients;
         }
     }
     public async Task<int> SaveAsync()

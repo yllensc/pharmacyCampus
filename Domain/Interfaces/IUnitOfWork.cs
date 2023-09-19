@@ -9,6 +9,7 @@ public interface IUnitOfWork
 {
     IRolRepository Roles { get; }
     IUserRepository Users { get; }
+    IPatient Patients { get; }
     Task<int> SaveAsync();
 
 }
