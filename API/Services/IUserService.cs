@@ -6,6 +6,7 @@ public interface IUserService
     Task<string> RegisterAdmiAsync(RegisterAdmiDto model);
     Task<string> RegisterEmployeeAsync(RegisterEmployeeDto model);
     Task<string> RegisterPatientAsync (RegisterPatientDto model);
+   // Task<string> RegisterPatientAsync (RegisterPatientDto model);
     Task<DataUserDto> GetTokenAsync(LoginDto model);
     Task<string> AddRoleAsync(AddRoleDto model);
     Task<DataUserDto> RefreshTokenAsync(string refreshToken);
