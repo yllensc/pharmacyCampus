@@ -57,7 +57,7 @@ public class UserService : IUserService
         }
         else
         {
-            return $"User {registerDto.UserName} already registered.";
+            return $"User {registerDto.UserName} already registered, change the identification or username.";
         }
     }
     public async Task<string> RegisterAdmiAsync(RegisterAdmiDto registerAdmiDto)
