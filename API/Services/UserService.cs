@@ -102,19 +102,9 @@ public class UserService : IUserService
     }
     public async Task<string> RegisterEmployeeAsync(RegisterEmployeeDto registerEmployeeDto)
     {
-        var user = new User
-        {
-            Email = registerEmployeeDto.Email,
-            UserName = registerEmployeeDto.UserName
-        };
+        var user= CreateUser(registerEmployeeDto.Email, registerEmployeeDto.UserName, registerEmployeeDto.Password);
 
-        user.Password = _passwordHasher.HashPassword(user, registerEmployeeDto.Password); //Encrypt password
-
-        var existingUser = _unitOfWork.Users
-                                    .Find(u => u.UserName.ToLower() == registerEmployeeDto.UserName.ToLower())
-                                    .FirstOrDefault();
-
-        if (existingUser == null)
+        if (user != null)
         {
             var existingEmployee = _unitOfWork.Employees
                                               .Find(u => u.IdenNumber == registerEmployeeDto.IdenNumber)
@@ -163,6 +153,60 @@ public class UserService : IUserService
             return $"User {registerEmployeeDto.UserName} already registered.";
         }
     }
+
+    public async Task<string> RegisterPatientAsync(RegisterPatientDto registerPatientDto)
+    {
+         var user= CreateUser(registerPatientDto.Email, registerPatientDto.UserName, registerPatientDto.Password);
+
+        if (user != null)
+        {
+            var existingPatient = _unitOfWork.Patients
+                                              .Find(u => u.IdenNumber == registerPatientDto.IdenNumber)
+                                              .FirstOrDefault();
+            if (existingPatient == null)
+            {
+                var rolDefault = _unitOfWork.Roles
+                                   .Find(u => u.Name == Authorization.Roles.Patient.ToString())
+                                   .First();
+                try
+                {
+                    user.Roles.Add(rolDefault);
+                    _unitOfWork.Users.Add(user);
+                    await _unitOfWork.SaveAsync();
+                    //var idUser = _unitOfWork.Users.GetIDUserAsync(user.UserName);
+                    var userLook = _unitOfWork.Users.GetByUserNameAsync(user.UserName);
+                    var patient = new Patient
+                    {
+                        Name = registerPatientDto.Name,
+                        Address = registerPatientDto.Address,
+                        IdenNumber = registerPatientDto.IdenNumber,
+                        PhoneNumber = registerPatientDto.PhoneNumber,
+                        UserId = userLook.Id
+
+                    };
+                   
+                    _unitOfWork.Patients.Add(patient);
+                    await _unitOfWork.SaveAsync();
+
+                    return $"User  {registerPatientDto.UserName} has been registered successfully";
+
+                }
+                catch (Exception ex)
+                {
+                    var message = ex.Message;
+                    return $"Error: {message}";
+                }
+            }
+            else
+            {
+                return $"User with Identificacion Number {registerPatientDto.IdenNumber} already registered.";
+            }
+        }
+        else
+        {
+            return $"User {registerPatientDto.UserName} already registered.";
+        }
+    } 
     public async Task<DataUserDto> GetTokenAsync(LoginDto model)
     {
         DataUserDto dataUserDto = new DataUserDto();
@@ -329,6 +373,27 @@ public class UserService : IUserService
             expires: DateTime.UtcNow.AddMinutes(_jwt.DurationOnMinutes),
             signingCredentials: signingCredentials);
         return jwtSecurityToken;
+    }
+
+    private User CreateUser(string email, string username, string password)
+    {
+        var user = new User
+        {
+            Email = email,
+            UserName = username
+        };
+
+        user.Password = _passwordHasher.HashPassword(user, password); //Encrypt password
+
+        var existingUser = _unitOfWork.Users
+                                    .Find(u => u.UserName.ToLower() == username.ToLower())
+                                    .FirstOrDefault();
+
+        if (existingUser != null)
+        {
+            return null;
+        }
+        return user;
     }
 
 }
