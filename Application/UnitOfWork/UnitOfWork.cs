@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -215,3 +216,5 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         _context.Dispose();
     }
 }
+=======
+>>>>>>> d61f3ff (feat: :sparkles: Creacion Interfaces y repo)
