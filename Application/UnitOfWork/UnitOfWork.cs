@@ -28,6 +28,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 
     private IPatient _patients;
 
+
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -142,7 +143,21 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+      public ISale Sales
+    {
+        get
+        {
+            if(_sales == null)
+            {
+                _sales = new SaleRepository(_context);
+            }
+            return _sales;
+        }
+    }
 
+
+
+   
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
