@@ -73,26 +73,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public ISaleMedicineRepository SaleMedicines
-    {
-        get{
-            if(_saleMedicines == null)
-            {
-                _saleMedicines = new SaleMedicineRepository(_context);
-            }
-            return _saleMedicines;
-        }
-    }
+    public IPurchase Purchases => throw new NotImplementedException();
 
-    public IProvider Providers {
-        get{
-            if(_provider == null)
-            {
-                _provider = new ProviderRepository(_context);
-            }
-            return _provider;
-        }
-    }
+    public IPurchasedMedicine PurchasedMedicines => throw new NotImplementedException();
 
     public IPurchase Purchases {
         get{
