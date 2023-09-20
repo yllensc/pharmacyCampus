@@ -29,8 +29,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPatient _patients;
 >>>>>>> dcfa50b (feat: :sparkles: Add patient to UnitOfWork)
     private ISale _sales;
-
-   
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -92,6 +90,27 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+    public ISaleMedicineRepository SaleMedicines
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
+        }
+    }
+
+    public IProvider Providers {
+        get{
+            if(_provider == null)
+            {
+                _provider = new ProviderRepository(_context);
+            }
+            return _provider;
+        }
+    }
+
     public IPurchase Purchases {
         get{
             if(_purchase == null)
@@ -113,6 +132,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     public IProvider Provider {
         get{
@@ -124,10 +144,12 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 >>>>>>> eaebbce (feat: :sparkles: Creacion Interfaces y repo)
+=======
+
+>>>>>>> 21a3290 (arreglando el bololó de mi commit :ccc)
     public IPatient Patients
     {
-        get
-        {
+         get{
             if(_patients == null)
             {
                 _patients = new PatientRepository(_context);
@@ -136,10 +158,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-     public ISale Sales
+    public ISale Sales
     {
-        get
-        {
+        get{
             if(_sales == null)
             {
                 _sales = new SaleRepository(_context);
@@ -147,6 +168,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _sales;
         }
     }
+
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
