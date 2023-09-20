@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Repository;
+using Domain.Entities;
 using Domain.Interfaces;
 using Persistence;
 
@@ -16,6 +17,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IEmployee _employees;
     private IPatient _patients;
 
+    private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -64,6 +66,17 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _patients = new PatientRepository(_context);
             }
             return _patients;
+        }
+    }
+
+    public ISale Sales
+    {
+        get{
+            if(_sales == null)
+            {
+                _sales = new SaleRepository(_context);
+            }
+            return _sales;
         }
     }
     public async Task<int> SaveAsync()

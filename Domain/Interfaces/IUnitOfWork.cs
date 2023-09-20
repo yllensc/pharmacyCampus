@@ -11,6 +11,7 @@ public interface IUnitOfWork
     IUserRepository Users { get; }
     IEmployee Employees { get; }
     IPatient Patients { get; }
+    ISale Sales { get; }
     Task<int> SaveAsync();
 
 }
