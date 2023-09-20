@@ -20,7 +20,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
 
-
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
