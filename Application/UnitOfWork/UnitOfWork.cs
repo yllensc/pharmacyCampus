@@ -59,6 +59,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
 
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
     public UnitOfWork(PharmacyDbContext context)
@@ -189,6 +191,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
 
@@ -224,6 +227,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 =======
 >>>>>>> 2a7d223 (delete migrations aaaaaaaa)
 =======
+=======
+>>>>>>> 22c976d (feat: :sparkles: Creacion Interfaces y repo)
 
     public IMedicineRepository Medicines
     {
@@ -246,6 +251,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _saleMedicines;
         }
     }
+<<<<<<< HEAD
 >>>>>>> f0c27a1 (feat: :sparkles: Creacion Interfaces y repo)
 =======
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
@@ -257,6 +263,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> c78bcf7 (feat: :sparkles: Add patient to UnitOfWork)
 =======
 >>>>>>> fdad28b (delete migrations aaaaaaaa)
+=======
+>>>>>>> 22c976d (feat: :sparkles: Creacion Interfaces y repo)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
