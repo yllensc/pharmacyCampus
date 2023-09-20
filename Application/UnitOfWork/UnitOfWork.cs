@@ -20,9 +20,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-    private IMedicineRepository _medicines;
-    private ISaleMedicineRepository _saleMedicines;
 
+    private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -85,9 +84,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public IProvider Providers => throw new NotImplementedException();
 
-    public IPurchase Purchases => throw new NotImplementedException();
 
     public IProvider Providers {
         get{
