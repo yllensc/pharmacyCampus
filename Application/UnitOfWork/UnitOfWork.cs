@@ -20,8 +20,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-    private IMedicineRepository _medicines;
-    private ISaleMedicineRepository _saleMedicines;
+    private ISale _sales;
+
+ 
 
     public UnitOfWork(PharmacyDbContext context)
     {
@@ -85,9 +86,28 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public IProvider Providers => throw new NotImplementedException();
+ 
+    public IMedicineRepository Medicines
+    {
+        get{
+            if(_medicines == null)
+            {
+                _medicines = new MedicineRepository(_context);
+            }
+            return _medicines;
+        }
+    }
 
-    public IPurchase Purchases => throw new NotImplementedException();
+    public ISaleMedicineRepository SaleMedicines
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
+        }
+    }
 
     public IProvider Providers {
         get{
@@ -119,28 +139,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-
-    public IMedicineRepository Medicines
-    {
-        get{
-            if(_medicines == null)
-            {
-                _medicines = new MedicineRepository(_context);
-            }
-            return _medicines;
-        }
-    }
-
-    public ISaleMedicineRepository SaleMedicines
-    {
-        get{
-            if(_saleMedicines == null)
-            {
-                _saleMedicines = new SaleMedicineRepository(_context);
-            }
-            return _saleMedicines;
-        }
-    }
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
