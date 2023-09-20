@@ -15,14 +15,14 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IUserRepository _users;
     private IEmployee _employees;
     private IPatient _patients;
-
-    private ISale _sales;
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-   
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
+
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -89,8 +89,58 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 
     public IPurchase Purchases => throw new NotImplementedException();
 
-    public IPurchasedMedicine PurchasedMedicines => throw new NotImplementedException();
+    public IProvider Providers {
+        get{
+            if(_provider == null)
+            {
+                _provider = new ProviderRepository(_context);
+            }
+            return _provider;
+        }
+    }
 
+    public IPurchase Purchases {
+        get{
+            if(_purchase == null)
+            {
+                _purchase = new PurchaseRepository(_context);
+            }
+            return _purchase;
+        }
+    }
+
+    public IPurchasedMedicine PurchasedMedicines {
+        get{
+            if(_purchasedMedicine == null)
+            {
+                _purchasedMedicine = new PurchasedMedicineRepository(_context);
+            }
+            return _purchasedMedicine;
+        }
+    }
+
+
+    public IMedicineRepository Medicines
+    {
+        get{
+            if(_medicines == null)
+            {
+                _medicines = new MedicineRepository(_context);
+            }
+            return _medicines;
+        }
+    }
+
+    public ISaleMedicineRepository SaleMedicines
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
+        }
+    }
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
