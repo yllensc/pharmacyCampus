@@ -57,154 +57,9 @@ public class UserService : IUserService
         }
         else
         {
-            return $"User {registerDto.UserName} already registered.";
+            return $"User {registerDto.UserName} already registered, change the identification or username.";
         }
     }
-    public async Task<string> RegisterAdmiAsync(RegisterAdmiDto registerAdmiDto)
-    {
-        var user = new User
-        {
-            Email = registerAdmiDto.Email,
-            UserName = registerAdmiDto.UserName
-        };
-
-        user.Password = _passwordHasher.HashPassword(user, registerAdmiDto.Password); //Encrypt password
-
-        var existingUser = _unitOfWork.Users
-                                    .Find(u => u.UserName.ToLower() == registerAdmiDto.UserName.ToLower())
-                                    .FirstOrDefault();
-
-        if (existingUser == null)
-        {
-            var rolDefault = _unitOfWork.Roles
-                                    .Find(u => u.Name == Authorization.Roles.Administrator.ToString())
-                                    .First();
-            try
-            {
-                user.Roles.Add(rolDefault);
-                _unitOfWork.Users.Add(user);
-                await _unitOfWork.SaveAsync();
-
-                return $"User  {registerAdmiDto.UserName} has been registered successfully";
-            }
-            catch (Exception ex)
-            {
-                var message = ex.Message;
-                return $"Error: {message}";
-            }
-        }
-        else
-        {
-            return $"User {registerAdmiDto.UserName} already registered.";
-        }
-    }
-    public async Task<string> RegisterEmployeeAsync(RegisterEmployeeDto registerEmployeeDto)
-    {
-        var user= CreateUser(registerEmployeeDto.Email, registerEmployeeDto.UserName, registerEmployeeDto.Password);
-
-        if (user != null)
-        {
-            var existingEmployee = _unitOfWork.Employees
-                                              .Find(u => u.IdenNumber == registerEmployeeDto.IdenNumber)
-                                              .FirstOrDefault();
-            if (existingEmployee == null)
-            {
-                var rolDefault = _unitOfWork.Roles
-                                   .Find(u => u.Name == Authorization.Roles.Employee.ToString())
-                                   .First();
-                try
-                {
-                    user.Roles.Add(rolDefault);
-                    _unitOfWork.Users.Add(user);
-                    await _unitOfWork.SaveAsync();
-                    //var idUser = _unitOfWork.Users.GetIDUserAsync(user.UserName);
-                    var userLook = _unitOfWork.Users.GetByUserNameAsync(user.UserName);
-                    var employee = new Employee
-                    {
-                        Name = registerEmployeeDto.Name,
-                        Position = registerEmployeeDto.Position,
-                        IdenNumber = registerEmployeeDto.IdenNumber,
-                        DateContract = registerEmployeeDto.DateContract,
-                        UserId = userLook.Id
-
-                    };
-                   
-                    _unitOfWork.Employees.Add(employee);
-                    await _unitOfWork.SaveAsync();
-
-                    return $"User  {registerEmployeeDto.UserName} has been registered successfully";
-
-                }
-                catch (Exception ex)
-                {
-                    var message = ex.Message;
-                    return $"Error: {message}";
-                }
-            }
-            else
-            {
-                return $"User {registerEmployeeDto.IdenNumber} already registered.";
-            }
-        }
-        else
-        {
-            return $"User {registerEmployeeDto.UserName} already registered.";
-        }
-    }
-
-    public async Task<string> RegisterPatientAsync(RegisterPatientDto registerPatientDto)
-    {
-         var user= CreateUser(registerPatientDto.Email, registerPatientDto.UserName, registerPatientDto.Password);
-
-        if (user != null)
-        {
-            var existingPatient = _unitOfWork.Patients
-                                              .Find(u => u.IdenNumber == registerPatientDto.IdenNumber)
-                                              .FirstOrDefault();
-            if (existingPatient == null)
-            {
-                var rolDefault = _unitOfWork.Roles
-                                   .Find(u => u.Name == Authorization.Roles.Patient.ToString())
-                                   .First();
-                try
-                {
-                    user.Roles.Add(rolDefault);
-                    _unitOfWork.Users.Add(user);
-                    await _unitOfWork.SaveAsync();
-                    //var idUser = _unitOfWork.Users.GetIDUserAsync(user.UserName);
-                    var userLook = _unitOfWork.Users.GetByUserNameAsync(user.UserName);
-                    var patient = new Patient
-                    {
-                        Name = registerPatientDto.Name,
-                        Address = registerPatientDto.Address,
-                        IdenNumber = registerPatientDto.IdenNumber,
-                        PhoneNumber = registerPatientDto.PhoneNumber,
-                        UserId = userLook.Id
-
-                    };
-                   
-                    _unitOfWork.Patients.Add(patient);
-                    await _unitOfWork.SaveAsync();
-
-                    return $"User  {registerPatientDto.UserName} has been registered successfully";
-
-                }
-                catch (Exception ex)
-                {
-                    var message = ex.Message;
-                    return $"Error: {message}";
-                }
-            }
-            else
-            {
-                return $"User with Identificacion Number {registerPatientDto.IdenNumber} already registered.";
-            }
-        }
-        else
-        {
-            return $"User {registerPatientDto.UserName} already registered.";
-        }
-    } 
     public async Task<DataUserDto> GetTokenAsync(LoginDto model)
     {
         DataUserDto dataUserDto = new DataUserDto();
@@ -383,21 +238,21 @@ public class UserService : IUserService
         return jwtSecurityToken;
     }
 
-    private User CreateUser(string email, string username, string password)
+    private User CreateUser(string email, string username, string password, string idenNumber)
     {
         var user = new User
         {
             Email = email,
-            UserName = username
+            UserName = username,
+            IdenNumber = idenNumber
         };
 
         user.Password = _passwordHasher.HashPassword(user, password); //Encrypt password
 
-        var existingUser = _unitOfWork.Users
-                                    .Find(u => u.UserName.ToLower() == username.ToLower())
+        var existUser = _unitOfWork.Users
+                                    .Find(u => u.UserName.ToLower() == username.ToLower() || u.IdenNumber == idenNumber)
                                     .FirstOrDefault();
-
-        if (existingUser != null)
+        if (existUser != null)
         {
             return null;
         }
