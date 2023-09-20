@@ -131,6 +131,7 @@ public class UserService : IUserService
 
                 if (userHasRole == false)
                 {
+<<<<<<< HEAD
                     if (rolExists.Name == Authorization.Roles.Employee.ToString())
                     {
                         var existPosition = _unitOfWork.Positions
@@ -159,6 +160,10 @@ public class UserService : IUserService
                     {
                         user.Roles.Remove(withoutRole);
                     }
+=======
+                    //if(rolExists.Name == Authorization.Roles.Employee.ToString()){}
+                    //en proceso jeje
+>>>>>>> e85a095 (feat: :alembic: cambios y experimentos con roles y usuarios jeje)
                     user.Roles.Add(rolExists);
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.SaveAsync();

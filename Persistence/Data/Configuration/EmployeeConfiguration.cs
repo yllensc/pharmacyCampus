@@ -18,6 +18,12 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(p => p.Name)
         .IsRequired()
         .HasMaxLength(100);
+<<<<<<< HEAD
+=======
+        builder.Property(p => p.Position)
+        .IsRequired()
+        .HasMaxLength(50);
+>>>>>>> e85a095 (feat: :alembic: cambios y experimentos con roles y usuarios jeje)
         builder.Property(p=> p.DateContract)    
         .IsRequired();
         builder.HasOne(p => p.Position)
