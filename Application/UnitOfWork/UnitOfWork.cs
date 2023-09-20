@@ -24,6 +24,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IEmployee _employees;
     private IPatient _patients;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
 <<<<<<< HEAD
@@ -42,6 +43,13 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
 >>>>>>> f0c27a1 (feat: :sparkles: Creacion Interfaces y repo)
+=======
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
+    private IPurchase _purchase;
+    private IPurchasedMedicine _purchasedMedicine;
+    private IProvider _provider;
+>>>>>>> 4f05f0f (interfaces yllen)
 
     private ISale _sales;
 =======
@@ -138,9 +146,12 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
+=======
+>>>>>>> 4f05f0f (interfaces yllen)
 
     public IProvider Providers {
         get{
@@ -172,6 +183,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -228,6 +240,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> f0c27a1 (feat: :sparkles: Creacion Interfaces y repo)
 =======
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
+=======
+>>>>>>> 4f05f0f (interfaces yllen)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
