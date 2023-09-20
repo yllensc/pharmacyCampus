@@ -30,6 +30,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> dcfa50b (feat: :sparkles: Add patient to UnitOfWork)
     private ISale _sales;
 
+   
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -91,27 +92,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public ISaleMedicineRepository SaleMedicines
-    {
-        get{
-            if(_saleMedicines == null)
-            {
-                _saleMedicines = new SaleMedicineRepository(_context);
-            }
-            return _saleMedicines;
-        }
-    }
-
-    public IProvider Providers {
-        get{
-            if(_provider == null)
-            {
-                _provider = new ProviderRepository(_context);
-            }
-            return _provider;
-        }
-    }
-
     public IPurchase Purchases {
         get{
             if(_purchase == null)
@@ -132,6 +112,18 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+<<<<<<< HEAD
+=======
+    public IProvider Provider {
+        get{
+            if(_provider == null)
+            {
+                _provider = new ProviderRepository(_context);
+            }
+            return _provider;
+        }
+    }
+>>>>>>> eaebbce (feat: :sparkles: Creacion Interfaces y repo)
     public IPatient Patients
     {
         get
