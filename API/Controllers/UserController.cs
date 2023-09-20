@@ -49,7 +49,6 @@ public class UserController : ApiBaseController
         return Ok(response);
     }
 
-
     private void SetRefreshTokenInCookie(string refreshToken)
     {
         var cookieOptions = new CookieOptions
