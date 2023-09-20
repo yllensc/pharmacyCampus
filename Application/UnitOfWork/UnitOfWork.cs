@@ -24,11 +24,16 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private IPatient _patients;
     private IPatient _patients;
 >>>>>>> 0810f6b (feat: :sparkles: Add patient to UnitOfWork)
 =======
 >>>>>>> 2a7d223 (delete migrations aaaaaaaa)
+=======
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
+>>>>>>> f0c27a1 (feat: :sparkles: Creacion Interfaces y repo)
 
     private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
@@ -148,6 +153,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     public IPatient Patients
     {
@@ -175,6 +181,30 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> 0810f6b (feat: :sparkles: Add patient to UnitOfWork)
 =======
 >>>>>>> 2a7d223 (delete migrations aaaaaaaa)
+=======
+
+    public IMedicineRepository Medicines
+    {
+        get{
+            if(_medicines == null)
+            {
+                _medicines = new MedicineRepository(_context);
+            }
+            return _medicines;
+        }
+    }
+
+    public ISaleMedicineRepository SaleMedicines
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
+        }
+    }
+>>>>>>> f0c27a1 (feat: :sparkles: Creacion Interfaces y repo)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
