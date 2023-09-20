@@ -20,10 +20,10 @@ public class PatientController : ApiBaseController
         _unitOfWork = unitOfWork;
     }
 
-   /* [HttpPost("register")]
+    [HttpPost("register")]
     public async Task<ActionResult> RegisterPatientAsync(RegisterPatientDto model)
     {
         var result = await _userService.RegisterPatientAsync(model);
         return Ok(result);
-    }*/
+    }
 }
