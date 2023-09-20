@@ -1,10 +1,16 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Repository;
+<<<<<<< HEAD
 using Domain.Entities;
+=======
+>>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
 using Domain.Interfaces;
 using Persistence;
 
@@ -17,6 +23,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IUserRepository _users;
     private IEmployee _employees;
     private IPatient _patients;
+<<<<<<< HEAD
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
 <<<<<<< HEAD
@@ -37,6 +44,15 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> f0c27a1 (feat: :sparkles: Creacion Interfaces y repo)
 
     private ISale _sales;
+=======
+    private ISale _sales;
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
+    private IPurchase _purchase;
+    private IPurchasedMedicine _purchasedMedicine;
+    private IProvider _provider;
+
+>>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -121,7 +137,10 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
 
     public IProvider Providers {
         get{
@@ -153,6 +172,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -206,6 +226,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 >>>>>>> f0c27a1 (feat: :sparkles: Creacion Interfaces y repo)
+=======
+>>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
@@ -216,5 +238,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         _context.Dispose();
     }
 }
+<<<<<<< HEAD
 =======
 >>>>>>> d61f3ff (feat: :sparkles: Creacion Interfaces y repo)
+=======
+>>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
