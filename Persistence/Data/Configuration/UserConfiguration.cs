@@ -45,9 +45,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 builder.HasMany(p => p.RefreshTokens)
                 .WithOne(p => p.User)
                 .HasForeignKey(p => p.UserId);
-                builder.HasMany(p => p.Employees)
-                .WithOne(p => p.User)
-                .HasForeignKey(p => p.UserId);
             }
 
         }
