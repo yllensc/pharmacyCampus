@@ -26,6 +26,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> da06d13 (interfaces yllen)
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
 <<<<<<< HEAD
@@ -194,8 +197,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
+=======
+>>>>>>> da06d13 (interfaces yllen)
 
     public IPatient Patients
     {
@@ -259,6 +265,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
 =======
 >>>>>>> 4f05f0f (interfaces yllen)
+<<<<<<< HEAD
 =======
 >>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
 =======
@@ -269,6 +276,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> 22c976d (feat: :sparkles: Creacion Interfaces y repo)
 =======
 >>>>>>> f3c4e88 (arreglando el bololó de mi commit :ccc)
+=======
+>>>>>>> da06d13 (interfaces yllen)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
