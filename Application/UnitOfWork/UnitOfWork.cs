@@ -14,6 +14,12 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IRolRepository _roles;
     private IUserRepository _users;
     private IEmployee _employees;
+    private IPatient _patients;
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
+    private IPurchase _purchase;
+    private IPurchasedMedicine _purchasedMedicine;
+    private IProvider _provider;
 
     public UnitOfWork(PharmacyDbContext context)
     {
@@ -53,6 +59,82 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _employees;
         }
     }
+
+    public IPatient Patients
+    {
+        get
+        {
+            if(_patients == null)
+            {
+                _patients = new PatientRepository(_context);
+            }
+            return _patients;
+        }
+    }
+
+    public ISale Sales
+    {
+        get{
+            if(_sales == null)
+            {
+                _sales = new SaleRepository(_context);
+            }
+            return _sales;
+        }
+    }
+
+    public IMedicineRepository Medicines
+    {
+        get{
+            if(_medicines == null)
+            {
+                _medicines = new MedicineRepository(_context);
+            }
+            return _medicines;
+        }
+    }
+
+    public ISaleMedicineRepository SaleMedicines
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
+        }
+    }
+
+    public IProvider Providers {
+        get{
+            if(_provider == null)
+            {
+                _provider = new ProviderRepository(_context);
+            }
+            return _provider;
+        }
+    }
+
+    public IPurchase Purchases {
+        get{
+            if(_purchase == null)
+            {
+                _purchase = new PurchaseRepository(_context);
+            }
+            return _purchase;
+        }
+    }
+
+    public IPurchasedMedicine PurchasedMedicines {
+        get{
+            if(_purchasedMedicine == null)
+            {
+                _purchasedMedicine = new PurchasedMedicineRepository(_context);
+            }
+            return _purchasedMedicine;
+        }
+    }
+
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
