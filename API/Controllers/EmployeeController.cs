@@ -17,8 +17,17 @@ public class EmployeeController : ApiBaseController
     {
         _userService = userService;
     }
+<<<<<<< HEAD
 
 
+=======
+        [HttpPost("register")]
+    public async Task<ActionResult> RegisterEmployeeAsync(RegisterEmployeeDto model)
+    {
+        var result = await _userService.RegisterEmployeeAsync(model);
+        return Ok(result);
+    }
+>>>>>>> aff8a9d (interfaces yllen)
 
     
     
