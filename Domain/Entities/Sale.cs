@@ -12,6 +12,6 @@ namespace Domain.Entities;
         public Patient Patient { get; set; }
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
-        public ICollection<SoldMedicine> SoldMedicines{ get; set; }
+        public ICollection<SaleMedicine> SaleMedicines{ get; set; }
 
     }

@@ -16,6 +16,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IUserRepository _users;
     private IEmployee _employees;
     private IPatient _patients;
+    private IMedicineRepository _medicines;
+    private ISaleMedicineRepository _saleMedicines;
 
     private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
@@ -77,6 +79,28 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _sales = new SaleRepository(_context);
             }
             return _sales;
+        }
+    }
+
+    public IMedicineRepository Medicines
+    {
+        get{
+            if(_medicines == null)
+            {
+                _medicines = new MedicineRepository(_context);
+            }
+            return _medicines;
+        }
+    }
+
+    public ISaleMedicineRepository SaleMedicines
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
         }
     }
     public async Task<int> SaveAsync()

@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Data.Configurations;
 
-public class SaleMedicineConfiguration : IEntityTypeConfiguration<SoldMedicine>
+public class SaleMedicineConfiguration : IEntityTypeConfiguration<SaleMedicine>
 {
-    public void Configure(EntityTypeBuilder<SoldMedicine> builder)
+    public void Configure(EntityTypeBuilder<SaleMedicine> builder)
     {
-        builder.ToTable("soldMedicine");
-        builder.HasKey(m => new { m.SoldId, m.MedicineId }); // Definir clave primaria compuesta
-        builder.Property(p => p.SoldQuantity)
+        builder.ToTable("saleMedicine");
+        builder.HasKey(m => new { m.SaleId, m.MedicineId }); // Definir clave primaria compuesta
+        builder.Property(p => p.SaleQuantity)
         .IsRequired()
         .HasColumnType("int");
         builder.Property(p => p.Price)
         .IsRequired()
         .HasColumnType("decimal");
         builder.HasOne(d => d.Sale)
-        .WithMany(p => p.SoldMedicines)
-        .HasForeignKey(d => d.SoldId);
+        .WithMany(p => p.SaleMedicines)
+        .HasForeignKey(d => d.SaleId);
         builder.HasOne(d => d.Medicine)
-        .WithMany(p => p.SoldMedicines)
+        .WithMany(p => p.SaleMedicines)
         .HasForeignKey(d => d.MedicineId);
     }
 }

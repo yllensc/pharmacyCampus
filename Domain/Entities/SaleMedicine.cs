@@ -1,11 +1,11 @@
 namespace Domain.Entities;
 
-public class SoldMedicine : BaseEntity
+public class SaleMedicine : BaseEntity
 {
-    public int SoldId { get; set; }
+    public int SaleId { get; set; }
     public Sale Sale {get; set;}
     public int MedicineId { get; set; }
     public Medicine Medicine { get; set;}
-    public int SoldQuantity { get; set; }
+    public int SaleQuantity { get; set; }
     public double Price { get; set; }
 }
