@@ -12,8 +12,6 @@ public interface IUnitOfWork
     IEmployee Employees { get; }
     IPatient Patients { get; }
     ISale Sales { get; }
-    IPatient Patients { get; }
-    ISale Sales { get; }
     IProvider Providers {get; }
     IPurchase Purchases {get; }
     IPurchasedMedicine PurchasedMedicines {get; }
