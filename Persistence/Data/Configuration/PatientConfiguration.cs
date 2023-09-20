@@ -25,10 +25,5 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
         builder.Property(p => p.PhoneNumber)
         .IsRequired()
         .HasMaxLength(25);
-        builder.Property(p => p.IdenNumber)
-        .IsRequired()
-        .HasMaxLength(15);
-        builder.HasIndex(p => p.IdenNumber)
-        .IsUnique();
     }
 }

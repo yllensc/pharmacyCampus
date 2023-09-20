@@ -8,7 +8,6 @@ namespace Domain.Interfaces
 {
     public interface IEmployee: IGenericRepository<Employee> 
 { 
-    Task<Employee> GetByEmployeeIDAsync(string idenNumber);
         
     }
 }
