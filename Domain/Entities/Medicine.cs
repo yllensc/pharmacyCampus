@@ -9,5 +9,5 @@ public class Medicine : BaseEntity
     public int ProviderId { get; set; } 
     public Provider Provider{ get; set; }
     public ICollection<PurchasedMedicine> PurchasedMedicines{ get; set; }
-    public ICollection<SoldMedicine> SoldMedicines{ get; set; }
+    public ICollection<SaleMedicine> SaleMedicines{ get; set; }
 }
