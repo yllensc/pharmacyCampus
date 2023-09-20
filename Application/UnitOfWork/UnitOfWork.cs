@@ -31,8 +31,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> da06d13 (interfaces yllen)
+=======
+>>>>>>> 33944b8 (arreglando el bololó de mi commit :ccc)
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
 <<<<<<< HEAD
@@ -78,8 +81,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-    private IMedicineRepository _medicines;
-    private ISaleMedicineRepository _saleMedicines;
 
 >>>>>>> 7aa3e61 (arreglando el bololó de mi commit :ccc)
     public UnitOfWork(PharmacyDbContext context)
@@ -207,10 +208,13 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> ae2622d (delete migrations aaaaaaaa)
 =======
 >>>>>>> f241337 (feat: :sparkles: Creacion Interfaces y repo)
+=======
+>>>>>>> 33944b8 (arreglando el bololó de mi commit :ccc)
 =======
 >>>>>>> 04616dd (feat: :sparkles: Add patient to UnitOfWork)
 =======
@@ -297,6 +301,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 >>>>>>> 22c976d (feat: :sparkles: Creacion Interfaces y repo)
 =======
 >>>>>>> f3c4e88 (arreglando el bololó de mi commit :ccc)
+<<<<<<< HEAD
 =======
 >>>>>>> da06d13 (interfaces yllen)
 =======
@@ -319,6 +324,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 =======
 >>>>>>> 22c976d (feat: :sparkles: Creacion Interfaces y repo)
 >>>>>>> f241337 (feat: :sparkles: Creacion Interfaces y repo)
+=======
+>>>>>>> 33944b8 (arreglando el bololó de mi commit :ccc)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
