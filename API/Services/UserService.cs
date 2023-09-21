@@ -132,6 +132,7 @@ public class UserService : IUserService
                 if (userHasRole == false)
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if (rolExists.Name == Authorization.Roles.Employee.ToString())
                     {
                         var existPosition = _unitOfWork.Positions
@@ -139,11 +140,20 @@ public class UserService : IUserService
                                                  .FirstOrDefault();
 
                         if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position) && existPosition != null)
+=======
+                    if (rolExists.Name == Authorization.Roles.Employee.ToString())
+                    {
+                        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position))
+>>>>>>> f6a347b (addrole casi check jeje)
                         {
                             var employee = new Employee
                             {
                                 Name = model.Name,
+<<<<<<< HEAD
                                 PositionId = existPosition.Id,
+=======
+                                Position = model.Position,
+>>>>>>> f6a347b (addrole casi check jeje)
                                 UserId = user.Id
                             };
                             _unitOfWork.Employees.Add(employee);
@@ -155,6 +165,7 @@ public class UserService : IUserService
                         }
 
                     }
+<<<<<<< HEAD
                     var withoutRole = user.Roles.FirstOrDefault(u => u.Name == Authorization.Roles.WithoutRol.ToString());
                     if (withoutRole != null && model.Role.ToLower() != Authorization.Roles.WithoutRol.ToString().ToLower())
                     {
@@ -164,11 +175,14 @@ public class UserService : IUserService
                     //if(rolExists.Name == Authorization.Roles.Employee.ToString()){}
                     //en proceso jeje
 >>>>>>> e85a095 (feat: :alembic: cambios y experimentos con roles y usuarios jeje)
+=======
+>>>>>>> f6a347b (addrole casi check jeje)
                     user.Roles.Add(rolExists);
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.SaveAsync();
                     return $"Role {model.Role} added to user {model.UserName} successfully.";
                 }
+<<<<<<< HEAD
                 else
                 {
                     return $"Role {model.Role} ya está asignado al usuario.";
@@ -176,12 +190,23 @@ public class UserService : IUserService
             }
             else
             {
+=======
+                else{
+                    return $"Role {model.Role} ya está asignado al usuario.";
+                }
+            }
+            else{
+>>>>>>> f6a347b (addrole casi check jeje)
                 return $"Role {model.Role} was not found.";
             }
 
         }
+<<<<<<< HEAD
         else
         {
+=======
+        else{
+>>>>>>> f6a347b (addrole casi check jeje)
             return $"Invalid Credentials";
         }
 
