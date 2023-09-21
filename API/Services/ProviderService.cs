@@ -53,7 +53,7 @@ namespace API.Services
 
           public async Task<string> UpdateAsync(ProviderPutDto providerPutDto){
             
-            var provider = await _unitOfWork.Providers.GetByIdProviderAsync(providerPutDto.Id);
+            var provider = await _unitOfWork.Providers.GetByIdAsync(providerPutDto.Id);
 
             provider.Name = providerPutDto.Name;
             provider.Email = providerPutDto.Email;

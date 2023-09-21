@@ -23,10 +23,13 @@ public static class ApplicationServiceExtensions
         });
     public static void AddAplicacionServices(this IServiceCollection services)
     {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProviderService, ProviderService>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IPatientService, PatientService>();
+
     }
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
