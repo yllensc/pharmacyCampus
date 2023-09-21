@@ -131,8 +131,39 @@ public class UserService : IUserService
 
                 if (userHasRole == false)
                 {
+<<<<<<< HEAD
                     //if(rolExists.Name == Authorization.Roles.Employee.ToString()){}
                     //en proceso jeje
+=======
+                    if (rolExists.Name == Authorization.Roles.Employee.ToString())
+                    {
+                        var existPosition = _unitOfWork.Positions
+                                                 .Find(u => u.Name.ToLower() == model.Position.ToLower())
+                                                 .FirstOrDefault();
+
+                        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position) && existPosition != null)
+                        {
+                            var employee = new Employee
+                            {
+                                Name = model.Name,
+                                PositionId = existPosition.Id,
+                                UserId = user.Id
+                            };
+                            _unitOfWork.Employees.Add(employee);
+                            await _unitOfWork.SaveAsync();
+                        }
+                        else
+                        {
+                            return $"Register employees needs all data correct (Name, Position)";
+                        }
+
+                    }
+                    var withoutRole = user.Roles.FirstOrDefault(u => u.Name == Authorization.Roles.WithoutRol.ToString());
+                    if (withoutRole != null && model.Role.ToLower() != Authorization.Roles.WithoutRol.ToString().ToLower())
+                    {
+                        user.Roles.Remove(withoutRole);
+                    }
+>>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)
                     user.Roles.Add(rolExists);
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.SaveAsync();

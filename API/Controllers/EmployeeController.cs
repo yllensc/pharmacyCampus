@@ -8,7 +8,10 @@ using API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Interfaces;
 using AutoMapper;
+<<<<<<< HEAD
 using Domain.Entities;
+=======
+>>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)
 
 namespace API.Controllers;
 
@@ -23,6 +26,7 @@ public class EmployeeController : ApiBaseController
         _unitOfWork = uniOfWork;
         _employees = employees;
         _mapper = mapper;
+<<<<<<< HEAD
     }
 
     [HttpGet]
@@ -64,9 +68,20 @@ public class EmployeeController : ApiBaseController
         if (!string.IsNullOrEmpty(response.RefreshToken))
             SetRefreshTokenInCookie(response.RefreshToken);
         return Ok(response);
+=======
+>>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)
     }
 
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<EmployeeGetDto>>> Get()
+    {
+        var employees = await _unitOfWork.Employees.GetAllAsync();
+        return _mapper.Map<List<EmployeeGetDto>>(employees);
+    }
 
+<<<<<<< HEAD
     private void SetRefreshTokenInCookie(string refreshToken)
     {
         var cookieOptions = new CookieOptions
@@ -78,3 +93,32 @@ public class EmployeeController : ApiBaseController
     }
     
 }
+=======
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> UpdateAsync([FromBody] EmployeeDto employeeDto)
+    {
+        if(employeeDto == null){return NotFound();}
+
+        var result = await _employees.UpdateAsync(employeeDto);
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var employee = await _unitOfWork.Employees.GetByIdAsync(id);
+
+        if(employee == null) {return NotFound();}
+
+        this._unitOfWork.Employees.Remove(employee);
+        await this._unitOfWork.SaveAsync();
+        return NoContent();
+    }
+
+}
+>>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)

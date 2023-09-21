@@ -28,6 +28,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProviderService, ProviderService>();
+<<<<<<< HEAD
         services.AddScoped<IPatientService, PatientService>();
 <<<<<<< HEAD
         services.AddScoped<ISaleService, SaleService>();
@@ -35,6 +36,10 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IPurchaseService, PurchaseService>();
 >>>>>>> eca8963 (feat: :sparkles: Add Purchase, wuuu)
 
+=======
+        services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+>>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)
     }
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
