@@ -131,70 +131,13 @@ public class UserService : IUserService
 
                 if (userHasRole == false)
                 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    if (rolExists.Name == Authorization.Roles.Employee.ToString())
-                    {
-                        var existPosition = _unitOfWork.Positions
-                                                 .Find(u => u.Name.ToLower() == model.Position.ToLower())
-                                                 .FirstOrDefault();
-
-                        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position) && existPosition != null)
-=======
-                    if (rolExists.Name == Authorization.Roles.Employee.ToString())
-                    {
-                        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position))
->>>>>>> f6a347b (addrole casi check jeje)
-                        {
-                            var employee = new Employee
-                            {
-                                Name = model.Name,
-<<<<<<< HEAD
-                                PositionId = existPosition.Id,
-=======
-                                Position = model.Position,
->>>>>>> f6a347b (addrole casi check jeje)
-                                UserId = user.Id
-                            };
-                            _unitOfWork.Employees.Add(employee);
-                            await _unitOfWork.SaveAsync();
-                        }
-                        else
-                        {
-                            return $"Register employees needs all data (Name, Position)";
-                        }
-
-                    }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8047d03 (addroles, check)
-                    var withoutRole = user.Roles.FirstOrDefault(u => u.Name == Authorization.Roles.WithoutRol.ToString());
-                    if (withoutRole != null && model.Role.ToLower() != Authorization.Roles.WithoutRol.ToString().ToLower())
-                    {
-                        user.Roles.Remove(withoutRole);
-                    }
-<<<<<<< HEAD
-=======
                     //if(rolExists.Name == Authorization.Roles.Employee.ToString()){}
                     //en proceso jeje
->>>>>>> e85a095 (feat: :alembic: cambios y experimentos con roles y usuarios jeje)
-=======
->>>>>>> f6a347b (addrole casi check jeje)
-=======
->>>>>>> 8047d03 (addroles, check)
-=======
-                    //if(rolExists.Name == Authorization.Roles.Employee.ToString()){}
-                    //en proceso jeje
->>>>>>> main
                     user.Roles.Add(rolExists);
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.SaveAsync();
                     return $"Role {model.Role} added to user {model.UserName} successfully.";
                 }
-<<<<<<< HEAD
-<<<<<<< HEAD
                 else
                 {
                     return $"Role {model.Role} ya está asignado al usuario.";
@@ -202,37 +145,12 @@ public class UserService : IUserService
             }
             else
             {
-=======
-                else{
-                    return $"Role {model.Role} ya está asignado al usuario.";
-                }
-            }
-            else{
->>>>>>> f6a347b (addrole casi check jeje)
-=======
-                else
-                {
-                    return $"Role {model.Role} ya está asignado al usuario.";
-                }
-            }
-            else
-            {
->>>>>>> 8047d03 (addroles, check)
                 return $"Role {model.Role} was not found.";
             }
 
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
         else
         {
-=======
-        else{
->>>>>>> f6a347b (addrole casi check jeje)
-=======
-        else
-        {
->>>>>>> 8047d03 (addroles, check)
             return $"Invalid Credentials";
         }
 

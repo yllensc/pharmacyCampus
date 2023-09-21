@@ -17,22 +17,8 @@ public class EmployeeController : ApiBaseController
     {
         _userService = userService;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
-=======
-        [HttpPost("register")]
-    public async Task<ActionResult> RegisterEmployeeAsync(RegisterEmployeeDto model)
-    {
-        var result = await _userService.RegisterEmployeeAsync(model);
-        return Ok(result);
-    }
->>>>>>> aff8a9d (interfaces yllen)
-=======
-
-
->>>>>>> e85a095 (feat: :alembic: cambios y experimentos con roles y usuarios jeje)
 
     [HttpPost("token")]
     public async Task<IActionResult> GetTokenAsync(LoginDto model)

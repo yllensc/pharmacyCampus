@@ -19,15 +19,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-<<<<<<< HEAD
-<<<<<<< HEAD
     private IPosition _position;
     private IPatient _patients;
-=======
->>>>>>> 5c89ca3 (delete migrations aaaaaaaa)
-=======
-    private IPatient _patients;
->>>>>>> dcfa50b (feat: :sparkles: Add patient to UnitOfWork)
     private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
     {
@@ -120,22 +113,6 @@ public IProvider Providers
         }
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    public IProvider Provider {
-        get{
-            if(_provider == null)
-            {
-                _provider = new ProviderRepository(_context);
-            }
-            return _provider;
-        }
-    }
->>>>>>> eaebbce (feat: :sparkles: Creacion Interfaces y repo)
-=======
-
->>>>>>> 21a3290 (arreglando el bololó de mi commit :ccc)
     public IPatient Patients
     {
          get{
