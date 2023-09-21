@@ -14,14 +14,13 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IRolRepository _roles;
     private IUserRepository _users;
     private IEmployee _employees;
-    private IPatient _patients;
-    private ISale _sales;
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
-
+    private IPatient _patients;
+    private ISale _sales;
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -61,29 +60,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public IPatient Patients
-    {
-        get
-        {
-            if(_patients == null)
-            {
-                _patients = new PatientRepository(_context);
-            }
-            return _patients;
-        }
-    }
 
-    public ISale Sales
-    {
-        get{
-            if(_sales == null)
-            {
-                _sales = new SaleRepository(_context);
-            }
-            return _sales;
-        }
-    }
-
+ 
     public IMedicineRepository Medicines
     {
         get{
@@ -133,6 +111,29 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _purchasedMedicine = new PurchasedMedicineRepository(_context);
             }
             return _purchasedMedicine;
+        }
+    }
+
+
+    public IPatient Patients
+    {
+         get{
+            if(_patients == null)
+            {
+                _patients = new PatientRepository(_context);
+            }
+            return _patients;
+        }
+    }
+
+    public ISale Sales
+    {
+        get{
+            if(_sales == null)
+            {
+                _sales = new SaleRepository(_context);
+            }
+            return _sales;
         }
     }
 
