@@ -1,6 +1,6 @@
 namespace Domain.Entities;
 
-public class SaleMedicine : BaseEntity
+public class SaleMedicine 
 {
     public int SaleId { get; set; }
     public Sale Sale {get; set;}
