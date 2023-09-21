@@ -138,7 +138,7 @@ public class UserService : IUserService
                             var employee = new Employee
                             {
                                 Name = model.Name,
-                                Position = model.Position,
+                                //Position = model.Position,
                                 UserId = user.Id
                             };
                             _unitOfWork.Employees.Add(employee);
