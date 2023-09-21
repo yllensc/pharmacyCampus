@@ -29,6 +29,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProviderService, ProviderService>();
         services.AddScoped<IPatientService, PatientService>();
+        services.AddScoped<IPurchaseService, PurchaseService>();
 
     }
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
