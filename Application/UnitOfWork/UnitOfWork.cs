@@ -19,9 +19,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchase _purchase;
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
+    private IPosition _position;
     private IPatient _patients;
     private ISale _sales;
-    private IPosition _position;
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -72,8 +72,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-
- 
     public IMedicineRepository Medicines
     {
         get{
