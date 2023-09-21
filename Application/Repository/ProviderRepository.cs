@@ -18,11 +18,4 @@ namespace Application.Repository;
 
     }
 
-    public async Task<Provider> GetByIdProviderAsync(int id)
-    {
-        return await _context.Providers
-                .Include(p=>p.Purchases)
-                .Include(p=>p.Medicines)
-                .FirstOrDefaultAsync(p => p.Id == id);
-    }
 }
