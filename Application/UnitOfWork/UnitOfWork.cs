@@ -20,7 +20,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IPurchasedMedicine _purchasedMedicine;
     private IProvider _provider;
     private IPatient _patients;
-
+    private ISale _sales;
+    private IPosition _position;
     public UnitOfWork(PharmacyDbContext context)
     {
         _context = context;
@@ -57,6 +58,17 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _employees = new EmployeeRepository(_context);
             }
             return _employees;
+        }
+    }
+        public IPosition Positions
+    {
+        get
+        {
+            if (_position == null)
+            {
+                _position = new PositionRepository(_context);
+            }
+            return _position;
         }
     }
 

@@ -10,6 +10,7 @@ public interface IUnitOfWork
     IRolRepository Roles { get; }
     IUserRepository Users { get; }
     IEmployee Employees { get; }
+    IPosition Positions {get; }
     IPatient Patients { get; }
     ISale Sales { get; }
     IProvider Providers {get; }
