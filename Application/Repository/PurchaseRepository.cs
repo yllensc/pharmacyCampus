@@ -21,6 +21,7 @@ namespace Application.Repository;
     public async Task<Purchase> GetByDate(DateTime date)
     {
         return await _context.Purchases
+<<<<<<< HEAD
                     .Include(p=>p.PurchasedMedicines)
                     .FirstAsync(u => u.DatePurchase == date);
     }
@@ -38,4 +39,8 @@ namespace Application.Repository;
             .Include(p=>p.PurchasedMedicines).ThenInclude(p=>p.Medicine)
             .FirstOrDefaultAsync(p=>p.Id == id);
     }
+=======
+                    .FirstAsync(u => u.DatePurchase == date);
+    }
+>>>>>>> eca8963 (feat: :sparkles: Add Purchase, wuuu)
 }
