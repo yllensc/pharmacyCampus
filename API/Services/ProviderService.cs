@@ -48,8 +48,21 @@ namespace API.Services
             }else{
                 return $"Provider with Identifaction Number {providerDto.IdenNumber} alredy register ";
             }
-            
+        
+        }
 
+          public async Task<string> UpdateAsync(ProviderPutDto providerPutDto){
+            
+            var provider = await _unitOfWork.Providers.GetByIdProviderAsync(providerPutDto.Id);
+
+            provider.Name = providerPutDto.Name;
+            provider.Email = providerPutDto.Email;
+            provider.Address = providerPutDto.Address;
+    
+            _unitOfWork.Providers.Update(provider);
+            await _unitOfWork.SaveAsync();
+
+            return "Provider update successfully";
 
         }
     }

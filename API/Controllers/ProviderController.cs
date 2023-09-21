@@ -45,4 +45,32 @@ public class ProviderController : ApiBaseController
 
     }
 
+    [HttpPut]
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<ActionResult> UpdateAsync([FromBody] ProviderPutDto providerPutDto)
+    {
+        if(providerPutDto == null){return NotFound();}
+
+        var result = await _providerService.UpdateAsync(providerPutDto);
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var provider = await _unitOfWork.Providers.GetByIdAsync(id);
+
+        if(provider == null) {return NotFound();}
+
+        this._unitOfWork.Providers.Remove(provider);
+        await this._unitOfWork.SaveAsync();
+        return NoContent();
+    }
+
 }
