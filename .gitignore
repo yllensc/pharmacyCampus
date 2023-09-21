@@ -11,7 +11,7 @@ Persistence/Data/Migrations
 *.user
 *.userosscache
 *.sln.docstates
-
+Persistence/Data/Migrations
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
