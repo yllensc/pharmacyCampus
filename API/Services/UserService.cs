@@ -128,27 +128,50 @@ public class UserService : IUserService
             var rolExists = _unitOfWork.Roles
                                         .Find(u => u.Name.ToLower() == model.Role.ToLower())
                                         .FirstOrDefault();
-
             if (rolExists != null)
             {
                 var userHasRole = user.Roles
-                                            .Any(u => u.Id == rolExists.Id);
+                                        .Any(u => u.Id == rolExists.Id);
 
                 if (userHasRole == false)
                 {
-                    //if(rolExists.Name == Authorization.Roles.Employee.ToString()){}
-                    //en proceso jeje
+                    if (rolExists.Name == Authorization.Roles.Employee.ToString())
+                    {
+                        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position))
+                        {
+                            var employee = new Employee
+                            {
+                                Name = model.Name,
+                                Position = model.Position,
+                                UserId = user.Id
+                            };
+                            _unitOfWork.Employees.Add(employee);
+                            await _unitOfWork.SaveAsync();
+                        }
+                        else
+                        {
+                            return $"Register employees needs all data (Name, Position)";
+                        }
+
+                    }
                     user.Roles.Add(rolExists);
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.SaveAsync();
+                    return $"Role {model.Role} added to user {model.UserName} successfully.";
                 }
-
-                return $"Role {model.Role} added to user {model.UserName} successfully.";
+                else{
+                    return $"Role {model.Role} ya está asignado al usuario.";
+                }
+            }
+            else{
+                return $"Role {model.Role} was not found.";
             }
 
-            return $"Role {model.Role} was not found.";
         }
-        return $"Invalid Credentials";
+        else{
+            return $"Invalid Credentials";
+        }
+
     }
     public async Task<DataUserDto> RefreshTokenAsync(string refreshToken)
     {
