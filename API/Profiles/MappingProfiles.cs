@@ -21,6 +21,10 @@ public class MappingProfiles: Profile
 
         CreateMap<Provider,ProviderPutDto>()
             .ReverseMap();
+
+        CreateMap<Patient,PatientDto>()
+            .ReverseMap()
+            .ForMember(o=> o.Sales, d => d.Ignore());
     }
 
 }
