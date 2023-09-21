@@ -32,13 +32,10 @@ public class UserService : IUserService
             UserName = registerDto.UserName,
             IdenNumber = registerDto.IdenNumber,
         };
-
         user.Password = _passwordHasher.HashPassword(user, registerDto.Password); //Encrypt password
-
         var existingUser = _unitOfWork.Users
                                     .Find(u => u.UserName.ToLower() == registerDto.UserName.ToLower() || u.IdenNumber == registerDto.IdenNumber)
                                     .FirstOrDefault();
-
         if (existingUser == null)
         {
             var rolDefault = _unitOfWork.Roles
@@ -113,7 +110,6 @@ public class UserService : IUserService
     }
     public async Task<string> AddRoleAsync(AddRoleDto model)
     {
-
         var user = await _unitOfWork.Users
                     .GetByUserNameAsync(model.UserName);
         if (user == null)
@@ -154,21 +150,29 @@ public class UserService : IUserService
                         }
 
                     }
+                    var withoutRole = user.Roles.FirstOrDefault(u => u.Name == Authorization.Roles.WithoutRol.ToString());
+                    if (withoutRole != null && model.Role.ToLower() != Authorization.Roles.WithoutRol.ToString().ToLower())
+                    {
+                        user.Roles.Remove(withoutRole);
+                    }
                     user.Roles.Add(rolExists);
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.SaveAsync();
                     return $"Role {model.Role} added to user {model.UserName} successfully.";
                 }
-                else{
+                else
+                {
                     return $"Role {model.Role} ya está asignado al usuario.";
                 }
             }
-            else{
+            else
+            {
                 return $"Role {model.Role} was not found.";
             }
 
         }
-        else{
+        else
+        {
             return $"Invalid Credentials";
         }
 
