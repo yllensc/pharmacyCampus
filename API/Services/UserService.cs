@@ -133,12 +133,16 @@ public class UserService : IUserService
                 {
                     if (rolExists.Name == Authorization.Roles.Employee.ToString())
                     {
-                        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position))
+                        var existPosition = _unitOfWork.Positions
+                                                 .Find(u => u.Name.ToLower() == model.Position.ToLower())
+                                                 .FirstOrDefault();
+
+                        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Position) && existPosition != null)
                         {
                             var employee = new Employee
                             {
                                 Name = model.Name,
-                                Position = model.Position,
+                                PositionId = existPosition.Id,
                                 UserId = user.Id
                             };
                             _unitOfWork.Employees.Add(employee);
