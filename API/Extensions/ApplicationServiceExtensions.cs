@@ -25,6 +25,7 @@ public static class ApplicationServiceExtensions
     {
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProviderService, ProviderService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
