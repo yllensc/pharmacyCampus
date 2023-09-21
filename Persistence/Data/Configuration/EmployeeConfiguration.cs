@@ -23,5 +23,9 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         .HasMaxLength(50);
         builder.Property(p=> p.DateContract)    
         .IsRequired();
+        builder.HasOne(p => p.Position)
+        .WithMany(p => p.Employees)
+        .HasForeignKey(p => p.PositionId)
+        .IsRequired();
     }
 }
