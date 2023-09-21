@@ -8,5 +8,7 @@ namespace API.Services
     public interface ISaleMedicineService
     {
         
+
+        
     }
 }
