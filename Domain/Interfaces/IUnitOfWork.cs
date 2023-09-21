@@ -16,9 +16,13 @@ public interface IUnitOfWork
     IProvider Providers {get; }
     IPurchase Purchases {get; }
     IPurchasedMedicine PurchasedMedicines {get; }
+<<<<<<< HEAD
     ISaleMedicineRepository SaleMedicines {get; }
     IMedicineRepository Medicines {get; }
     IUserRol UserRoles {get; }
+=======
+    IMedicineRepository Medicines {get; }
+>>>>>>> 6b78404 (método GET medicine)
     Task<int> SaveAsync();
 
 }
