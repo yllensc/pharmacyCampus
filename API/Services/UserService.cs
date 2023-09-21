@@ -133,6 +133,7 @@ public class UserService : IUserService
                 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if (rolExists.Name == Authorization.Roles.Employee.ToString())
                     {
                         var existPosition = _unitOfWork.Positions
@@ -183,6 +184,10 @@ public class UserService : IUserService
 >>>>>>> f6a347b (addrole casi check jeje)
 =======
 >>>>>>> 8047d03 (addroles, check)
+=======
+                    //if(rolExists.Name == Authorization.Roles.Employee.ToString()){}
+                    //en proceso jeje
+>>>>>>> main
                     user.Roles.Add(rolExists);
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.SaveAsync();

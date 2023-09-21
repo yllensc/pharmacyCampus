@@ -90,27 +90,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public ISaleMedicineRepository SaleMedicines
-    {
-        get{
-            if(_saleMedicines == null)
-            {
-                _saleMedicines = new SaleMedicineRepository(_context);
-            }
-            return _saleMedicines;
-        }
-    }
-
-    public IProvider Providers {
-        get{
-            if(_provider == null)
-            {
-                _provider = new ProviderRepository(_context);
-            }
-            return _provider;
-        }
-    }
-
     public IPurchase Purchases {
         get{
             if(_purchase == null)
@@ -128,6 +107,16 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _purchasedMedicine = new PurchasedMedicineRepository(_context);
             }
             return _purchasedMedicine;
+        }
+    }
+public IProvider Providers
+    {
+        get{
+            if(_provider == null)
+            {
+                _provider = new ProviderRepository(_context);
+            }
+            return _provider;
         }
     }
 
@@ -168,6 +157,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _sales;
         }
     }
+
 
     public async Task<int> SaveAsync()
     {
