@@ -150,7 +150,7 @@ public class UserService : IUserService
                         }
                         else
                         {
-                            return $"Register employees needs all data (Name, Position)";
+                            return $"Register employees needs all data correct (Name, Position)";
                         }
 
                     }
