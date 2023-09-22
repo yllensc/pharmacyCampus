@@ -18,14 +18,15 @@ public class EmployeeService : IEmployeeService
 
     public async Task<string> UpdateAsync(EmployeeDto model)
     {
-        if (DateTime.TryParseExact(model.DateContract.ToString(), "yyyy-MM-dd", null, DateTimeStyles.None, out DateTime parsedDate))
+        string prueba = model.DateContract.Date.ToString();
+        string prueba2 = model.DateContract.Date.ToLocalTime().ToString();
+        if (DateTime.TryParseExact(prueba, "yyyy-MM-dd HH:mm:ss.ffffff", null, System.Globalization.DateTimeStyles.None, out DateTime result))
         {
-
             var existPosition = await _unitOfWork.Positions.GetByIdAsync(model.PositionId);
             if (existPosition != null){
                 var employee = await _unitOfWork.Employees.GetByIdAsync(model.Id);
                 employee.Name = model.Name;
-                employee.DateContract = model.DateContract;
+                employee.DateContract = result;
                 employee.PositionId = model.PositionId;
                 _unitOfWork.Employees.Update(employee);
                 await _unitOfWork.SaveAsync();
