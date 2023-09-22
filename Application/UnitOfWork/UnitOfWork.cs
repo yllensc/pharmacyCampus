@@ -148,6 +148,7 @@ public IProvider Providers
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public ISaleMedicineRepository SaleMedicines
 =======
     public ISaleMedicineRepository saleMedicine
@@ -166,6 +167,8 @@ public IProvider Providers
 >>>>>>> 3faabab (feat: :construction: Providers + Purchases + Medicines...)
 
     }
+=======
+>>>>>>> c89bc5f (Adaptación de las tablas "intermedias" jeje)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
