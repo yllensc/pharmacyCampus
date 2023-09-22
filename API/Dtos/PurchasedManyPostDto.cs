@@ -10,5 +10,6 @@ public class PurchaseManyPostDto
 {
     [Required]
     public int ProviderId { get; set;}
+    [Required]
     public List<PurchaseMedicinePostDto> MedicinesList { get; set; }
 }
