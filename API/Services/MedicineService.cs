@@ -21,9 +21,6 @@ private readonly IUnitOfWork _unitOfWork;
            var medicine = new Medicine
         {
             Name = model.Name,
-            Price = model.Price,
-            Stock = model.Stock,
-            ExpirationDate = model.ExpirationDate,
             ProviderId = model.ProviderId
         };
 

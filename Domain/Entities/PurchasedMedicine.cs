@@ -12,7 +12,10 @@ namespace Domain.Entities
         public int MedicineId {get; set;}
         public Medicine Medicine { get; set;}
         public int CantPurchased { get; set;}
+        public int Stock { get; set;}
         public double PricePurchase { get; set;}
+        public DateTime ExpirationDate { get; set; }
+
 
     }
 }
