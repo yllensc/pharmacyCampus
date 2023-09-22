@@ -35,8 +35,16 @@ public class MappingProfiles: Profile
         CreateMap<Sale,SaleDto>()
             .ReverseMap()
             .ForMember(o => o.SaleMedicines, d => d.Ignore());
-
-        
-    }
+            
+        CreateMap<Provider,ProviderxPurchaseDto>()
+                .ForMember(dest=> dest.purchases, origen => origen.MapFrom(o => o.Purchases))
+                .ReverseMap();
+        CreateMap<Purchase,PurchaseDto>()
+            .ForMember(dest=> dest.purchaseMedicines, origen => origen.MapFrom(o => o.PurchasedMedicines))
+            .ReverseMap();
+        CreateMap<PurchasedMedicine, PurchaseMedicineDto>()
+            .ForMember(dest=> dest.MedicineName, origen => origen.MapFrom(o => o.Medicine.Name))
+            .ReverseMap();
+                }
 
 }

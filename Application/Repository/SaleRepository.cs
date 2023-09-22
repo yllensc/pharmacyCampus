@@ -17,4 +17,5 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         _context = context;
 
     }
+    
 }

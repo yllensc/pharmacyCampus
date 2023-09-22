@@ -7,6 +7,8 @@ namespace API.Dtos;
 
 public class PurchaseDto
 {
+    public int Id { get; set; }
     public DateTime DatePurchase { get; set; }
+    public List<PurchaseMedicineDto> purchaseMedicines {get; set; }
     
 }

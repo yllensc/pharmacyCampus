@@ -15,25 +15,25 @@ public class PurchaseService : IPurchaseService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<string> RegisterAsync(PurchaseMedicineDto purchaseMedicineDto)
+    public async Task<string> RegisterAsync(PurchasePostDto purchasePostDto)
     {
-        var newPurshase = new Purchase
+        var newPurchase = new Purchase
         {
-            DatePurchase = purchaseMedicineDto.DatePurchase,
-            ProviderId = purchaseMedicineDto.ProviderId
+            DatePurchase = DateTime.UtcNow,
+            ProviderId = purchasePostDto.ProviderId
         };
 
-        _unitOfWork.Purchases.Add(newPurshase);
+        _unitOfWork.Purchases.Add(newPurchase);
         await _unitOfWork.SaveAsync();
 
-        var purchaseCreated = await _unitOfWork.Purchases.GetByDate(purchaseMedicineDto.DatePurchase);
+        var purchaseCreated = await _unitOfWork.Purchases.GetByDate(newPurchase.DatePurchase);
 
         var newPurchaseMedicine = new PurchasedMedicine
         {
             PurchasedId = purchaseCreated.Id,
-            MedicineId = purchaseMedicineDto.MedicineId,
-            CantPurchased = purchaseMedicineDto.CantPurchased,
-            PricePurchase = purchaseMedicineDto.PricePurchase
+            MedicineId = purchasePostDto.MedicineId,
+            CantPurchased = purchasePostDto.CantPurchased,
+            PricePurchase = purchasePostDto.PricePurchase
         };
 
         _unitOfWork.PurchasedMedicines.Add(newPurchaseMedicine);
