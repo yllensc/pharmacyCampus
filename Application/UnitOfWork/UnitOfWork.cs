@@ -147,7 +147,11 @@ public IProvider Providers
         }
     }
 
+<<<<<<< HEAD
     public ISaleMedicineRepository SaleMedicines
+=======
+    public ISaleMedicineRepository saleMedicine
+>>>>>>> 3faabab (feat: :construction: Providers + Purchases + Medicines...)
     {
         get{
             if(_saleMedicines == null)
@@ -156,7 +160,10 @@ public IProvider Providers
             }
             return _saleMedicines;
         }
+<<<<<<< HEAD
     }
+=======
+>>>>>>> 3faabab (feat: :construction: Providers + Purchases + Medicines...)
 
     }
     public async Task<int> SaveAsync()

@@ -42,6 +42,7 @@ public class MappingProfiles: Profile
         CreateMap<Sale,SaleDto>()
             .ReverseMap()
             .ForMember(o => o.SaleMedicines, d => d.Ignore());
+<<<<<<< HEAD
             
         CreateMap<Provider,ProviderxPurchaseDto>()
                 .ForMember(dest=> dest.purchases, origen => origen.MapFrom(o => o.Purchases))
@@ -53,5 +54,10 @@ public class MappingProfiles: Profile
             .ForMember(dest=> dest.MedicineName, origen => origen.MapFrom(o => o.Medicine.Name))
             .ReverseMap();
                 }
+=======
+
+        
+    }
+>>>>>>> 3faabab (feat: :construction: Providers + Purchases + Medicines...)
 
 }
