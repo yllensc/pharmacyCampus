@@ -8,7 +8,7 @@ public class PurchasedMedicineConfiguration : IEntityTypeConfiguration<Purchased
     public void Configure(EntityTypeBuilder<PurchasedMedicine> builder)
     {
         builder.ToTable("purchasedMedicine");
-        builder.HasKey(m => new { m.PurchasedId, m.MedicineId }); // Definir clave primaria compuesta
+        //builder.HasKey(m => new { m.PurchasedId, m.MedicineId }); // Definir clave primaria compuesta
         builder.HasOne(m => m.Purchase)
         .WithMany(m => m.PurchasedMedicines)
         .HasForeignKey(m => m.PurchasedId)

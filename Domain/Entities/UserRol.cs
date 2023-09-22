@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Domain.Entities;
 
-public class UserRol
+
+public class UserRol: BaseEntity
 {
     public int UserId { get; set; }
     public User User { get; set; }
