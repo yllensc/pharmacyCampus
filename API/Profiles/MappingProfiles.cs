@@ -18,16 +18,9 @@ public class MappingProfiles: Profile
             .ReverseMap()
             .ForMember(o=> o.Purchases, d => d.Ignore())
             .ForMember(o=> o.Medicines, d => d.Ignore());
+
         CreateMap<Provider,ProviderPutDto>()
             .ReverseMap();
-        CreateMap<Employee,EmployeeDto>()
-            .ReverseMap();
-        CreateMap<Employee,EmployeeGetDto>()
-            .ReverseMap()
-            .ForMember(o=> o.PositionId, d => d.Ignore());
-        CreateMap<Position,PositionDto>()
-            .ReverseMap()
-            .ForMember(o=> o.Id, d => d.Ignore());
         CreateMap<Medicine,MedicineDto>()
             .ReverseMap()
             .ForMember(o=> o.PurchasedMedicines, d => d.Ignore())
@@ -42,22 +35,6 @@ public class MappingProfiles: Profile
         CreateMap<Sale,SaleDto>()
             .ReverseMap()
             .ForMember(o => o.SaleMedicines, d => d.Ignore());
-<<<<<<< HEAD
-            
-        CreateMap<Provider,ProviderxPurchaseDto>()
-                .ForMember(dest=> dest.purchases, origen => origen.MapFrom(o => o.Purchases))
-                .ReverseMap();
-        CreateMap<Purchase,PurchaseDto>()
-            .ForMember(dest=> dest.purchaseMedicines, origen => origen.MapFrom(o => o.PurchasedMedicines))
-            .ReverseMap();
-        CreateMap<PurchasedMedicine, PurchaseMedicineDto>()
-            .ForMember(dest=> dest.MedicineName, origen => origen.MapFrom(o => o.Medicine.Name))
-            .ReverseMap();
-                }
-=======
-
-        
     }
->>>>>>> 3faabab (feat: :construction: Providers + Purchases + Medicines...)
 
 }

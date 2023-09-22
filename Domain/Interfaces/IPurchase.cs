@@ -5,7 +5,5 @@ using System.Threading.Tasks;
 using Domain.Entities;
 
 namespace Domain.Interfaces;
-public interface IPurchase: IGenericRepository<Purchase>
-{
-    Task<Purchase> GetByDate (DateTime date);
-}
+    public interface IPurchase: IGenericRepository<Purchase>
+{}

@@ -13,7 +13,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private readonly PharmacyDbContext _context;
     private IRolRepository _roles;
     private IUserRepository _users;
-    private IUserRol _userole;
     private IEmployee _employees;
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
@@ -36,17 +35,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _roles = new RolRepository(_context);
             }
             return _roles;
-        }
-    }
-    public IUserRol UserRoles
-    {
-        get
-        {
-            if (_userole == null)
-            {
-                _userole = new UseroleRepository(_context);
-            }
-            return _userole;
         }
     }
 
@@ -147,12 +135,7 @@ public IProvider Providers
         }
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     public ISaleMedicineRepository SaleMedicines
-=======
-    public ISaleMedicineRepository saleMedicine
->>>>>>> 3faabab (feat: :construction: Providers + Purchases + Medicines...)
     {
         get{
             if(_saleMedicines == null)
@@ -161,14 +144,8 @@ public IProvider Providers
             }
             return _saleMedicines;
         }
-<<<<<<< HEAD
     }
-=======
->>>>>>> 3faabab (feat: :construction: Providers + Purchases + Medicines...)
 
-    }
-=======
->>>>>>> c89bc5f (Adaptación de las tablas "intermedias" jeje)
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();

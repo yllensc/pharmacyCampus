@@ -7,6 +7,6 @@ public class Employee : BaseEntity
         public string Name { get; set; }
         public int PositionId {get; set;}
         public Position Position { get; set; }
-        public DateTime DateContract { get; set; }  = DateTime.UtcNow;
+        public DateTime DateContract { get; set; }
         public ICollection<Sale> Sales { get; set;}
     }
