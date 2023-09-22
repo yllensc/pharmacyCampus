@@ -9,9 +9,5 @@ namespace API.Services;
 
 public interface IPurchaseService
 {
-<<<<<<< HEAD
     Task<string> RegisterAsync(PurchasePostDto model);
-=======
-    Task<string> RegisterAsync(PurchaseMedicineDto model);
->>>>>>> eca8963 (feat: :sparkles: Add Purchase, wuuu)
 }

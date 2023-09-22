@@ -6,6 +6,8 @@ using API.Dtos;
 using API.Services;
 using API.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Interfaces;
+using AutoMapper;
 
 namespace API.Controllers;
 
@@ -14,11 +16,7 @@ public class EmployeeController : ApiBaseController
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmployeeService _employees;
     private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IEmployeeService _employees;
-    private readonly IMapper _mapper;
 
-   public EmployeeController(IUnitOfWork uniOfWork, IEmployeeService employees,IMapper mapper)
    public EmployeeController(IUnitOfWork uniOfWork, IEmployeeService employees,IMapper mapper)
     {
         _userService = userService;
