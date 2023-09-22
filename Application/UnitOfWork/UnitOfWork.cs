@@ -14,7 +14,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IRolRepository _roles;
     private IUserRepository _users;
     private IUserRol _userole;
-    private IUserRol _userole;
     private IEmployee _employees;
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
