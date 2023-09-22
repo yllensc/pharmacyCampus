@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Dtos;
+namespace Domain.Entities;
 
-public class PurchaseMedicineDto
+public class PMedicineGetDto
 {
-    public string MedicineName {get; set;}
+
+    public string MedicineName { get; set; }
     public int CantPurchased { get; set;}
     public double PricePurchase { get; set;}
-
 }

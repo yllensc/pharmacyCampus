@@ -21,6 +21,21 @@ namespace Application.Repository;
     public async Task<Purchase> GetByDate(DateTime date)
     {
         return await _context.Purchases
+                    .Include(p=>p.PurchasedMedicines)
                     .FirstAsync(u => u.DatePurchase == date);
+    }
+
+    public override async Task<IEnumerable<Purchase>> GetAllAsync()
+    {
+        return await _context.Purchases
+            .Include(p=>p.PurchasedMedicines).ThenInclude(p=>p.Medicine)
+            .ToListAsync();
+    }
+
+    public override async Task<Purchase> GetByIdAsync(int id)
+    {
+        return await _context.Purchases
+            .Include(p=>p.PurchasedMedicines).ThenInclude(p=>p.Medicine)
+            .FirstOrDefaultAsync(p=>p.Id == id);
     }
 }

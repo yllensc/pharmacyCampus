@@ -24,32 +24,37 @@ public class ProviderController : ApiBaseController
         _mapper = mapper;
     }
 
-    [HttpGet]
+    /*[HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderDto>>> Get()
     {
         var providers = await _unitOfWork.Providers.GetAllAsync();
         return _mapper.Map<List<ProviderDto>>(providers);
-    }
+    }*/
 
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProviderxPurchaseDto>>> Get()
+    {
+        var providersAll = await _unitOfWork.Providers.GetAllAsync();
+        return _mapper.Map<List<ProviderxPurchaseDto>>(providersAll);
+    }
+    
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
     public async Task<ActionResult> RegisterAsync([FromBody] ProviderDto providerDto){
 
         var result = await _providerService.RegisterAsync(providerDto);
 
         return Ok(result);
-
     }
 
     [HttpPut]
-
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
     public async Task<ActionResult> UpdateAsync([FromBody] ProviderPutDto providerPutDto)
     {
         if(providerPutDto == null){return NotFound();}

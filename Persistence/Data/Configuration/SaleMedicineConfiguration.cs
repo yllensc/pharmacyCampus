@@ -11,6 +11,8 @@ public class SaleMedicineConfiguration : IEntityTypeConfiguration<SaleMedicine>
     {
         builder.ToTable("saleMedicine");
         //builder.HasKey(m => new { m.SaleId, m.MedicineId }); // Definir clave primaria compuesta
+        builder.Property(p=> p.Id)
+        .IsRequired();
         builder.Property(p => p.SaleQuantity)
         .IsRequired()
         .HasColumnType("int");

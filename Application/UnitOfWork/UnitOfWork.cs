@@ -147,6 +147,17 @@ public IProvider Providers
         }
     }
 
+    public ISaleMedicineRepository saleMedicine
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
+        }
+
+    }
     public async Task<int> SaveAsync()
     {
         return await _context.SaveChangesAsync();
