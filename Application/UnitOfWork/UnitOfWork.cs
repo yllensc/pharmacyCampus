@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private IRolRepository _roles;
     private IUserRepository _users;
     private IUserRol _userole;
+    private IUserRol _userole;
     private IEmployee _employees;
     private IMedicineRepository _medicines;
     private ISaleMedicineRepository _saleMedicines;
@@ -36,6 +37,17 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _roles = new RolRepository(_context);
             }
             return _roles;
+        }
+    }
+    public IUserRol UserRoles
+    {
+        get
+        {
+            if (_userole == null)
+            {
+                _userole = new UseroleRepository(_context);
+            }
+            return _userole;
         }
     }
     public IUserRol UserRoles

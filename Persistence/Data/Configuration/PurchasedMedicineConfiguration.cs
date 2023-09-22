@@ -29,5 +29,8 @@ public class PurchasedMedicineConfiguration : IEntityTypeConfiguration<Purchased
         builder.Property(p => p.ExpirationDate)
         .IsRequired()
         .HasColumnType("DateTime");
+        builder.Property(p => p.ExpirationDate)
+        .IsRequired()
+        .HasColumnType("DateTime");
     }
 }

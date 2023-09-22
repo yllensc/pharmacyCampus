@@ -24,7 +24,11 @@ public class EmployeeController : ApiBaseController
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmployeeService _employees;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IEmployeeService _employees;
+    private readonly IMapper _mapper;
 
+   public EmployeeController(IUnitOfWork uniOfWork, IEmployeeService employees,IMapper mapper)
    public EmployeeController(IUnitOfWork uniOfWork, IEmployeeService employees,IMapper mapper)
     {
         _unitOfWork = uniOfWork;
@@ -52,20 +56,26 @@ public class EmployeeController : ApiBaseController
     [HttpPost("token")]
     public async Task<IActionResult> GetTokenAsync(LoginDto model)
     {
-        var result = await _userService.GetTokenAsync(model);
-        SetRefreshTokenInCookie(result.RefreshToken);
-        return Ok(result);
+        var employees = await _unitOfWork.Employees.GetAllAsync();
+        return _mapper.Map<List<EmployeeGetDto>>(employees);
     }
 
-    [HttpPost("addrole")]
-    public async Task<IActionResult> AddRoleAsync(AddRoleDto model)
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> UpdateAsync([FromBody] EmployeeDto employeeDto)
     {
-        var result = await _userService.AddRoleAsync(model);
+        if(employeeDto == null){return NotFound();}
+
+        var result = await _employees.UpdateAsync(employeeDto);
         return Ok(result);
     }
 
-    [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshToken()
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<IActionResult> Delete(int id)
     {
         var refreshToken = Request.Cookies["refreshToken"];
         var response = await _userService.RefreshTokenAsync(refreshToken);
@@ -76,26 +86,16 @@ public class EmployeeController : ApiBaseController
 >>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)
     }
 
-    [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<EmployeeGetDto>>> Get()
-    {
-        var employees = await _unitOfWork.Employees.GetAllAsync();
-        return _mapper.Map<List<EmployeeGetDto>>(employees);
-    }
 
-<<<<<<< HEAD
     private void SetRefreshTokenInCookie(string refreshToken)
     {
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTime.UtcNow.AddMinutes(2),
-        };
-        Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        _unitOfWork.UserRoles.Remove(userEmployeeRole);
     }
-    
+        this._unitOfWork.Employees.Remove(employee);
+        await this._unitOfWork.SaveAsync();
+        return NoContent();
+    }
+
 }
 =======
     [HttpPut]

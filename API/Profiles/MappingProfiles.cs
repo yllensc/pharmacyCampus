@@ -28,6 +28,14 @@ public class MappingProfiles: Profile
         CreateMap<Position,PositionDto>()
             .ReverseMap()
             .ForMember(o=> o.Id, d => d.Ignore());
+        CreateMap<Employee,EmployeeDto>()
+            .ReverseMap();
+        CreateMap<Employee,EmployeeGetDto>()
+            .ReverseMap()
+            .ForMember(o=> o.PositionId, d => d.Ignore());
+        CreateMap<Position,PositionDto>()
+            .ReverseMap()
+            .ForMember(o=> o.Id, d => d.Ignore());
         CreateMap<Medicine,MedicineDto>()
             .ReverseMap()
             .ForMember(o=> o.PurchasedMedicines, d => d.Ignore())
