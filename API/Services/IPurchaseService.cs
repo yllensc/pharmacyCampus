@@ -10,4 +10,6 @@ namespace API.Services;
 public interface IPurchaseService
 {
     Task<string> RegisterAsync(PurchasePostDto model);
+
+    Task<string> RegisterManyMedicinesAsync(PurchaseManyPostDto model);
 }
