@@ -17,7 +17,7 @@ namespace API.Controllers;
         _medicines = medicines;
         _mapper = mapper;
     }
-        [HttpPost("register")]
+    [HttpPost("register")]
     public async Task<ActionResult> RegisterAsync(MedicineDto model)
     {
         var result = await _medicines.RegisterAsync(model);
@@ -30,5 +30,30 @@ namespace API.Controllers;
     {
         var medicines = await _unitOfWork.Medicines.GetAllAsync();
         return _mapper.Map<List<MedicineDto>>(medicines);
+    }
+
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> UpdateAsync([FromBody] MedicinePutDto medicineDto)
+    {
+        if(medicineDto == null){return NotFound();}
+
+        var result = await _medicines.UpdateAsync(medicineDto);
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var medicine = await _unitOfWork.Medicines.GetByIdAsync(id);
+
+        if(medicine == null) {return NotFound();}
+        this._unitOfWork.Medicines.Remove(medicine);
+        await this._unitOfWork.SaveAsync();
+        return NoContent();
     }
     }

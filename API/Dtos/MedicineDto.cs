@@ -14,8 +14,6 @@ namespace API.Dtos
         public double Price { get; set; }
         [Required]
         public int Stock { get; set; }
-        [Required]
-        public DateTime ExpirationDate { get; set; }
         public int ProviderId { get; set; } 
     }
 }
