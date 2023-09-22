@@ -14,6 +14,5 @@ public class ProviderxPurchaseDto
     public string Name { get; set; }
     [Required]
     public string IdenNumber { get; set;}
-
     public List<PurchaseDto> purchases  { get; set; }
 }
