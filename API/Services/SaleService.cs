@@ -12,7 +12,7 @@ public class SaleService : ISaleService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<string> RegisterAsync(SaleDto saleDto)
+    public async Task<string> RegisterAsync (SaleDto saleDto)
     {
         var sale = new Sale
         {
@@ -30,9 +30,42 @@ public class SaleService : ISaleService
         {
             try
             {
-                _unitOfWork.Sales.Add(sale);
-                await _unitOfWork.SaveAsync();
-                return $"User  {saleDto.Id} has been registered successfully";
+                var saleMedicine = new SaleMedicine
+                {
+                    SaleId = sale.Id,
+                    MedicineId = saleDto.MedicineId,
+                    SaleQuantity = saleDto.QuantitySale,
+                    Price = saleDto.Price
+                };
+
+                var existingMedicine = _unitOfWork.Medicines
+                                .Find(u => u.Id == saleDto.Id)
+                                .FirstOrDefault();
+
+                if (existingMedicine != null)
+                {
+                    try
+                    {
+                        if (existingMedicine.Stock >= saleDto.QuantitySale)
+                        {
+                            _unitOfWork.Sales.Add(sale);
+                            _unitOfWork.SaleMedicines.Add(saleMedicine);
+                            existingMedicine.Stock = existingMedicine.Stock - saleDto.QuantitySale;  
+                            _unitOfWork.Medicines.Update(existingMedicine);
+                            await _unitOfWork.SaveAsync();
+                            return $"User {saleDto.Id} has been registered successfully";
+                        }else{
+                            return $"Sale with Identifaction Number {saleDto.Id} alredy register ";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var message = ex.Message;
+                        return $"Error: {message}";
+                    }
+                }else{
+                    return $"Sale with Identifaction Number {saleDto.Id} alredy register ";
+                }
             }
             catch (Exception ex)
             {
@@ -43,5 +76,10 @@ public class SaleService : ISaleService
             return $"Sale with Identifaction Number {saleDto.Id} alredy register ";
         }
     }
+
+        
+
+        
+
         
 }

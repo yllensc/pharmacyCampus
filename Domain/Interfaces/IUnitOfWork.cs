@@ -16,6 +16,8 @@ public interface IUnitOfWork
     IProvider Providers {get; }
     IPurchase Purchases {get; }
     IPurchasedMedicine PurchasedMedicines {get; }
+    ISaleMedicineRepository SaleMedicines {get; }
+    IMedicineRepository Medicines {get; }
     Task<int> SaveAsync();
 
 }

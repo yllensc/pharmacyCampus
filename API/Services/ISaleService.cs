@@ -8,5 +8,5 @@ namespace API.Services;
 
 public interface ISaleService
 {
-    Task<string> RegisterAsync(SaleDto model);
+    Task<string> RegisterAsync (SaleDto model);
 }

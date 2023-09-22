@@ -135,6 +135,16 @@ public IProvider Providers
         }
     }
 
+    public ISaleMedicineRepository SaleMedicines
+    {
+        get{
+            if(_saleMedicines == null)
+            {
+                _saleMedicines = new SaleMedicineRepository(_context);
+            }
+            return _saleMedicines;
+        }
+    }
 
     public async Task<int> SaveAsync()
     {

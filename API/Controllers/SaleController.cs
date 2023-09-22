@@ -40,43 +40,38 @@ public class SaleController : ApiBaseController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Sale>> Post(SaleDto saleDto)
+    public async Task<ActionResult<Sale>> Post([FromBody] SaleDto saleDto)
     {
-        var sale = _mapper.Map<Sale>(saleDto);
-        _unitOfWork.Sales.Add(sale);
-        await _unitOfWork.SaveAsync();
-        if (sale == null)
-        {
-            return BadRequest();
-        }
-        saleDto.Id = sale.Id;
-        return CreatedAtAction(nameof(Post),new {id = saleDto.Id}, saleDto);
+         var result = await _saleService.RegisterAsync(saleDto);
+
+        return Ok(result);
+
     }
 
-    [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<SaleDto>> Put(int id, [FromBody] SaleDto saleDto)
-    {
-        if (saleDto == null) return NotFound();
-        var sales = _mapper.Map<Sale>(saleDto);
-        _unitOfWork.Sales.Update(sales);
-        await _unitOfWork.SaveAsync();
-        return saleDto;
-    }
+    // [HttpPut("{id}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult<SaleDto>> Put(int id, [FromBody] SaleDto saleDto)
+    // {
+    //     if (saleDto == null) return NotFound();
+    //     var sales = _mapper.Map<Sale>(saleDto);
+    //     _unitOfWork.Sales.Update(sales);
+    //     await _unitOfWork.SaveAsync();
+    //     return saleDto;
+    // }
 
-    [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var sale = await _unitOfWork.Sales.GetByIdAsync(id);
+    // [HttpDelete("{id}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<IActionResult> Delete(int id)
+    // {
+    //     var sale = await _unitOfWork.Sales.GetByIdAsync(id);
 
-        if(sale == null) {return NotFound();}
+    //     if(sale == null) {return NotFound();}
 
-        this._unitOfWork.Sales.Remove(sale);
-        await this._unitOfWork.SaveAsync();
-        return NoContent();
-    }
+    //     this._unitOfWork.Sales.Remove(sale);
+    //     await this._unitOfWork.SaveAsync();
+    //     return NoContent();
+    // }
 }
