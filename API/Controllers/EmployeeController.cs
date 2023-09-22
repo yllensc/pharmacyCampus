@@ -8,6 +8,7 @@ using API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Interfaces;
 using AutoMapper;
+using Domain.Entities;
 
 namespace API.Controllers;
 
