@@ -9,9 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Interfaces;
 using AutoMapper;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Domain.Entities;
 =======
 >>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)
+=======
+using Domain.Entities;
+>>>>>>> 346b96b (feat: :sparkles: CRUD Employee check)
 
 namespace API.Controllers;
 
@@ -114,7 +118,13 @@ public class EmployeeController : ApiBaseController
         var employee = await _unitOfWork.Employees.GetByIdAsync(id);
 
         if(employee == null) {return NotFound();}
-
+        var userEmployeeRole =  _unitOfWork.UserRoles
+                                .Find(u => u.UserId == employee.UserId && u.Rol.Name == "employee")
+                                .FirstOrDefault();
+    if (userEmployeeRole != null)
+    {
+        _unitOfWork.UserRoles.Remove(userEmployeeRole);
+    }
         this._unitOfWork.Employees.Remove(employee);
         await this._unitOfWork.SaveAsync();
         return NoContent();

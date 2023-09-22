@@ -2,9 +2,12 @@ using API.Dtos;
 using API.Services;
 using AutoMapper;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 using Domain.Entities;
 >>>>>>> 6b78404 (método GET medicine)
+=======
+>>>>>>> 346b96b (feat: :sparkles: CRUD Employee check)
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
