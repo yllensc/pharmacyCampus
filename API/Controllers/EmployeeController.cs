@@ -8,6 +8,7 @@ using API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Interfaces;
 using AutoMapper;
+using Domain.Entities;
 
 namespace API.Controllers;
 
@@ -53,7 +54,13 @@ public class EmployeeController : ApiBaseController
         var employee = await _unitOfWork.Employees.GetByIdAsync(id);
 
         if(employee == null) {return NotFound();}
-
+        var userEmployeeRole =  _unitOfWork.UserRoles
+                                .Find(u => u.UserId == employee.UserId && u.Rol.Name == "employee")
+                                .FirstOrDefault();
+    if (userEmployeeRole != null)
+    {
+        _unitOfWork.UserRoles.Remove(userEmployeeRole);
+    }
         this._unitOfWork.Employees.Remove(employee);
         await this._unitOfWork.SaveAsync();
         return NoContent();
