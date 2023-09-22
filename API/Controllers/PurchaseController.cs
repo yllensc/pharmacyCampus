@@ -39,7 +39,7 @@ public class PurchaseController : ApiBaseController
         return _mapper.Map<List<PurchaseDto>>(purchases);
     }
 
-    [HttpPost]
+    /*[HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterAsync([FromBody] PurchasePostDto purchasePostDto){
@@ -48,5 +48,16 @@ public class PurchaseController : ApiBaseController
 
         return Ok(result);
 
+    }*/
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] PurchaseManyPostDto purchasePostDto){
+
+        var result = await _purchaseService.RegisterManyMedicinesAsync(purchasePostDto);
+
+        return Ok(result);
+
     }
+
 }
