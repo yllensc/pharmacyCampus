@@ -6,16 +6,6 @@ using API.Dtos;
 using API.Services;
 using API.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Interfaces;
-using AutoMapper;
-<<<<<<< HEAD
-<<<<<<< HEAD
-using Domain.Entities;
-=======
->>>>>>> 81e6bcc (Employee CRUD check y avance de Medicine jaja)
-=======
-using Domain.Entities;
->>>>>>> 346b96b (feat: :sparkles: CRUD Employee check)
 
 namespace API.Controllers;
 
@@ -31,10 +21,7 @@ public class EmployeeController : ApiBaseController
    public EmployeeController(IUnitOfWork uniOfWork, IEmployeeService employees,IMapper mapper)
    public EmployeeController(IUnitOfWork uniOfWork, IEmployeeService employees,IMapper mapper)
     {
-        _unitOfWork = uniOfWork;
-        _employees = employees;
-        _mapper = mapper;
-<<<<<<< HEAD
+        _userService = userService;
     }
 
     [HttpGet]
@@ -46,12 +33,6 @@ public class EmployeeController : ApiBaseController
         return _mapper.Map<List<EmployeeGetDto>>(employees);
     }
 
-    [HttpPut]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> UpdateAsync([FromBody] EmployeeDto employeeDto)
-    {
-        if(employeeDto == null){return NotFound();}
 
     [HttpPost("token")]
     public async Task<IActionResult> GetTokenAsync(LoginDto model)

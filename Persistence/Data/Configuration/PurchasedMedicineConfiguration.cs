@@ -8,12 +8,7 @@ public class PurchasedMedicineConfiguration : IEntityTypeConfiguration<Purchased
     public void Configure(EntityTypeBuilder<PurchasedMedicine> builder)
     {
         builder.ToTable("purchasedMedicine");
-        //builder.HasKey(m => new { m.PurchasedId, m.MedicineId }); // Definir clave primaria compuesta
-<<<<<<< HEAD
-        builder.Property(p=> p.Id)
-        .IsRequired();
-=======
->>>>>>> c89bc5f (Adaptación de las tablas "intermedias" jeje)
+        builder.HasKey(m => new { m.PurchasedId, m.MedicineId }); // Definir clave primaria compuesta
         builder.HasOne(m => m.Purchase)
         .WithMany(m => m.PurchasedMedicines)
         .HasForeignKey(m => m.PurchasedId)
@@ -26,11 +21,5 @@ public class PurchasedMedicineConfiguration : IEntityTypeConfiguration<Purchased
         .IsRequired();
         builder.Property(p => p.PricePurchase)
         .IsRequired();
-        builder.Property(p => p.ExpirationDate)
-        .IsRequired()
-        .HasColumnType("DateTime");
-        builder.Property(p => p.ExpirationDate)
-        .IsRequired()
-        .HasColumnType("DateTime");
     }
 }

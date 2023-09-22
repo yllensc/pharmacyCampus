@@ -5,7 +5,5 @@ using System.Threading.Tasks;
 using Domain.Entities;
 
 namespace Domain.Interfaces;
-public interface IPurchasedMedicine : IGenericRepository<PurchasedMedicine>
-{
-
-}
+    public interface IPurchasedMedicine: IGenericRepository<PurchasedMedicine>
+{}
