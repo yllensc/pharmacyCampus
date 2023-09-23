@@ -49,4 +49,15 @@ public class PurchaseController : ApiBaseController
         return Ok(result);
 
     }
+    [HttpPost("range")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] PurchaseManyPostDto purchasePostDto){
+
+        var result = await _purchaseService.RegisterManyMedicinesAsync(purchasePostDto);
+
+        return Ok(result);
+
+    }
+
 }
