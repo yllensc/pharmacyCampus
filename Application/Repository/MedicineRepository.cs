@@ -133,5 +133,13 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         return listMedicines;
         
     }
+
+    public async Task<IEnumerable<Provider>> GetProvidersInfoWithMedicines()
+    {
+          return await this._context.Providers
+            .Include(d => d.Medicines)
+            .ToListAsync();
+
+    }
 }
 

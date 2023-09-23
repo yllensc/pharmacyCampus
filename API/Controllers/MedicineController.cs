@@ -63,6 +63,14 @@ namespace API.Controllers;
         var medicines = await _unitOfWork.Medicines.GetRangePriceStockPredeterminated();
         return _mapper.Map<List<MedicineDto>>(medicines);
     }
+    [HttpGet("GetProvidersInfoWithMedicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProviderDto>>> GetProvidersInfoWithMedicines()
+    {
+        var medicines = await _unitOfWork.Medicines.GetProvidersInfoWithMedicines();
+        return _mapper.Map<List<ProviderDto>>(medicines);
+    }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
