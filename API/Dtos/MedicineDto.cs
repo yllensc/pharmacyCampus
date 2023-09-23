@@ -15,5 +15,6 @@ namespace API.Dtos
         [Required]
         public int Stock { get; set; }
         public int ProviderId { get; set; } 
+        public ProviderDto Provider { get; set; }
     }
 }

@@ -76,6 +76,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                 return "El registro que quieres actualizar, no existe, sorry";
             }  
         }
+    
     public async Task<IEnumerable<Medicine>> GetUnder50()
     {
         return await _context.Medicines.Where(m => m.Stock < 50).ToListAsync();
@@ -105,6 +106,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                 listMedicines.Add(medicine);
             }
         }
+        await _context.SaveChangesAsync();
         return listMedicines;
     }
     public async Task<IEnumerable<Medicine>> GetMoreExpensive()
@@ -118,6 +120,17 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
             }
         }
         return  await _context.Medicines.Where(m=>m.Price == priceMoreExpensive).ToListAsync(); 
+    }
+    public async Task<IEnumerable<Medicine>> GetRangePriceStockPredeterminated()
+    {
+        List<Medicine> listMedicines = new();
+        foreach(var m in _context.Medicines){
+            if (m.Price >= 50000 && m.Stock > 100){
+                listMedicines.Add(m);
+            }
+        }
+        await _context.SaveChangesAsync();
+        return listMedicines;
         
     }
 }
