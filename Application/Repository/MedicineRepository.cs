@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Repository;
@@ -76,7 +77,6 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                 return "El registro que quieres actualizar, no existe, sorry";
             }  
         }
-    
     public async Task<IEnumerable<Medicine>> GetUnder50()
     {
         return await _context.Medicines.Where(m => m.Stock < 50).ToListAsync();
@@ -139,7 +139,12 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
           return await this._context.Providers
             .Include(d => d.Medicines)
             .ToListAsync();
-
+    }
+    public override async Task<Medicine> GetByIdAsync(int id)
+    {
+        return await _context.Medicines
+                    .Include(p => p.PurchasedMedicines)
+                    .FirstOrDefaultAsync(p=>p.Id == id);
     }
 }
 

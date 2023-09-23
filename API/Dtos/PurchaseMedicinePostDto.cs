@@ -14,7 +14,6 @@ public class PurchaseMedicinePostDto
     public int CantPurchased { get; set;}
     [Required]
     public double PricePurchase { get; set;}  
-    [Required]
      public int Stock { get; set;}
     [Required]
     public DateTime ExpirationDate { get; set; }
