@@ -61,7 +61,6 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                 return "El proveedor no existe en nuestro sistema, sorry";
              }
         }
-
     public async Task<string> UpdateAsync(Medicine model)
         {
             var medicine =  _context.Medicines.Where(u=> u.Id == model.Id).FirstOrDefault();
@@ -81,5 +80,19 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
     {
         return await _context.Medicines.Where(m => m.Stock < 50).ToListAsync();
     }
+
+    public async Task<IEnumerable<Medicine>> GetExpireUnder2024()
+    {
+        DateTime init2024 = new(2024,1,1);
+        var listPurchases = await _context.PurchasedMedicines.Where(m => m.ExpirationDate < init2024).ToListAsync();
+        List<Medicine> listMedicines = new();
+        foreach(var m in listPurchases){
+            var medicine = _context.Medicines.Where(me=>me.Id == m.MedicineId).FirstOrDefault();
+            if(medicine != null){
+                listMedicines.Add(medicine);
+            }
+        }
+        return listMedicines;
     }
+}
 

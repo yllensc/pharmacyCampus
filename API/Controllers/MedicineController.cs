@@ -31,6 +31,14 @@ namespace API.Controllers;
         var medicines = await _unitOfWork.Medicines.GetUnder50();
         return _mapper.Map<List<MedicineDto>>(medicines);
     }
+    [HttpGet("underExpires2024")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetExpireUnder2024()
+    {
+        var medicines = await _unitOfWork.Medicines.GetExpireUnder2024();
+        return _mapper.Map<List<MedicineDto>>(medicines);
+    }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
