@@ -79,4 +79,10 @@ namespace Application.Repository;
         return "Provider update successfully";
 
     }
+    public async Task<IEnumerable<Provider>> GetProvidersWithMedicines()
+    {
+        return await _context.Providers
+            .Include(p=>p.Medicines)
+            .ToListAsync();
+    }
 }

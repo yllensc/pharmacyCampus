@@ -10,11 +10,9 @@ public class SaleController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly ISaleService _saleService;
 
-    public SaleController(IUnitOfWork unitOfWork, ISaleService saleService, IMapper mapper)
+    public SaleController(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _saleService = saleService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }

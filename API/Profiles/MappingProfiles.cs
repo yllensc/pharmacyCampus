@@ -35,16 +35,18 @@ public class MappingProfiles: Profile
         CreateMap<Medicine,MedicinePutDto>()
             .ReverseMap();
         CreateMap<Patient,PatientDto>()
-            .ReverseMap();
+            .ReverseMap()
+            .ForMember(o=> o.Sales, d => d.Ignore());
         CreateMap<Patient,PatientPutDto>()
             .ReverseMap();
-
         CreateMap<Sale,SaleDto>()
             .ReverseMap()
             .ForMember(o => o.SaleMedicines, d => d.Ignore());
-            
         CreateMap<Provider,ProviderxPurchaseDto>()
                 .ForMember(dest=> dest.purchases, origen => origen.MapFrom(o => o.Purchases))
+                .ReverseMap();
+        CreateMap<Provider,ProviderWithListMedicinesDto>()
+                .ForMember(dest=> dest.Medicines, origen => origen.MapFrom(o => o.Medicines))
                 .ReverseMap();
         CreateMap<Purchase,PurchaseDto>()
             .ForMember(dest=> dest.purchaseMedicines, origen => origen.MapFrom(o => o.PurchasedMedicines))

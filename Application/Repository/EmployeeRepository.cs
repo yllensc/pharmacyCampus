@@ -1,3 +1,4 @@
+using System.Globalization;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -21,4 +22,35 @@ public class EmployeeRepository : GenericRepository<Employee>, IEmployee
             .ToListAsync();
     }
 
+    public async Task<string> UpdateAsync(Employee model)
+    {
+        var existingEmployee = await _context.Employees.Where(e=> e.Id == model.Id).FirstOrDefaultAsync();  
+        if (existingEmployee == null)
+        {
+            return "Empleado no encontrado, sorry";
+        }
+        string strDateTimeNowExact = model.DateContract.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ");
+        if (DateTime.TryParseExact(strDateTimeNowExact, "yyyy-MM-ddTHH:mm:ss.ffffffZ", null, DateTimeStyles.None, out DateTime parseDate))
+        {
+            var existPosition = await _context.Positions.Where(e => e.Id == model.PositionId).FirstOrDefaultAsync();
+            if (existPosition != null)
+            {
+                existingEmployee.Name = model.Name;
+                existingEmployee.DateContract = parseDate;
+                existingEmployee.PositionId = model.PositionId;
+                _context.Employees.Update(existingEmployee);
+                await _context.SaveChangesAsync();
+
+                return "employee update successfully";
+            }
+            else
+            {
+                return "sorry, this position isn't part in our company";
+            }
+        }
+        else
+        {
+            return $"La fecha proporcionada no es válida.";
+        }
+    }
 }

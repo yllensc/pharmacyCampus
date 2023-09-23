@@ -15,13 +15,11 @@ namespace API.Controllers;
 public class EmployeeController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IEmployeeService _employees;
     private readonly IMapper _mapper;
 
-   public EmployeeController(IUnitOfWork uniOfWork, IEmployeeService employees,IMapper mapper)
+   public EmployeeController(IUnitOfWork uniOfWork,IMapper mapper)
     {
         _unitOfWork = uniOfWork;
-        _employees = employees;
         _mapper = mapper;
     }
 
@@ -40,8 +38,9 @@ public class EmployeeController : ApiBaseController
     public async Task<ActionResult> UpdateAsync([FromBody] EmployeeDto employeeDto)
     {
         if(employeeDto == null){return NotFound();}
+        var employee =  _mapper.Map<Employee>(employeeDto);
+        var result = await _unitOfWork.Employees.UpdateAsync(employee);
 
-        var result = await _employees.UpdateAsync(employeeDto);
         return Ok(result);
     }
 
@@ -63,7 +62,7 @@ public class EmployeeController : ApiBaseController
     }
         this._unitOfWork.Employees.Remove(employee);
         await this._unitOfWork.SaveAsync();
-        return NoContent();
+        return Ok($"El empleado {employee.Name} ha sido eliminado correctamente");
     }
 
 }

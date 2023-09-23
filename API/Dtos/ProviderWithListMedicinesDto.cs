@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace API.Dtos
 {
-    public class MedicineDto
+    public class ProviderWithListMedicinesDto
     {
         [Required]
         public string Name { get; set; }
         [Required]
-        public double Price { get; set; }
+        public string IdenNumber { get; set;}
         [Required]
-        public int Stock { get; set; }
-        public int ProviderId { get; set; } 
-        public ProviderDto Provider { get; set; }
+        public string Email { get; set;}
+        [Required]
+        public string Address { get; set;}
+        public IEnumerable<MedicineDto> Medicines{ get; set;}
     }
 }
