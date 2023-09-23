@@ -98,7 +98,7 @@ namespace Application.Repository;
        
     }
 
-     public async Task<string> RegisterManyMedicinesAsync(Purchase modelPurchase, PurchasedMedicine modelPurMedicine, List<PurchasedMedicine> list)
+     public async Task<string> RegisterManyMedicinesAsync(Purchase modelPurchase,  List<PurchasedMedicine> list)
     {
 
         foreach(var purshaseMedicine in list)
@@ -139,7 +139,7 @@ namespace Application.Repository;
                 });
 
                 var medicine = await _context.Medicines
-                                    .Where(u=>u.Id == modelPurMedicine.MedicineId)
+                                    .Where(u=>u.Id == purshaseMedicine.MedicineId)
                                     .FirstOrDefaultAsync();
 
                 medicine.Stock += purshaseMedicine.CantPurchased;

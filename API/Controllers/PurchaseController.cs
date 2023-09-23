@@ -57,9 +57,8 @@ public class PurchaseController : ApiBaseController
     public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] PurchaseManyPostDto purchasePostDto){
 
         var purchase = _mapper.Map<Purchase>(purchasePostDto);
-        var purchasedMedicine = _mapper.Map<PurchasedMedicine>(purchasePostDto);
         var list = _mapper.Map<List<PurchasedMedicine>>(purchasePostDto.MedicinesList);
-        var result = await _unitOfWork.Purchases.RegisterManyMedicinesAsync(purchase,purchasedMedicine,list);
+        var result = await _unitOfWork.Purchases.RegisterManyMedicinesAsync(purchase,list);
 
         return Ok(result);
 
