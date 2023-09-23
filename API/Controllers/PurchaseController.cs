@@ -56,7 +56,10 @@ public class PurchaseController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] PurchaseManyPostDto purchasePostDto){
 
-        var result = await _purchaseService.RegisterManyMedicinesAsync(purchasePostDto);
+        var purchase = _mapper.Map<Purchase>(purchasePostDto);
+        var purchasedMedicine = _mapper.Map<PurchasedMedicine>(purchasePostDto);
+        var list = _mapper.Map<List<PurchasedMedicine>>(purchasePostDto.MedicinesList);
+        var result = await _unitOfWork.Purchases.RegisterManyMedicinesAsync(purchase,purchasedMedicine,list);
 
         return Ok(result);
 
