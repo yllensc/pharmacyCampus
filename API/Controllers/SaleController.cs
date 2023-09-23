@@ -10,11 +10,9 @@ public class SaleController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly ISaleService _saleService;
 
-    public SaleController(IUnitOfWork unitOfWork, ISaleService saleService, IMapper mapper)
+    public SaleController(IUnitOfWork unitOfWork,  IMapper mapper)
     {
-        _saleService = saleService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
@@ -36,47 +34,71 @@ public class SaleController : ApiBaseController
         var sale = await _unitOfWork.Sales.GetByIdAsync(id);
         return _mapper.Map<SaleDto>(sale);
     }
+[HttpPost]
+[ProducesResponseType(StatusCodes.Status201Created)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<ActionResult<Sale>> Post([FromBody] SaleDto saleDto)
+{
+    if (saleDto == null)
+{
+    // Manejo de error o respuesta 400 Bad Request
+    return BadRequest("El objeto SaleDto es nulo.");
+}
+    
+    var sale = _mapper.Map<Sale>(saleDto);
 
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Sale>> Post(SaleDto saleDto)
+    var saleMedicine = new SaleMedicine
     {
-        var sale = _mapper.Map<Sale>(saleDto);
-        _unitOfWork.Sales.Add(sale);
+        MedicineId = saleDto.MedicineId,
+        SaleQuantity = saleDto.QuantitySale,
+        Price = saleDto.Price
+    };
+
+    // Agrega el SaleMedicine a la colección de SaleMedicines en la entidad Sale
+    sale.SaleMedicines.Add(saleMedicine);
+
+    _unitOfWork.Sales.Add(sale);
+    
+    try
+    {
         await _unitOfWork.SaveAsync();
-        if (sale == null)
-        {
-            return BadRequest();
-        }
-        saleDto.Id = sale.Id;
-        return CreatedAtAction(nameof(Post),new {id = saleDto.Id}, saleDto);
+        return Ok("Venta creada con éxito");
     }
-
-    [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<SaleDto>> Put(int id, [FromBody] SaleDto saleDto)
+    catch (Exception ex)
     {
-        if (saleDto == null) return NotFound();
-        var sales = _mapper.Map<Sale>(saleDto);
-        _unitOfWork.Sales.Update(sales);
-        await _unitOfWork.SaveAsync();
-        return saleDto;
+        // Loguea la excepción interna para obtener más información
+        Console.WriteLine(ex.InnerException);
+        throw; // Re-lanza la excepción para que sea manejada globalmente o muestre más detalles en la respuesta HTTP
     }
+}
 
-    [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var sale = await _unitOfWork.Sales.GetByIdAsync(id);
 
-        if(sale == null) {return NotFound();}
+    
 
-        this._unitOfWork.Sales.Remove(sale);
-        await this._unitOfWork.SaveAsync();
-        return NoContent();
-    }
+    // [HttpPut("{id}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult<SaleDto>> Put(int id, [FromBody] SaleDto saleDto)
+    // {
+    //     if (saleDto == null) return NotFound();
+    //     var sales = _mapper.Map<Sale>(saleDto);
+    //     _unitOfWork.Sales.Update(sales);
+    //     await _unitOfWork.SaveAsync();
+    //     return saleDto;
+    // }
+
+    // [HttpDelete("{id}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<IActionResult> Delete(int id)
+    // {
+    //     var sale = await _unitOfWork.Sales.GetByIdAsync(id);
+
+    //     if(sale == null) {return NotFound();}
+
+    //     this._unitOfWork.Sales.Remove(sale);
+    //     await this._unitOfWork.SaveAsync();
+    //     return NoContent();
+    // }
 }

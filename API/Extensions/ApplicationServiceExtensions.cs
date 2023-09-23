@@ -31,7 +31,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPatientService, PatientService>();
         services.AddScoped<IPurchaseService, PurchaseService>();
-        services.AddScoped<ISaleService, SaleService>();
+        // services.AddScoped<ISaleService, SaleService>();
         services.AddScoped<IMedicineService, MedicineService>();
 
     }
