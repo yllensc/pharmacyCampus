@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using API.Services;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Entities;
 
 namespace API.Controllers;
 
@@ -16,7 +15,6 @@ public class PurchaseController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public PurchaseController(IUnitOfWork unitOfWork, IMapper mapper)
     public PurchaseController(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
@@ -65,17 +63,4 @@ public class PurchaseController : ApiBaseController
         return Ok(result);
 
     }
-    [HttpPost("range")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] PurchaseManyPostDto purchasePostDto){
-
-        var purchase = _mapper.Map<Purchase>(purchasePostDto);
-        var list = _mapper.Map<List<PurchasedMedicine>>(purchasePostDto.MedicinesList);
-        var result = await _unitOfWork.Purchases.RegisterManyMedicinesAsync(purchase,list);
-
-        return Ok(result);
-
-    }
-
 }
