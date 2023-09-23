@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace API.Dtos;
 
-public class PurchaseMedicineDto
+public class PurchaseMedicinePostDto
 {
-    public string MedicineName {get; set;}
+    [Required]
+    public int MedicineId {get; set;}
+    [Required]
     public int CantPurchased { get; set;}
-    public double PricePurchase { get; set;}
-    public int Stock { get; set;} 
+    [Required]
+    public double PricePurchase { get; set;}  
+     public int Stock { get; set;}
+    [Required]
     public DateTime ExpirationDate { get; set; }
 
 }

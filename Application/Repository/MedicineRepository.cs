@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Repository;
@@ -16,5 +17,12 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
     {
         _context = context;
 
+    }
+
+    public override async Task<Medicine> GetByIdAsync(int id)
+    {
+        return await _context.Medicines
+                    .Include(p => p.PurchasedMedicines)
+                    .FirstOrDefaultAsync(p=>p.Id == id);
     }
 }

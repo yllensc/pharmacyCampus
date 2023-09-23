@@ -7,18 +7,17 @@ using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using API.Services;
 using AutoMapper;
+using Domain.Entities;
 
 namespace API.Controllers;
 
 public class PurchaseController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPurchaseService _purchaseService;
     private readonly IMapper _mapper;
-    public PurchaseController(IUnitOfWork unitOfWork,  IPurchaseService purchaseService, IMapper mapper)
+    public PurchaseController(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _purchaseService = purchaseService;
         _mapper = mapper;
     }
 
@@ -44,9 +43,25 @@ public class PurchaseController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterAsync([FromBody] PurchasePostDto purchasePostDto){
 
-        var result = await _purchaseService.RegisterAsync(purchasePostDto);
+        var purchase = _mapper.Map<Purchase>(purchasePostDto);
+        var purchasedMedicine = _mapper.Map<PurchasedMedicine>(purchasePostDto);
+
+        var result = await _unitOfWork.Purchases.RegisterAsync(purchase,purchasedMedicine);
 
         return Ok(result);
 
     }
+    [HttpPost("range")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] PurchaseManyPostDto purchasePostDto){
+
+        var purchase = _mapper.Map<Purchase>(purchasePostDto);
+        var list = _mapper.Map<List<PurchasedMedicine>>(purchasePostDto.MedicinesList);
+        var result = await _unitOfWork.Purchases.RegisterManyMedicinesAsync(purchase,list);
+
+        return Ok(result);
+
+    }
+
 }
