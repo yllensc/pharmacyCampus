@@ -56,8 +56,8 @@ public class MappingProfiles: Profile
         CreateMap<PurchasedMedicine, PurchaseMedicineDto>()
             .ForMember(dest=> dest.MedicineName, origen => origen.MapFrom(o => o.Medicine.Name))
             .ReverseMap();
-        CreateMap<PurchasedMedicine, PurchaseManyPostDto>()
-            .ForMember(dest=> dest.MedicinesList, origen => origen.MapFrom(o => o.Medicine.Name))
+        CreateMap<Purchase, PurchaseManyPostDto>()
+            .ForMember(dest=> dest.MedicinesList, origen => origen.MapFrom(o => o.PurchasedMedicines))
             .ReverseMap();
         CreateMap<PurchasedMedicine, PurchaseMedicinePostDto>()
             .ReverseMap();
