@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Dtos;
 using API.Services;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +14,11 @@ namespace API.Controllers;
 public class PatientController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPatientService _patientService;
     private readonly IMapper _mapper;
 
 
-    public PatientController(IUnitOfWork unitOfWork, IPatientService patientService, IMapper mapper)
+    public PatientController(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _patientService = patientService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
@@ -37,9 +36,10 @@ public class PatientController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-    public async Task<ActionResult> RegisterAsync([FromBody] PatientDto patientDto){
+    public async Task<ActionResult> Post([FromBody] PatientDto patientDto){
 
-        var result = await _patientService.RegisterAsync(patientDto);
+        var patient =  _mapper.Map<Patient>(patientDto);
+        var result = await _unitOfWork.Patients.RegisterAsync(patient);
 
         return Ok(result);
 
@@ -49,11 +49,13 @@ public class PatientController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-    public async Task<ActionResult> UpdateAsync([FromBody] PatientPutDto patientPutDto)
+    public async Task<ActionResult> Put([FromBody] PatientPutDto patientPutDto)
     {
         if(patientPutDto == null){return NotFound();}
 
-        var result = await _patientService.UpdateAsync(patientPutDto);
+        var patient = _mapper.Map<Patient>(patientPutDto);
+        
+        var result = await _unitOfWork.Patients.UpdateAsync(patient);
         return Ok(result);
     }
 

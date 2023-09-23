@@ -48,7 +48,11 @@ public class PurchaseService : IPurchaseService
                 _unitOfWork.PurchasedMedicines.Add(newPurchaseMedicine);
                 await _unitOfWork.SaveAsync();
 
-                //Traer la info de medicina para sumarle el stock
+                var medicine = await _unitOfWork.Medicines.GetByIdAsync(purchasePostDto.MedicineId);
+
+                medicine.Stock += purchasePostDto.CantPurchased;
+                 _unitOfWork.Medicines.Update(medicine);
+                await _unitOfWork.SaveAsync();
 
                 }catch(Exception ex){
                     return ex.Message;
@@ -77,6 +81,7 @@ public class PurchaseService : IPurchaseService
                 
                 return "Expiration date with incorrect format. Please, fix it";
             }
+            purshaseMedicine.ExpirationDate = parseDate;
 
         }
         var newPurchase = new Purchase
@@ -94,7 +99,6 @@ public class PurchaseService : IPurchaseService
             List<PurchasedMedicine> newPmedicines = new(); 
             foreach(var purshaseMedicine in purchaseManyPostDto.MedicinesList)
             {
-                DateTime.TryParseExact(purshaseMedicine.ExpirationDate.ToString(), "yyyy-MM-ddTHH:mm:ss.ffffffZ", null, DateTimeStyles.None, out DateTime parseDate);
                 newPmedicines.Add(new PurchasedMedicine
                 {
                     PurchasedId = purchaseCreated.Id,
@@ -102,12 +106,20 @@ public class PurchaseService : IPurchaseService
                     CantPurchased = purshaseMedicine.CantPurchased,
                     PricePurchase = purshaseMedicine.PricePurchase,
                     Stock = purshaseMedicine.CantPurchased,
-                    ExpirationDate =parseDate
+                    ExpirationDate =purshaseMedicine.ExpirationDate
                 });
+
+                var medicine = await _unitOfWork.Medicines.GetByIdAsync(purshaseMedicine.MedicineId);
+
+                medicine.Stock += purshaseMedicine.CantPurchased;
+                _unitOfWork.Medicines.Update(medicine);
+                await _unitOfWork.SaveAsync();
             } 
                 try{
                 _unitOfWork.PurchasedMedicines.AddRange(newPmedicines);
                 await _unitOfWork.SaveAsync();
+
+                
 
                 }catch(Exception ex){
                     return ex.Message;

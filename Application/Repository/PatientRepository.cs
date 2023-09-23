@@ -18,5 +18,57 @@ public class PatientRepository : GenericRepository<Patient>, IPatient
         _context = context;
     }
 
+    public async Task<string> RegisterAsync(Patient patient)
+    {
+        var newPatient = new Patient
+        {
+            Name = patient.Name,
+            IdenNumber = patient.IdenNumber,
+            PhoneNumber = patient.PhoneNumber,
+            Address = patient.Address
+        };
+
+        var existingID = _context.Patients
+                                .Where(u => u.IdenNumber.ToLower() == patient.IdenNumber.ToLower())
+                                .FirstOrDefault();
+        
+        if (existingID == null)
+        {
+            try
+            {
+                _context.Patients.Add(newPatient);
+                await _context.SaveChangesAsync();
+
+                return $"User  {patient.Name} has been registered successfully";
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                return $"Error: {message}";
+            }
+        }else{
+            return $"Patient with Identifaction Number {patient.IdenNumber} alredy register ";
+        }
+    
+    }
+    public async Task<string> UpdateAsync(Patient model){
+            
+        var patient =  _context.Patients.Where(u => u.Id == model.Id).FirstOrDefault();
+        
+        if(patient == null){
+            return "Id Patient doesn't exist";
+        }
+        patient.Name = model.Name;
+        patient.PhoneNumber = model.PhoneNumber;
+        patient.Address = model.Address;
+
+        _context.Patients.Update(patient);
+        await _context.SaveChangesAsync();
+
+        return "Patient update successfully";
+
+    }
+
+
 
 }
