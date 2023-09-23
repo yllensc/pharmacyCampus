@@ -30,4 +30,53 @@ namespace Application.Repository;
             .Include(p=>p.Purchases).ThenInclude(p=>p.PurchasedMedicines)
             .FirstOrDefaultAsync(p=>p.Id == id);
     }
+
+    public async Task<string> RegisterAsync(Provider model)
+    {
+        var provider = new Provider
+        {
+            Name = model.Name,
+            IdenNumber = model.IdenNumber,
+            Email = model.Email,
+            Address = model.Address
+        };
+
+        var existingID = _context.Providers
+                                .Where(u => u.IdenNumber.ToLower() == model.IdenNumber.ToLower())
+                                .FirstOrDefault();
+        
+        if (existingID == null)
+        {
+            try
+            {
+                _context.Providers.Add(provider);
+                await _context.SaveChangesAsync();
+
+                return $"User  {model.Name} has been registered successfully";
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                return $"Error: {message}";
+            }
+        }else{
+            return $"Provider with Identifaction Number {model.IdenNumber} alredy register ";
+        }
+    
+    }
+
+    public async Task<string> UpdateAsync(Provider model){
+        
+        var provider = await _context.Providers.Where(u=> u.Id == model.Id).FirstOrDefaultAsync();
+
+        provider.Name = model.Name;
+        provider.Email = model.Email;
+        provider.Address = model.Address;
+
+        _context.Providers.Update(provider);
+        await _context.SaveChangesAsync();
+
+        return "Provider update successfully";
+
+    }
 }
