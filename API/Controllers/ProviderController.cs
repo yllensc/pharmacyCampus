@@ -14,13 +14,11 @@ namespace API.Controllers;
 public class ProviderController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IProviderService _providerService;
     private readonly IMapper _mapper;
 
-    public ProviderController(IUnitOfWork uniOfWork,IProviderService providerService, IMapper mapper)
+    public ProviderController(IUnitOfWork uniOfWork, IMapper mapper)
     {
         _unitOfWork = uniOfWork;
-        _providerService = providerService;
         _mapper = mapper;
     }
 
@@ -45,9 +43,11 @@ public class ProviderController : ApiBaseController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> RegisterAsync([FromBody] ProviderDto providerDto){
+    public async Task<ActionResult> Post([FromBody] ProviderDto providerDto){
+        
+        var provider = _mapper.Map<Provider>(providerDto);
 
-        var result = await _providerService.RegisterAsync(providerDto);
+        var result = await _unitOfWork.Providers.RegisterAsync(provider);
 
         return Ok(result);
     }
@@ -58,8 +58,9 @@ public class ProviderController : ApiBaseController
     public async Task<ActionResult> UpdateAsync([FromBody] ProviderPutDto providerPutDto)
     {
         if(providerPutDto == null){return NotFound();}
+        var provider = _mapper.Map<Provider>(providerPutDto);
 
-        var result = await _providerService.UpdateAsync(providerPutDto);
+        var result =await _unitOfWork.Providers.UpdateAsync(provider);
         return Ok(result);
     }
 
