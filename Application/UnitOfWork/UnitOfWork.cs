@@ -147,7 +147,7 @@ public IProvider Providers
         }
     }
 
-    public ISaleMedicineRepository saleMedicine
+    public ISaleMedicineRepository SaleMedicines
     {
         get{
             if(_saleMedicines == null)

@@ -63,5 +63,4 @@ public class PurchaseController : ApiBaseController
         return Ok(result);
 
     }
-
 }

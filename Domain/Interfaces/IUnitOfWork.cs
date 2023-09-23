@@ -13,6 +13,7 @@ public interface IUnitOfWork
     IPosition Positions {get; }
     IPatient Patients { get; }
     ISale Sales { get; }
+    ISaleMedicineRepository SaleMedicines { get; }
     IProvider Providers {get; }
     IPurchase Purchases {get; }
     IPurchasedMedicine PurchasedMedicines {get; }

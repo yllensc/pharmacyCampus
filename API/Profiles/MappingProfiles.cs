@@ -42,6 +42,18 @@ public class MappingProfiles: Profile
         CreateMap<Sale,SaleDto>()
             .ReverseMap()
             .ForMember(o => o.SaleMedicines, d => d.Ignore());
+        
+         CreateMap<SaleMedicine,SaleDto>()
+            .ReverseMap();         
+        
+        CreateMap<Sale, SaleManyPostDto>()
+            .ForMember(dest => dest.MedicinesList, origen => origen.MapFrom(o => o.SaleMedicines))
+            .ReverseMap()
+            .ForMember(o => o.SaleMedicines, d => d.Ignore());
+        
+        CreateMap<SaleMedicine,SaleMedicinePostDto>()
+            .ReverseMap();
+
         CreateMap<Provider,ProviderxPurchaseDto>()
                 .ForMember(dest=> dest.purchases, origen => origen.MapFrom(o => o.Purchases))
                 .ReverseMap();
