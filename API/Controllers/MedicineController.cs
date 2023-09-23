@@ -1,6 +1,7 @@
 using API.Dtos;
 using API.Services;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,21 +9,29 @@ namespace API.Controllers;
     public class MedicineController: ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMedicineService _medicines;
     private readonly IMapper _mapper;
 
-    public MedicineController(IUnitOfWork uniOfWork,IMedicineService medicines, IMapper mapper)
+    public MedicineController(IUnitOfWork uniOfWork, IMapper mapper)
     {
         _unitOfWork = uniOfWork;
-        _medicines = medicines;
         _mapper = mapper;
     }
     [HttpPost("register")]
     public async Task<ActionResult> RegisterAsync(MedicineDto model)
     {
-        var result = await _medicines.RegisterAsync(model);
+        var medicine = _mapper.Map<Medicine>(model);
+        var result = await _unitOfWork.Medicines.RegisterAsync(medicine);
         return Ok(result);
     }
+    [HttpGet("under50")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetUnder50()
+    {
+        var medicines = await _unitOfWork.Medicines.GetUnder50();
+        return _mapper.Map<List<MedicineDto>>(medicines);
+    }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,8 +47,8 @@ namespace API.Controllers;
     public async Task<ActionResult> UpdateAsync([FromBody] MedicinePutDto medicineDto)
     {
         if(medicineDto == null){return NotFound();}
-
-        var result = await _medicines.UpdateAsync(medicineDto);
+        var medicine = _mapper.Map<Medicine>(medicineDto);
+        var result = await _unitOfWork.Medicines.UpdateAsync(medicine);
         return Ok(result);
     }
 
@@ -54,6 +63,6 @@ namespace API.Controllers;
         if(medicine == null) {return NotFound();}
         this._unitOfWork.Medicines.Remove(medicine);
         await this._unitOfWork.SaveAsync();
-        return NoContent();
+        return Ok($"El medicamento {medicine.Name} ha sido eliminado correctamente");
     }
     }
