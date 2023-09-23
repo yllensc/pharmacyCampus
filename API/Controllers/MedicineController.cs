@@ -39,6 +39,14 @@ namespace API.Controllers;
         var medicines = await _unitOfWork.Medicines.GetExpireUnder2024();
         return _mapper.Map<List<MedicineDto>>(medicines);
     }
+    [HttpGet("moreExpensive")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetMoreExpensive()
+    {
+        var medicines = await _unitOfWork.Medicines.GetMoreExpensive();
+        return _mapper.Map<List<MedicineDto>>(medicines);
+    }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]

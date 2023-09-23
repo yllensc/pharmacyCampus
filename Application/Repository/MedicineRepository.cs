@@ -94,5 +94,19 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         }
         return listMedicines;
     }
+
+    public async Task<IEnumerable<Medicine>> GetMoreExpensive()
+    {
+        double priceMoreExpensive = 0;
+        List<Medicine> listMedicines = new();
+        foreach (var m in _context.Medicines){
+            var medicinePrice = m.Price;
+            if (medicinePrice >= priceMoreExpensive){
+                priceMoreExpensive = medicinePrice;
+            }
+        }
+        return  await _context.Medicines.Where(m=>m.Price == priceMoreExpensive).ToListAsync(); 
+        
+    }
 }
 

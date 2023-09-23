@@ -12,5 +12,6 @@ public interface IMedicineRepository : IGenericRepository<Medicine>
     Task<string> UpdateAsync(Medicine model);
     Task<IEnumerable<Medicine>> GetUnder50();
     Task<IEnumerable<Medicine>> GetExpireUnder2024();
+    Task<IEnumerable<Medicine>> GetMoreExpensive();
 
 }
