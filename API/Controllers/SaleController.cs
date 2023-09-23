@@ -34,41 +34,63 @@ public class SaleController : ApiBaseController
         var sale = await _unitOfWork.Sales.GetByIdAsync(id);
         return _mapper.Map<SaleDto>(sale);
     }
-[HttpPost]
-[ProducesResponseType(StatusCodes.Status201Created)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-public async Task<ActionResult<Sale>> Post([FromBody] SaleDto saleDto)
-{
-    if (saleDto == null)
-{
-    // Manejo de error o respuesta 400 Bad Request
-    return BadRequest("El objeto SaleDto es nulo.");
-}
+
     
-    var sale = _mapper.Map<Sale>(saleDto);
-
-    var saleMedicine = new SaleMedicine
-    {
-        MedicineId = saleDto.MedicineId,
-        SaleQuantity = saleDto.QuantitySale,
-        Price = saleDto.Price
-    };
-
-    // Agrega el SaleMedicine a la colección de SaleMedicines en la entidad Sale
-    sale.SaleMedicines.Add(saleMedicine);
-
-    _unitOfWork.Sales.Add(sale);
+// [HttpPost]
+// [ProducesResponseType(StatusCodes.Status201Created)]
+// [ProducesResponseType(StatusCodes.Status400BadRequest)]
+// public async Task<ActionResult<Sale>> Post([FromBody] SaleDto saleDto)
+// {
+//     if (saleDto == null)
+// {
+//     // Manejo de error o respuesta 400 Bad Request
+//     return BadRequest("El objeto SaleDto es nulo.");
+// }
     
-    try
-    {
-        await _unitOfWork.SaveAsync();
-        return Ok("Venta creada con éxito");
+//     var sale = _mapper.Map<Sale>(saleDto);
+//     var saleMedicine = _mapper.Map<SaleMedicine>(saleDto);
+
+
+//     // Agrega el SaleMedicine a la colección de SaleMedicines en la entidad Sale
+//     _unitOfWork.SaleMedicines.Add(saleMedicine);
+//     _unitOfWork.Sales.Add(sale);
+    
+//     try
+//     {
+//         await _unitOfWork.SaveAsync();
+//         return Ok("Venta creada con éxito");
+//     }
+//     catch (Exception ex)
+//     {
+//         // Loguea la excepción interna para obtener más información
+//         Console.WriteLine(ex.InnerException);
+//         throw; // Re-lanza la excepción para que sea manejada globalmente o muestre más detalles en la respuesta HTTP
+//     }
+// }
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> Post([FromBody] SaleDto saleDto){
+
+        var sale = _mapper.Map<Sale>(saleDto);
+        var saleMedicine = _mapper.Map<SaleMedicine>(saleDto);
+
+        var result = await _unitOfWork.Sales.RegisterAsync(sale,saleMedicine);
+
+        return Ok(result);
+
     }
-    catch (Exception ex)
-    {
-        // Loguea la excepción interna para obtener más información
-        Console.WriteLine(ex.InnerException);
-        throw; // Re-lanza la excepción para que sea manejada globalmente o muestre más detalles en la respuesta HTTP
+    [HttpPost("range")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] SaleManyPostDto saleManyDto){
+
+        var sale = _mapper.Map<Sale>(saleManyDto);
+        var list = _mapper.Map<List<SaleMedicine>>(saleManyDto.MedicinesList);
+        var result = await _unitOfWork.Sales.RegisterManyMedicinesAsync(sale,list);
+
+        return Ok(result);
+
     }
 }
 
@@ -101,4 +123,4 @@ public async Task<ActionResult<Sale>> Post([FromBody] SaleDto saleDto)
     //     await this._unitOfWork.SaveAsync();
     //     return NoContent();
     // }
-}
+// }

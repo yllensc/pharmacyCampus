@@ -6,20 +6,12 @@ using System.Threading.Tasks;
 
 namespace API.Dtos;
 
-public class SaleDto
+public class SaleMedicinePostDto
 {
-    public DateTime DateSale { get; set; } = DateTime.UtcNow;
-    [Required]
-    public int PatientId { get; set; }
-    [Required]
-    public int EmployeeId { get; set; }
-    [Required]
-    public bool Prescription { get; set; }
     [Required]
     public int MedicineId {get; set;}
     [Required]
     public int SaleQuantity { get; set;}
     [Required]
     public double Price { get; set;}
-
 }

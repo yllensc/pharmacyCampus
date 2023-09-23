@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.Dtos;
 
-public class SaleDto
+public class SaleManyPostDto
 {
     public DateTime DateSale { get; set; } = DateTime.UtcNow;
     [Required]
@@ -16,10 +16,6 @@ public class SaleDto
     [Required]
     public bool Prescription { get; set; }
     [Required]
-    public int MedicineId {get; set;}
-    [Required]
-    public int SaleQuantity { get; set;}
-    [Required]
-    public double Price { get; set;}
+    public List<SaleMedicinePostDto> MedicinesList { get; set; }
 
 }
