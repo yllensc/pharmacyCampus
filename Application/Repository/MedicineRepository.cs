@@ -153,6 +153,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
 
     public async Task<int> CalculateTotalQuantity(Provider provider)
     {
+    
     var totalQuantity = provider.Medicines
         .SelectMany(m => m.PurchasedMedicines)
         .Sum(pm => pm.CantPurchased);
@@ -160,5 +161,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
     
     return  totalQuantity;
     }
+
+
 }
 

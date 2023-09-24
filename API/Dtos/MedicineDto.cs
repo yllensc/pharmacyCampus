@@ -24,10 +24,11 @@ namespace API.Dtos
         public string Name { get; set; }
         
     }
-        public class MedicineNameDto
+        public class MedicineWithQuantityDto
     {
         [Required]
         public string Name { get; set; }
+        public int PurchaseCant { get; set; }
         
     }
 
