@@ -170,5 +170,60 @@ namespace Application.Repository;
         return "Purchase made successfully!!";
     }
 
+    public async Task<IEnumerable<Provider>> GetProvidersWithoutPurchases()
+    {
+        DateTime date = DateTime.UtcNow.AddYears(-1);
+        var purchases = await _context.Purchases
+                            .Where(u=> u.DatePurchase > date)
+                            .ToListAsync();
+        
+        var providers = _context.Providers;
+
+        List<Provider> result = new();
+        foreach(var provider in providers)
+        {
+            var existProvider = purchases
+                                    .Where(u=> u.ProviderId == provider.Id)
+                                    .FirstOrDefault();
+            if(existProvider == null)
+            {
+                result.Add(provider);
+            }
+        }
+
+       return result;
+    }
+
     
+
+   
+
+    /*public async Task<IEnumerable<Medicine>> GetMedicinesPurchasedByProvider(string provider)
+    {
+        int idProvider = _context.Providers
+                                .Where(u=>u.Name.ToLower() == provider.ToLower())
+                                .FirstOrDefault().Id;
+       
+        var medicines = _context.Medicines;
+        var purchasedMedicines = _context.PurchasedMedicines;
+        
+        List<Medicine> medicinesProvider =  new();
+        medicinesProvider = await medicines
+                            .Where(u=>u.Id == idProvider)
+                            .ToListAsync();
+        
+        List<Medicine> medicinesPurchased = new();
+        foreach (var medicine in medicinesProvider)
+        {
+            var purchased = purchasedMedicines.Where(u=>u.MedicineId == medicine.Id).FirstOrDefault();
+;
+            if(purchased != null)
+            {
+                medicinesPurchased.Add(medicine);
+            }
+        }
+
+        return medicinesPurchased;
+    }*/
 }
+
