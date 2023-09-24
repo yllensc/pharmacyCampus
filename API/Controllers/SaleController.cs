@@ -1,4 +1,5 @@
 using API.Dtos;
+using API.Helpers;
 using API.Services;
 using AutoMapper;
 using Domain.Entities;
@@ -35,38 +36,6 @@ public class SaleController : ApiBaseController
         return _mapper.Map<SaleDto>(sale);
     }
 
-    
-// [HttpPost]
-// [ProducesResponseType(StatusCodes.Status201Created)]
-// [ProducesResponseType(StatusCodes.Status400BadRequest)]
-// public async Task<ActionResult<Sale>> Post([FromBody] SaleDto saleDto)
-// {
-//     if (saleDto == null)
-// {
-//     // Manejo de error o respuesta 400 Bad Request
-//     return BadRequest("El objeto SaleDto es nulo.");
-// }
-    
-//     var sale = _mapper.Map<Sale>(saleDto);
-//     var saleMedicine = _mapper.Map<SaleMedicine>(saleDto);
-
-
-//     // Agrega el SaleMedicine a la colección de SaleMedicines en la entidad Sale
-//     _unitOfWork.SaleMedicines.Add(saleMedicine);
-//     _unitOfWork.Sales.Add(sale);
-    
-//     try
-//     {
-//         await _unitOfWork.SaveAsync();
-//         return Ok("Venta creada con éxito");
-//     }
-//     catch (Exception ex)
-//     {
-//         // Loguea la excepción interna para obtener más información
-//         Console.WriteLine(ex.InnerException);
-//         throw; // Re-lanza la excepción para que sea manejada globalmente o muestre más detalles en la respuesta HTTP
-//     }
-// }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -78,8 +47,8 @@ public class SaleController : ApiBaseController
         var result = await _unitOfWork.Sales.RegisterAsync(sale,saleMedicine);
 
         return Ok(result);
-
     }
+
     [HttpPost("range")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -90,11 +59,35 @@ public class SaleController : ApiBaseController
         var result = await _unitOfWork.Sales.RegisterManyMedicinesAsync(sale,list);
 
         return Ok(result);
-
     }
+
+    [HttpGet("recipes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<SaleDto>>> GetRecipes()
+    {
+        var sales = await _unitOfWork.Sales.GetAllRecipesAsync();
+        return _mapper.Map<List<SaleDto>>(sales);
+    }
+
+    [HttpGet("month")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<SaleDto>>> GetSaleMonthly([FromQuery] Params parameter)
+    {
+        var sales = await _unitOfWork.Sales.GetSaleMonthly(parameter.Month);
+        return _mapper.Map<List<SaleDto>>(sales);
+    }
+
+    // [HttpGet("average")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult<IEnumerable<object>>> GetAverage()
+    // {
+    //     var sales = await _unitOfWork.Sales.GetAverage();
+    //     return Ok(sales);
+    // }
 }
-
-
     
 
     // [HttpPut("{id}")]
