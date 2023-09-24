@@ -85,4 +85,14 @@ namespace Application.Repository;
             .Include(p=>p.Medicines)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<Provider>> GetCantMedicineByProvider()
+    {
+       var providers = await _context.Providers
+        .Include(p => p.Medicines)
+        .ThenInclude(m => m.PurchasedMedicines)
+        .ToListAsync();
+
+    return providers;
+    }
 }

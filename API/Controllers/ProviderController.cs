@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using API.Dtos;
 using API.Services;
 using AutoMapper;
@@ -38,8 +39,33 @@ public class ProviderController : ApiBaseController
         var providers = await _unitOfWork.Providers.GetProvidersWithMedicines();
         return _mapper.Map<List<ProviderWithListMedicinesDto>>(providers);
     }
- 
+    [HttpGet("getProvidersWithCantMedicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityDto>>> GetProvidersWithTotalMedicines()
+    {
+        var providers = await _unitOfWork.Providers.GetCantMedicineByProvider();
+        var result = new List<ProviderWithTotalQuantityDto>();
 
+    foreach (var provider in providers)
+    {
+        int totalMedicine = await _unitOfWork.Medicines.CalculateTotalQuantity(provider);
+        var providerWithCant = new ProviderWithTotalQuantityDto
+        {
+            Name = provider.Name,
+            MedicinesList = provider.Medicines.Select(medicine => new MedicineNameDto
+    {
+        Name = medicine.Name
+    }).ToList(),
+            TotalQuantity = totalMedicine
+        };
+
+        result.Add(providerWithCant);
+    }
+
+    return  result;
+    }
+ 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

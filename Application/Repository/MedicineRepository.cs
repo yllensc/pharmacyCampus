@@ -99,10 +99,11 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         }
         return listMedicines;
     }
-    public async Task<IEnumerable<Medicine>> GetExpireUntil2024()
+    public async Task<IEnumerable<Medicine>> GetExpireIn2024()
     {
-        DateTime init2024 = new(2024,1,1);
-        var listPurchases = await _context.PurchasedMedicines.Where(m => m.ExpirationDate >= init2024).ToListAsync();
+        DateTime validFrom = new(2024,1,1);
+        DateTime validTo = new(2025,1,1);
+        var listPurchases = await _context.PurchasedMedicines.Where(m => m.ExpirationDate >= validFrom && m.ExpirationDate < validTo).ToListAsync();
         List<Medicine> listMedicines = new();
         foreach(var m in listPurchases){
             var medicine = _context.Medicines.Include(d => d.Provider).Where(me=>me.Id == m.MedicineId).FirstOrDefault();
@@ -129,7 +130,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
     {
         List<Medicine> listMedicines = new();
         foreach(var m in _context.Medicines.Include(d => d.Provider)){
-            if (m.Price >= 50000 && m.Stock > 100){
+            if (m.Price >= 50.00 && m.Stock > 100){
                 listMedicines.Add(m);
             }
         }
@@ -150,6 +151,14 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                     .FirstOrDefaultAsync(p=>p.Id == id);
     }
 
- 
+    public async Task<int> CalculateTotalQuantity(Provider provider)
+    {
+    var totalQuantity = provider.Medicines
+        .SelectMany(m => m.PurchasedMedicines)
+        .Sum(pm => pm.CantPurchased);
+    await _context.SaveChangesAsync();
+    
+    return  totalQuantity;
+    }
 }
 

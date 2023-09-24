@@ -13,9 +13,10 @@ public interface IMedicineRepository : IGenericRepository<Medicine>
     //Task<IEnumerable<Medicine>> GetListBasicAsync();
     Task<IEnumerable<Medicine>> GetUnder50();
     Task<IEnumerable<Medicine>> GetExpireUnder2024();
-    Task<IEnumerable<Medicine>> GetExpireUntil2024();
+    Task<IEnumerable<Medicine>> GetExpireIn2024();
     Task<IEnumerable<Medicine>> GetMoreExpensive();
     Task<IEnumerable<Medicine>> GetRangePriceStockPredeterminated();
     Task<IEnumerable<Provider>> GetProvidersInfoWithMedicines(); 
-
+    Task<int> CalculateTotalQuantity(Provider provider);  
+    
 }
