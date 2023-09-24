@@ -9,5 +9,6 @@ public interface IProvider: IGenericRepository<Provider>
     Task<IEnumerable<Provider>> GetProvidersWithMedicines();
     Task<Dictionary<string, double>> GetGainsByProviders();
 
-    Task<object> GetProviderWithMoreMedicines();
+    Task<IEnumerable<object>> GetProviderWithMoreMedicines();
+    Task<object> GetTotalProviders2023();
 }

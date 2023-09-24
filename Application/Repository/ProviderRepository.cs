@@ -128,7 +128,7 @@ namespace Application.Repository;
         return gainsProviders;
     } 
 
-    public async Task<object> GetProviderWithMoreMedicines()
+    public async Task<IEnumerable<object>> GetProviderWithMoreMedicines()
     {
         var providers = await _context.Providers.ToListAsync();
         Dictionary<int,int> cantMedicines = new();
@@ -180,5 +180,28 @@ namespace Application.Repository;
 
        return providerWithMoreMed;
 
+    }
+
+    public async Task<object> GetTotalProviders2023()
+    {
+        var providers = await _context.Providers.ToListAsync();
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+        int totalProviders = 0;
+        foreach(var p in providers)
+        {
+            var existPurchase = await _context.Purchases
+                                            .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
+                                           .ToListAsync();
+            if(existPurchase.Any() )
+            {   
+                 totalProviders += 1;   
+            }
+        }
+
+        object total = new{
+            TotalProviders = totalProviders
+        };
+        return total;
     }
 }
