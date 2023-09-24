@@ -16,6 +16,6 @@ namespace API.Dtos
         public string Email { get; set;}
         [Required]
         public string Address { get; set;}
-        public IEnumerable<MedicineDto> Medicines{ get; set;}
+        public IEnumerable<MedicineBaseDto> Medicines{ get; set;}
     }
 }
