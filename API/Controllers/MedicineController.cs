@@ -17,7 +17,7 @@ namespace API.Controllers;
         _mapper = mapper;
     }
     [HttpPost("register")]
-    public async Task<ActionResult> RegisterAsync(MedicineDto model)
+    public async Task<ActionResult> RegisterAsync(MedicineAllDto model)
     {
         var medicine = _mapper.Map<Medicine>(model);
         var result = await _unitOfWork.Medicines.RegisterAsync(medicine);
@@ -26,42 +26,42 @@ namespace API.Controllers;
     [HttpGet("under50")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetUnder50()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetUnder50()
     {
         var medicines = await _unitOfWork.Medicines.GetUnder50();
-        return _mapper.Map<List<MedicineDto>>(medicines);
+        return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("ExpiresUnder2024")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetExpireUnder2024()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireUnder2024()
     {
         var medicines = await _unitOfWork.Medicines.GetExpireUnder2024();
-        return _mapper.Map<List<MedicineDto>>(medicines);
+        return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("ExpiresUntil2024")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetExpireUntil2024()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireUntil2024()
     {
         var medicines = await _unitOfWork.Medicines.GetExpireUntil2024();
-        return _mapper.Map<List<MedicineDto>>(medicines);
+        return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("moreExpensive")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetMoreExpensive()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetMoreExpensive()
     {
         var medicines = await _unitOfWork.Medicines.GetMoreExpensive();
-        return _mapper.Map<List<MedicineDto>>(medicines);
+        return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("getRangePriceStock")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineDto>>> GetRangePriceStockPredeterminated()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetRangePriceStockPredeterminated()
     {
         var medicines = await _unitOfWork.Medicines.GetRangePriceStockPredeterminated();
-        return _mapper.Map<List<MedicineDto>>(medicines);
+        return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("GetProvidersInfoWithMedicines")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -75,19 +75,19 @@ namespace API.Controllers;
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineDto>>> Get()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> Get()
     {
         var medicines = await _unitOfWork.Medicines.GetAllAsync();
-        return _mapper.Map<List<MedicineDto>>(medicines);
+        return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
 
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> UpdateAsync([FromBody] MedicinePutDto medicineDto)
+    public async Task<ActionResult> UpdateAsync([FromBody] MedicinePutDto MedicineAllDto)
     {
-        if(medicineDto == null){return NotFound();}
-        var medicine = _mapper.Map<Medicine>(medicineDto);
+        if(MedicineAllDto == null){return NotFound();}
+        var medicine = _mapper.Map<Medicine>(MedicineAllDto);
         var result = await _unitOfWork.Medicines.UpdateAsync(medicine);
         return Ok(result);
     }

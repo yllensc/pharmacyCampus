@@ -9,37 +9,38 @@ using Domain.Entities;
 
 namespace API.Profiles;
 
-public class MappingProfiles: Profile
+public class MappingProfiles : Profile
 {
-   
+
     public MappingProfiles()
     {
-        CreateMap<Provider,ProviderDto>()
+        CreateMap<Provider, ProviderDto>()
             .ReverseMap()
-            .ForMember(o=> o.Purchases, d => d.Ignore())
-            .ForMember(o=> o.Medicines, d => d.Ignore());
-        CreateMap<Provider,ProviderPutDto>()
+            .ForMember(o => o.Purchases, d => d.Ignore())
+            .ForMember(o => o.Medicines, d => d.Ignore());
+        CreateMap<Provider, ProviderPutDto>()
             .ReverseMap();
-        CreateMap<Employee,EmployeeDto>()
+        CreateMap<Employee, EmployeeDto>()
             .ReverseMap();
-        CreateMap<Employee,EmployeeGetDto>()
+        CreateMap<Employee, EmployeeGetDto>()
             .ReverseMap()
-            .ForMember(o=> o.PositionId, d => d.Ignore());
-        CreateMap<Position,PositionDto>()
+            .ForMember(o => o.PositionId, d => d.Ignore());
+        CreateMap<Position, PositionDto>()
             .ReverseMap()
-            .ForMember(o=> o.Id, d => d.Ignore());
-        CreateMap<Medicine,MedicineDto>()
+            .ForMember(o => o.Id, d => d.Ignore());
+        CreateMap<Medicine, MedicineAllDto>()
+            .ForMember(dest => dest.ProviderName, origen => origen.MapFrom(o => o.Provider.Name))
             .ReverseMap()
-            .ForMember(o=> o.PurchasedMedicines, d => d.Ignore())
-            .ForMember(o=> o.SaleMedicines, d => d.Ignore());
-        CreateMap<Medicine,MedicinePutDto>()
+            .ForMember(o => o.PurchasedMedicines, d => d.Ignore())
+            .ForMember(o => o.SaleMedicines, d => d.Ignore());
+        CreateMap<Medicine, MedicinePutDto>()
             .ReverseMap();
-        CreateMap<Patient,PatientDto>()
+        CreateMap<Patient, PatientDto>()
             .ReverseMap()
-            .ForMember(o=> o.Sales, d => d.Ignore());
-        CreateMap<Patient,PatientPutDto>()
+            .ForMember(o => o.Sales, d => d.Ignore());
+        CreateMap<Patient, PatientPutDto>()
             .ReverseMap();
-        CreateMap<Sale,SaleDto>()
+        CreateMap<Sale, SaleDto>()
             .ReverseMap()
             .ForMember(o => o.SaleMedicines, d => d.Ignore());
         
@@ -57,21 +58,27 @@ public class MappingProfiles: Profile
         CreateMap<Provider,ProviderxPurchaseDto>()
                 .ForMember(dest=> dest.purchases, origen => origen.MapFrom(o => o.Purchases))
                 .ReverseMap();
-        CreateMap<Provider,ProviderWithListMedicinesDto>()
-                .ForMember(dest=> dest.Medicines, origen => origen.MapFrom(o => o.Medicines))
-                .ReverseMap();
-        CreateMap<Purchase,PurchaseDto>()
-            .ForMember(dest=> dest.purchaseMedicines, origen => origen.MapFrom(o => o.PurchasedMedicines))
+        CreateMap<Provider, ProviderWithListMedicinesDto>()
+            .ForMember(dest => dest.Medicines, opt => opt.MapFrom(src => src.Medicines.Select(medicine => new MedicineBaseDto
+            {
+                Name = medicine.Name,
+                Price = medicine.Price
+            })))
             .ReverseMap();
-        CreateMap<Purchase,PurchasePostDto>()
+        CreateMap<Purchase, PurchaseDto>()
+            .ForMember(dest => dest.purchaseMedicines, origen => origen.MapFrom(o => o.PurchasedMedicines))
             .ReverseMap();
-        CreateMap<PurchasedMedicine,PurchasePostDto>()
+        CreateMap<Purchase, PurchasePostDto>()
+            .ReverseMap();
+        CreateMap<PurchasedMedicine, PurchasePostDto>()
             .ReverseMap();
         CreateMap<PurchasedMedicine, PurchaseMedicineDto>()
-            .ForMember(dest=> dest.MedicineName, origen => origen.MapFrom(o => o.Medicine.Name))
+            .ForMember(dest => dest.MedicineName, origen => origen.MapFrom(o => o.Medicine.Name))
             .ReverseMap();
         CreateMap<Purchase, PurchaseManyPostDto>()
             .ForMember(dest=> dest.MedicinesList, origen => origen.MapFrom(o => o.PurchasedMedicines))
+        CreateMap<PurchasedMedicine, PurchaseManyPostDto>()
+            .ForMember(dest => dest.MedicinesList, origen => origen.MapFrom(o => o.Medicine.Name))
             .ReverseMap();
         CreateMap<PurchasedMedicine, PurchaseMedicinePostDto>()
             .ReverseMap();
