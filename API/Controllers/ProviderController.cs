@@ -114,5 +114,14 @@ public class ProviderController : ApiBaseController
         var provider = await _unitOfWork.Providers.GetTotalProviders2023();
         return Ok(provider);
     }
+
+    [HttpGet("aleast5medicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetProvidersWithDiferentMedicines()
+    {     
+        var providers = await _unitOfWork.Providers.GetProvidersWithDiferentMedicines();
+        return Ok(_mapper.Map<List<ProviderDto>>(providers));
+    }
     
 }
