@@ -76,18 +76,23 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                 return "El registro que quieres actualizar, no existe, sorry";
             }  
         }
+    public override async Task<IEnumerable<Medicine>> GetAllAsync()
+    {
+        return await this._context.Medicines
+            .Include(d => d.Provider)
+            .ToListAsync();
+    }
     public async Task<IEnumerable<Medicine>> GetUnder50()
     {
-        return await _context.Medicines.Where(m => m.Stock < 50).ToListAsync();
+        return await _context.Medicines.Include(d => d.Provider).Where(m => m.Stock < 50).ToListAsync();
     }
-
     public async Task<IEnumerable<Medicine>> GetExpireUnder2024()
     {
         DateTime init2024 = new(2024,1,1);
         var listPurchases = await _context.PurchasedMedicines.Where(m => m.ExpirationDate < init2024).ToListAsync();
         List<Medicine> listMedicines = new();
         foreach(var m in listPurchases){
-            var medicine = _context.Medicines.Where(me=>me.Id == m.MedicineId).FirstOrDefault();
+            var medicine = _context.Medicines.Include(d => d.Provider).Where(me=>me.Id == m.MedicineId).FirstOrDefault();
             if(medicine != null){
                 listMedicines.Add(medicine);
             }
@@ -100,7 +105,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         var listPurchases = await _context.PurchasedMedicines.Where(m => m.ExpirationDate >= init2024).ToListAsync();
         List<Medicine> listMedicines = new();
         foreach(var m in listPurchases){
-            var medicine = _context.Medicines.Where(me=>me.Id == m.MedicineId).FirstOrDefault();
+            var medicine = _context.Medicines.Include(d => d.Provider).Where(me=>me.Id == m.MedicineId).FirstOrDefault();
             if(medicine != null){
                 listMedicines.Add(medicine);
             }
@@ -118,12 +123,12 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                 priceMoreExpensive = medicinePrice;
             }
         }
-        return  await _context.Medicines.Where(m=>m.Price == priceMoreExpensive).ToListAsync(); 
+        return  await _context.Medicines.Include(d => d.Provider).Where(m=>m.Price == priceMoreExpensive).ToListAsync(); 
     }
     public async Task<IEnumerable<Medicine>> GetRangePriceStockPredeterminated()
     {
         List<Medicine> listMedicines = new();
-        foreach(var m in _context.Medicines){
+        foreach(var m in _context.Medicines.Include(d => d.Provider)){
             if (m.Price >= 50000 && m.Stock > 100){
                 listMedicines.Add(m);
             }
@@ -132,7 +137,6 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         return listMedicines;
         
     }
-
     public async Task<IEnumerable<Provider>> GetProvidersInfoWithMedicines()
     {
           return await this._context.Providers
@@ -145,5 +149,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                     .Include(p => p.PurchasedMedicines)
                     .FirstOrDefaultAsync(p=>p.Id == id);
     }
+
+ 
 }
 
