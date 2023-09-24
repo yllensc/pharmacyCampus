@@ -47,25 +47,25 @@ public class ProviderController : ApiBaseController
         var providers = await _unitOfWork.Providers.GetCantMedicineByProvider();
         var result = new List<ProviderWithTotalQuantityDto>();
 
-    foreach (var provider in providers)
-    {
-        int totalMedicine = await _unitOfWork.Medicines.CalculateTotalQuantity(provider);
-        var providerWithCant = new ProviderWithTotalQuantityDto
+        foreach (var provider in providers)
         {
-            Name = provider.Name,
-            MedicinesList = provider.Medicines.Select(medicine => new MedicineNameDto
-    {
-        Name = medicine.Name
-    }).ToList(),
-            TotalQuantity = totalMedicine
-        };
+            int totalMedicine = await _unitOfWork.Medicines.CalculateTotalQuantity(provider);
+            var providerWithCant = new ProviderWithTotalQuantityDto
+            {
+                Name = provider.Name,
+                MedicinesList = provider.Medicines.Select(medicine => new MedicineNameDto
+                {
+                    Name = medicine.Name
+                }).ToList(),
+                TotalQuantity = totalMedicine
+            };
 
-        result.Add(providerWithCant);
+            result.Add(providerWithCant);
+        }
+
+        return result;
     }
 
-    return  result;
-    }
- 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,12 +74,13 @@ public class ProviderController : ApiBaseController
         var providersAll = await _unitOfWork.Providers.GetAllAsync();
         return _mapper.Map<List<ProviderxPurchaseDto>>(providersAll);
     }
-    
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post([FromBody] ProviderDto providerDto){
-        
+    public async Task<ActionResult> Post([FromBody] ProviderDto providerDto)
+    {
+
         var provider = _mapper.Map<Provider>(providerDto);
 
         var result = await _unitOfWork.Providers.RegisterAsync(provider);
@@ -92,10 +93,10 @@ public class ProviderController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateAsync([FromBody] ProviderPutDto providerPutDto)
     {
-        if(providerPutDto == null){return NotFound();}
+        if (providerPutDto == null) { return NotFound(); }
         var provider = _mapper.Map<Provider>(providerPutDto);
 
-        var result =await _unitOfWork.Providers.UpdateAsync(provider);
+        var result = await _unitOfWork.Providers.UpdateAsync(provider);
         return Ok(result);
     }
 
@@ -107,7 +108,7 @@ public class ProviderController : ApiBaseController
     {
         var provider = await _unitOfWork.Providers.GetByIdAsync(id);
 
-        if(provider == null) {return NotFound();}
+        if (provider == null) { return NotFound(); }
 
         this._unitOfWork.Providers.Remove(provider);
         await this._unitOfWork.SaveAsync();
