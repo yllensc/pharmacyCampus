@@ -45,7 +45,10 @@ public class MappingProfiles : Profile
             .ForMember(o => o.SaleMedicines, d => d.Ignore());
         
          CreateMap<SaleMedicine,SaleDto>()
-            .ReverseMap();         
+            .ReverseMap();        
+
+        CreateMap<Sale,SaleAverageDto>()
+        .ReverseMap(); 
         
         CreateMap<Sale, SaleManyPostDto>()
             .ForMember(dest => dest.MedicinesList, origen => origen.MapFrom(o => o.SaleMedicines))
