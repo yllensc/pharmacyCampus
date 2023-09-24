@@ -37,7 +37,7 @@ public class MappingProfiles : Profile
             .ReverseMap();
         CreateMap<Medicine, MedicineBaseDto>()
             .ReverseMap();
-        CreateMap<Medicine, MedicineNameDto>()
+        CreateMap<Medicine, MedicineWithQuantityDto>()
             .ReverseMap();
         CreateMap<Patient, PatientDto>()
             .ReverseMap()

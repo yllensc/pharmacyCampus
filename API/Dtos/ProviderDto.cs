@@ -30,7 +30,7 @@ namespace API.Dtos
     public class ProviderWithTotalQuantityDto
     {
     public string Name { get; set; }
-    public ICollection<MedicineNameDto> MedicinesList { get; set; }
-    public int TotalQuantity { get; set; }
+    public ICollection<MedicineWithQuantityDto> MedicinesList { get; set; }
+    public int TotalPurchaseCant { get; set; }
     }
 }

@@ -42,29 +42,49 @@ public class ProviderController : ApiBaseController
     [HttpGet("getProvidersWithCantMedicines")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityDto>>> GetProvidersWithTotalMedicines()
-    {
-        var providers = await _unitOfWork.Providers.GetCantMedicineByProvider();
-        var result = new List<ProviderWithTotalQuantityDto>();
+public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityDto>>> GetProvidersWithTotalMedicines()
+{
+    var providers = await _unitOfWork.Providers.GetCantMedicineByProvider();
+    var result = new List<ProviderWithTotalQuantityDto>();
 
-        foreach (var provider in providers)
+    foreach (var provider in providers)
+    {
+        int totalMedicine = await _unitOfWork.Medicines.CalculateTotalQuantity(provider);
+
+        var medicineQuantities = new List<MedicineWithQuantityDto>();
+
+        foreach (var medicine in provider.Medicines)
         {
-            int totalMedicine = await _unitOfWork.Medicines.CalculateTotalQuantity(provider);
-            var providerWithCant = new ProviderWithTotalQuantityDto
+            int individualCantPurchased = await _unitOfWork.PurchasedMedicines.CalculateMedicineQuantityPurchased(medicine.Id);
+
+            var medicineDto = new MedicineWithQuantityDto
             {
-                Name = provider.Name,
-                MedicinesList = provider.Medicines.Select(medicine => new MedicineNameDto
-                {
-                    Name = medicine.Name
-                }).ToList(),
-                TotalQuantity = totalMedicine
+                Name = medicine.Name,
+                PurchaseCant = individualCantPurchased
             };
 
-            result.Add(providerWithCant);
+            medicineQuantities.Add(medicineDto);
         }
 
-        return result;
+        var providerWithCant = new ProviderWithTotalQuantityDto
+        {
+            Name = provider.Name,
+            MedicinesList = medicineQuantities,
+            TotalPurchaseCant = totalMedicine
+        };
+
+        result.Add(providerWithCant);
     }
+
+    return result;
+}
+
+
+
+
+
+
+
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]

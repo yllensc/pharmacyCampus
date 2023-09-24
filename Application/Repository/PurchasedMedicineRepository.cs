@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Repository;
-    public class PurchasedMedicineRepository: GenericRepository<PurchasedMedicine>, IPurchasedMedicine
+public class PurchasedMedicineRepository : GenericRepository<PurchasedMedicine>, IPurchasedMedicine
 {
     private readonly PharmacyDbContext _context;
 
@@ -21,14 +21,23 @@ namespace Application.Repository;
     public override async Task<IEnumerable<PurchasedMedicine>> GetAllAsync()
     {
         return await _context.PurchasedMedicines
-            .Include(p=>p.Medicine)
+            .Include(p => p.Medicine)
             .ToListAsync();
     }
 
     public override async Task<PurchasedMedicine> GetByIdAsync(int id)
     {
         return await _context.PurchasedMedicines
-            .Include(p=>p.Medicine)
-            .FirstOrDefaultAsync(p=>p.Id == id);
+            .Include(p => p.Medicine)
+            .FirstOrDefaultAsync(p => p.Id == id);
+    }
+
+    public async Task<int> CalculateMedicineQuantityPurchased(int medicineId)
+    {
+        var totalQuantityPurchased = await _context.PurchasedMedicines
+            .Where(p => p.MedicineId == medicineId)
+            .SumAsync(p => p.CantPurchased);
+
+        return totalQuantityPurchased;
     }
 }
