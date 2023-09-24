@@ -86,10 +86,11 @@ namespace Application.Repository;
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<double>> GetGainsByProviders()
+    public async Task<Dictionary<string, double> > GetGainsByProviders()
     {
         List<double> gainsProvider = new();
-        var providers = _context.Providers;
+        Dictionary<string, double> gainsProviders =new();
+        var providers = await _context.Providers.ToListAsync();
     
         foreach(var p in providers)
         {
@@ -112,13 +113,16 @@ namespace Application.Repository;
                     }
                 }
                 gainsProvider.Add(gains);
+                gainsProviders.Add(p.Name,gains);
                 
             }else
             {
                 gainsProvider.Add(0);
+                gainsProviders.Add(p.Name,0);
+
             }
         }
 
-        return gainsProvider;
+        return gainsProviders;
     } 
 }
