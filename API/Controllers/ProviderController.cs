@@ -88,4 +88,13 @@ public class ProviderController : ApiBaseController
         return NoContent();
     }
 
+    [HttpGet("gains")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetGains()
+    {     
+        //var provider = _mapper.Map<List<ProviderGains>>();
+        var providers = await _unitOfWork.Providers.GetGainsByProviders();
+        return Ok(providers);
+    }
 }

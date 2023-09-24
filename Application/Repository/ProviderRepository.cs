@@ -85,4 +85,40 @@ namespace Application.Repository;
             .Include(p=>p.Medicines)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<double>> GetGainsByProviders()
+    {
+        List<double> gainsProvider = new();
+        var providers = _context.Providers;
+    
+        foreach(var p in providers)
+        {
+            var existPurchase = await _context.Purchases
+                                            .Where(u=> u.ProviderId == p.Id)
+                                            .ToListAsync();
+            
+            if(existPurchase !=  null)
+            {
+
+                double gains = 0;
+                foreach(var purchase in existPurchase)
+                {
+                    var purMedicines = await _context.PurchasedMedicines
+                                                    .Where(u=> u.PurchasedId == purchase.Id)
+                                                    .ToListAsync();
+                    foreach(var pMed in purMedicines)
+                    {
+                        gains += pMed.PricePurchase;
+                    }
+                }
+                gainsProvider.Add(gains);
+                
+            }else
+            {
+                gainsProvider.Add(0);
+            }
+        }
+
+        return gainsProvider;
+    } 
 }
