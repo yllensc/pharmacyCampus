@@ -138,4 +138,40 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         
         return "Sale made successfully!!";
     }
+    public async Task<IEnumerable<Sale>> GetAllRecipesAsync()
+    {
+        DateTime sice2023 = new(2023,1,1);
+        return await _context.Sales.Where(m => m.Prescription == true && m.DateSale >= sice2023).ToListAsync();
+    }
+    public async Task<IEnumerable<Sale>> GetSaleMonthly(int parameter)
+    {
+        DateTime date = new(2023, parameter, 1);
+        var query = _context.Sales as IQueryable<Sale>;
+        var registros = await query
+                                .Where(p => p.DateSale.Year == date.Year && p.DateSale.Month == date.Month)
+                                .ToListAsync();
+        return registros;
+    }
+
+    //Promedio de medicamentos comprados por venta
+    // public async Task<IEnumerable<object>> GetAverage()
+    // {
+    //     var sales = await _context.Sales.ToListAsync();
+
+    //     var promedioVentasPorVenta = sales.Select(sale => new
+    //     {
+            
+    //         SaleId = sale.Id,
+    //         PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
+    //     });
+
+    //     var prom = sales
+    //             .SelectMany(sale => sale.SaleMedicines, (sale, medicine) => new
+    //             {
+    //                 SaleId = sale.Id,
+    //                 MedicineId = medicine.MedicineId,
+    //                 PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
+    //             });
+    //     return prom;
+    // }
 }
