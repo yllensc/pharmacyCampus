@@ -88,7 +88,7 @@ namespace Application.Repository;
             .ToListAsync();
     }
 
-    public async Task<Dictionary<string, double> > GetGainsByProviders()
+    /*public async Task<Dictionary<string, double> > GetGainsByProviders()
     {
         List<double> gainsProvider = new();
         Dictionary<string, double> gainsProviders =new();
@@ -126,7 +126,7 @@ namespace Application.Repository;
         }
 
         return gainsProviders;
-    } 
+    } */
 
     public async Task<IEnumerable<object>> GetProviderWithMoreMedicines()
     {
@@ -251,4 +251,59 @@ namespace Application.Repository;
 
        return providersM;
     }
+
+    public async Task<IEnumerable<object>> GetGainByProvider()
+    {
+        List<object> gainsProviders =new();
+        var providers = await _context.Providers.ToListAsync();
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+    
+        foreach(var p in providers)
+        {
+            var existPurchase = await _context.Purchases
+                                            .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
+                                           .ToListAsync();
+            
+
+            
+            if(existPurchase.Any())
+            {
+
+                double gains = 0;
+                foreach(var purchase in existPurchase)
+                {
+                    var purMedicines = await _context.PurchasedMedicines
+                                                    .Where(u=> u.PurchasedId == purchase.Id)
+                                                    .ToListAsync();
+                    foreach(var pMed in purMedicines)
+                    {
+                        gains += pMed.PricePurchase;
+                    }
+                }
+
+                object newObject = new{
+                    p.Id,
+                    p.Name,
+                    TotalGain2023 = gains
+                };
+                gainsProviders.Add(newObject);
+
+                
+            }else
+            {
+                object newObject = new{
+                    p.Id,
+                    p.Name,
+                    TotalGain2023 = 0
+                };
+                gainsProviders.Add(newObject);
+
+            }
+
+        }
+
+        return gainsProviders;
+    }
+
 }

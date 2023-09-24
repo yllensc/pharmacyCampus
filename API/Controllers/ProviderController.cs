@@ -88,14 +88,14 @@ public class ProviderController : ApiBaseController
         return NoContent();
     }
 
-    [HttpGet("gains")]
+    /*[HttpGet("gains")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetGains()
     {     
         var providers = await _unitOfWork.Providers.GetGainsByProviders();
         return Ok(providers);
-    }
+    }*/
 
      [HttpGet("moreQuantityMedicines")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -122,6 +122,15 @@ public class ProviderController : ApiBaseController
     {     
         var providers = await _unitOfWork.Providers.GetProvidersWithDiferentMedicines();
         return Ok(_mapper.Map<List<ProviderDto>>(providers));
+    }
+
+    [HttpGet("gain2023")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetGain()
+    {     
+        var result = await _unitOfWork.Providers.GetGainByProvider();
+        return Ok(result);
     }
     
 }
