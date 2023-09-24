@@ -195,35 +195,48 @@ namespace Application.Repository;
     }
 
     
-
-   
-
-    /*public async Task<IEnumerable<Medicine>> GetMedicinesPurchasedByProvider(string provider)
+    public async Task<IEnumerable<Medicine>> GetMedicinesPurchasedByProvider(string provider)
     {
-        int idProvider = _context.Providers
+        List<Medicine> medicinesProvider = new();
+
+        var providerM = await _context.Providers
                                 .Where(u=>u.Name.ToLower() == provider.ToLower())
-                                .FirstOrDefault().Id;
-       
-        var medicines = _context.Medicines;
-        var purchasedMedicines = _context.PurchasedMedicines;
-        
-        List<Medicine> medicinesProvider =  new();
-        medicinesProvider = await medicines
-                            .Where(u=>u.Id == idProvider)
-                            .ToListAsync();
-        
-        List<Medicine> medicinesPurchased = new();
-        foreach (var medicine in medicinesProvider)
+                                .FirstOrDefaultAsync();
+        if(providerM == null)
         {
-            var purchased = purchasedMedicines.Where(u=>u.MedicineId == medicine.Id).FirstOrDefault();
-;
-            if(purchased != null)
+            return null;
+        }
+        
+        var existPurchase = await _context.Purchases
+                                            .Where(u=> u.ProviderId == providerM.Id)
+                                          .ToListAsync();
+        
+        List<int> IdsMedicine = new();
+        if(existPurchase != null)
+        {
+            foreach(var purchase in existPurchase)
             {
-                medicinesPurchased.Add(medicine);
+                var purMedicines = await _context.PurchasedMedicines
+                                                .Where(u=> u.PurchasedId == purchase.Id)
+                                                .ToListAsync();
+                foreach(var pMed in purMedicines)
+                {
+                    int idMedicine = pMed.MedicineId;
+                    if(!IdsMedicine.Contains(idMedicine))
+                    {
+                        IdsMedicine.Add(idMedicine);
+                    }
+                }   
+            }
+
+            foreach(var id in IdsMedicine)
+            {
+                var medicine =await _context.Medicines.Where(u=>u.Id == id).FirstOrDefaultAsync();
+                medicinesProvider.Add(medicine);
             }
         }
-
-        return medicinesPurchased;
-    }*/
+        
+        return medicinesProvider;
+    }
 }
 
