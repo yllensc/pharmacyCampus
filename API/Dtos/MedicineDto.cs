@@ -24,6 +24,13 @@ namespace API.Dtos
         public string Name { get; set; }
         
     }
+        public class MedicineNameDto
+    {
+        [Required]
+        public string Name { get; set; }
+        
+    }
+
     public class MedicineAllDto : MedicineBaseDto
     {
         public int ProviderId { get; set; }
