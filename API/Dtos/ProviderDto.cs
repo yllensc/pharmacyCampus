@@ -16,10 +16,10 @@ namespace API.Dtos
         public string Address { get; set;}
     }
 
-    public class ProviderGains
+    public class ProviderMoreQuantityMedDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public double Gains { get; set; }
+        public int MoreQuantity { get; set; }
     }
 }

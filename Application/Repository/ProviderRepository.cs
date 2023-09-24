@@ -6,6 +6,8 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Globalization;
+
 
 namespace Application.Repository;
     public class ProviderRepository: GenericRepository<Provider>, IProvider
@@ -125,4 +127,58 @@ namespace Application.Repository;
 
         return gainsProviders;
     } 
+
+    public async Task<object> GetProviderWithMoreMedicines()
+    {
+        var providers = await _context.Providers.ToListAsync();
+        Dictionary<int,int> cantMedicines = new();
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+
+        foreach(var p in providers)
+        {
+            var existPurchase = await _context.Purchases
+                                            .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
+                                           .ToListAsync();
+            List<int> IdsMedicine = new();
+            if(existPurchase !=  null)
+            {   
+                int cant = 0;
+                foreach(var purchase in existPurchase)
+                {
+                    var purMedicines = await _context.PurchasedMedicines
+                                                    .Where(u=> u.PurchasedId == purchase.Id)
+                                                    .ToListAsync();
+                    foreach(var pMed in purMedicines)
+                    {
+                        int idMedicine = pMed.MedicineId;
+                        if(!IdsMedicine.Contains(idMedicine))
+                        {
+                            IdsMedicine.Add(idMedicine);
+                            cant +=1;
+                        }
+                    }   
+                }
+                cantMedicines.Add(p.Id, cant);
+            }
+        }
+        int moreQuantity = cantMedicines.Values.Max();
+        List<object>providerWithMoreMed = new();
+        foreach(var dic in cantMedicines)
+        {
+            if(moreQuantity == dic.Value){
+                var provider = await _context.Providers.Where(u=>u.Id == dic.Key).FirstOrDefaultAsync();
+                object objecResult = new{
+                    provider.Id,
+                    provider.Name,
+                    MoreQuantity = dic.Value
+                };
+
+                providerWithMoreMed.Add(objecResult);
+            };
+        };
+
+       return providerWithMoreMed;
+
+    }
 }
