@@ -77,6 +77,7 @@ public class MappingProfiles : Profile
             .ReverseMap();
         CreateMap<Purchase, PurchaseManyPostDto>()
             .ForMember(dest=> dest.MedicinesList, origen => origen.MapFrom(o => o.PurchasedMedicines))
+            .ReverseMap();
         CreateMap<PurchasedMedicine, PurchaseManyPostDto>()
             .ForMember(dest => dest.MedicinesList, origen => origen.MapFrom(o => o.Medicine.Name))
             .ReverseMap();
