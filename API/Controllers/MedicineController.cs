@@ -42,9 +42,9 @@ namespace API.Controllers;
     [HttpGet("ExpiresUntil2024")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireUntil2024()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireIn2024()
     {
-        var medicines = await _unitOfWork.Medicines.GetExpireUntil2024();
+        var medicines = await _unitOfWork.Medicines.GetExpireIn2024();
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("moreExpensive")]

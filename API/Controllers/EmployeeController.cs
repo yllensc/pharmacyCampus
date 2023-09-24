@@ -35,10 +35,10 @@ public class EmployeeController : ApiBaseController
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> UpdateAsync([FromBody] EmployeeDto employeeDto)
+    public async Task<ActionResult> UpdateAsync([FromBody] EmployeeAllDto EmployeeAllDto)
     {
-        if(employeeDto == null){return NotFound();}
-        var employee =  _mapper.Map<Employee>(employeeDto);
+        if(EmployeeAllDto == null){return NotFound();}
+        var employee =  _mapper.Map<Employee>(EmployeeAllDto);
         var result = await _unitOfWork.Employees.UpdateAsync(employee);
 
         return Ok(result);
