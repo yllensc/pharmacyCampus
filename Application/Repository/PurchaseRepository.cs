@@ -83,10 +83,15 @@ namespace Application.Repository;
                 await _context.SaveChangesAsync();
 
                 }catch(Exception ex){
+                    _context.Purchases.Remove(newPurchase);
+                    _context.PurchasedMedicines.Remove(newPurchaseMedicine);
+
                     return ex.Message;
                 } 
             }catch(Exception ex)
             {
+                _context.Purchases.Remove(newPurchase);
+
                 return ex.Message;
             }
             
@@ -146,18 +151,19 @@ namespace Application.Repository;
                 _context.Medicines.Update(medicine);
                 await _context.SaveChangesAsync();
             } 
-                try{
-                _context.PurchasedMedicines.AddRange(newPmedicines);
-                await _context.SaveChangesAsync();
+            try{
+            _context.PurchasedMedicines.AddRange(newPmedicines);
+            await _context.SaveChangesAsync();
 
-                
-
-                }catch(Exception ex){
-                    return ex.Message;
-                } 
+            }catch(Exception ex){
+                _context.Purchases.Remove(newPurchase);
+                _context.PurchasedMedicines.RemoveRange(newPmedicines);
+                return ex.Message;
+            } 
 
         }catch(Exception ex)
         {
+            _context.Purchases.Remove(newPurchase);
             return ex.Message;
         }
         

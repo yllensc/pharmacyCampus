@@ -8,7 +8,6 @@ namespace API.Dtos;
 
 public class SaleDto
 {
-    public DateTime DateSale { get; set; } = DateTime.UtcNow;
     [Required]
     public int PatientId { get; set; }
     [Required]
@@ -19,7 +18,5 @@ public class SaleDto
     public int MedicineId {get; set;}
     [Required]
     public int SaleQuantity { get; set;}
-    [Required]
-    public double Price { get; set;}
 
 }

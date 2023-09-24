@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 
-namespace Domain.Interfaces
-{
-    public interface IEmployee: IGenericRepository<Employee> 
-{ 
-        
+namespace Domain.Interfaces;
+    public interface IEmployee : IGenericRepository<Employee>
+    {
+        Task<string> UpdateAsync(Employee model);
     }
-}

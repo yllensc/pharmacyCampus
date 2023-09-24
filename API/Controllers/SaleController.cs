@@ -11,7 +11,7 @@ public class SaleController : ApiBaseController
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public SaleController(IUnitOfWork unitOfWork,  IMapper mapper)
+    public SaleController(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
