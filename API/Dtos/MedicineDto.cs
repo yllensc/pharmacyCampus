@@ -27,4 +27,9 @@ namespace API.Dtos
         [Required]
         public int Stock { get; set; }
     }
+
+    public class MedicineOnlyDto{
+        [Required]
+        public string Name { get; set; }
+    }
 }

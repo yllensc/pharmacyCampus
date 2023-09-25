@@ -87,6 +87,17 @@ public class SaleController : ApiBaseController
     //     var sales = await _unitOfWork.Sales.GetAverage();
     //     return Ok(sales);
     // }
+
+    [HttpGet("totalSaleOneMedicine")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetTotalSalesOneMedicine([FromBody] MedicineOnlyDto medicineDto)
+    {
+        var medicine = _mapper.Map<Medicine>(medicineDto);
+        var result = await _unitOfWork.Sales.GetTotalSalesOneMedicine(medicine.Name);
+        return  Ok(result);
+    }
+    
 }
     
 

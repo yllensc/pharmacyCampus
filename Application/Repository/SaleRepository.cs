@@ -174,4 +174,26 @@ public class SaleRepository : GenericRepository<Sale>, ISale
     //             });
     //     return prom;
     // }
+
+
+    public async Task<object> GetTotalSalesOneMedicine(string nameMedicine)
+    {
+        var existMedicine = await _context.Medicines
+                                    .Where(u=>u.Name.ToLower()== nameMedicine.ToLower())
+                                    .FirstOrDefaultAsync();
+        if(existMedicine == null)
+        { 
+            return null;
+        }
+
+        var salesMedicine = await _context.SaleMedicines
+                                    .Where(u=>u.MedicineId == existMedicine.Id)
+                                    .ToListAsync();
+        
+        object totalSales = new
+        {
+            TotalSales = salesMedicine.Count
+        };
+        return totalSales;
+    }
 }
