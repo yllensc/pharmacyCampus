@@ -17,3 +17,9 @@ public class PatientDto
     [Required]
     public string PhoneNumber { get; set; }   
 }
+
+public class PatientOnlyDto
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+}

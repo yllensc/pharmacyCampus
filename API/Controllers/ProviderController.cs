@@ -172,4 +172,49 @@ public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityStockDto>>> 
         return NoContent();
     }
 
+    /*[HttpGet("gains")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetGains()
+    {     
+        var providers = await _unitOfWork.Providers.GetGainsByProviders();
+        return Ok(providers);
+    }*/
+
+     [HttpGet("moreQuantityMedicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetQuantity()
+    {     
+        var provider = await _unitOfWork.Providers.GetProviderWithMoreMedicines();
+        return Ok(provider);
+    }
+
+    [HttpGet("totalProviders")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetTotalProviders2023()
+    {     
+        var provider = await _unitOfWork.Providers.GetTotalProviders2023();
+        return Ok(provider);
+    }
+
+    [HttpGet("aleast5medicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetProvidersWithDiferentMedicines()
+    {     
+        var providers = await _unitOfWork.Providers.GetProvidersWithDiferentMedicines();
+        return Ok(_mapper.Map<List<ProviderDto>>(providers));
+    }
+
+    [HttpGet("gain2023")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetGain()
+    {     
+        var result = await _unitOfWork.Providers.GetGainByProvider();
+        return Ok(result);
+    }
+    
 }

@@ -63,4 +63,24 @@ public class PurchaseController : ApiBaseController
         return Ok(result);
 
     }
+    [HttpGet("providersWithoutPurchases")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetProvidersWithoutPurchases()
+    {
+        var result = await _unitOfWork.Purchases.GetProvidersWithoutPurchases();
+        //var list = _mapper.Map<List<ProviderDto>>(result);
+
+        return Ok(_mapper.Map<List<ProviderDto>>(result));
+
+    }
+    [HttpGet("medicinesPurchased")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetMedicinesPurchasedByProvider([FromBody] ProviderDto providerDto)
+    {
+        var provider = _mapper.Map<Provider>(providerDto);
+        var result = await _unitOfWork.Purchases.GetMedicinesPurchasedByProvider(provider.Name);
+        return  Ok(_mapper.Map<List<MedicinePDto>>(result));
+    }
 }
