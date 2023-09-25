@@ -68,7 +68,7 @@ namespace API.Controllers;
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderDto>>> GetProvidersInfoWithMedicines()
     {
-        var medicines = await _unitOfWork.Medicines.GetProvidersInfoWithMedicines();
+        var medicines = await _unitOfWork.Providers.GetCantMedicineByProvider();
         return _mapper.Map<List<ProviderDto>>(medicines);
     }
 

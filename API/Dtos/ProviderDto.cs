@@ -21,6 +21,10 @@ namespace API.Dtos
         [Required]
         public string IdenNumber { get; set;}
     }
+    public class ProviderWithMedicineUnder50: ProviderPutDto
+    {
+       public IEnumerable<MedicineWithStockDto> MedicinesList{ get; set;} 
+    }
 
     public class ProviderWithListMedicinesDto : ProviderDto
     {
@@ -32,5 +36,11 @@ namespace API.Dtos
     public string Name { get; set; }
     public ICollection<MedicineWithQuantityDto> MedicinesList { get; set; }
     public int TotalPurchaseCant { get; set; }
+    }
+    public class ProviderWithTotalQuantityStockDto
+    {
+    public string Name { get; set; }
+    public ICollection<MedicineWithStockDto> MedicinesList { get; set; }
+    public int TotalStockCant { get; set; }
     }
 }

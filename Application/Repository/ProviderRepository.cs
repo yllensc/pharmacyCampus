@@ -86,7 +86,7 @@ namespace Application.Repository;
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Provider>> GetCantMedicineByProvider()
+    public async Task<IEnumerable<Provider>> GetCantPurchasedMedicineByProvider()
     {
        var providers = await _context.Providers
         .Include(p => p.Medicines)
@@ -94,5 +94,28 @@ namespace Application.Repository;
         .ToListAsync();
 
     return providers;
+    }
+public async Task<IEnumerable<Provider>> GetProvidersWithMedicinesUnder50()
+{
+    var providersWithMedicinesUnder50 = await _context.Providers
+        .Where(p => p.Medicines.Any(m => m.Stock < 50))
+        .Select(p => new Provider
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Email = p.Email,
+            Address = p.Address,
+            Medicines = p.Medicines.Where(m => m.Stock < 50).ToList()
+        })
+        .ToListAsync();
+
+    return providersWithMedicinesUnder50;
+}
+
+    public async Task<IEnumerable<Provider>> GetCantMedicineByProvider()
+    {
+        return await _context.Providers
+        .Include(p => p.Medicines)
+        .ToListAsync();
     }
 }

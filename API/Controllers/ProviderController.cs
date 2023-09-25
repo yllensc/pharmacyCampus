@@ -31,7 +31,7 @@ public class ProviderController : ApiBaseController
         var providers = await _unitOfWork.Providers.GetAllAsync();
         return _mapper.Map<List<ProviderDto>>(providers);
     }
-    [HttpGet("getProvidersWithMedicines")]
+    [HttpGet("providersWithMedicines")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderWithListMedicinesDto>>> GetProvidersWithMedicines()
@@ -39,17 +39,25 @@ public class ProviderController : ApiBaseController
         var providers = await _unitOfWork.Providers.GetProvidersWithMedicines();
         return _mapper.Map<List<ProviderWithListMedicinesDto>>(providers);
     }
+    [HttpGet("providersWithMedicinesUnder50")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProviderWithMedicineUnder50>>> GetProvidersWithMedicinesUnder50()
+    {
+        var providers = await _unitOfWork.Providers.GetProvidersWithMedicinesUnder50();
+        return _mapper.Map<List<ProviderWithMedicineUnder50>>(providers);
+    }
     [HttpGet("getProvidersWithCantMedicines")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityDto>>> GetProvidersWithTotalMedicines()
+public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityDto>>> GetProvidersWithTotalPurchasedMedicines()
 {
-    var providers = await _unitOfWork.Providers.GetCantMedicineByProvider();
+    var providers = await _unitOfWork.Providers.GetCantPurchasedMedicineByProvider();
     var result = new List<ProviderWithTotalQuantityDto>();
 
     foreach (var provider in providers)
     {
-        int totalMedicine = await _unitOfWork.Medicines.CalculateTotalQuantity(provider);
+        int totalMedicine = await _unitOfWork.Medicines.CalculateTotalPurchaseQuantity(provider);
 
         var medicineQuantities = new List<MedicineWithQuantityDto>();
 
@@ -78,14 +86,43 @@ public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityDto>>> GetPr
 
     return result;
 }
+[HttpGet("getProvidersWithCantTotalMedicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityStockDto>>> GetProvidersWithTotalMedicines()
+{
+    var providers = await _unitOfWork.Providers.GetCantPurchasedMedicineByProvider();
+    var result = new List<ProviderWithTotalQuantityStockDto>();
 
+    foreach (var provider in providers)
+    {
+        int totalMedicine = await _unitOfWork.Medicines.CalculateTotalStockQuantity(provider);
 
+        var medicineQuantities = new List<MedicineWithStockDto>();
 
+        foreach (var medicine in provider.Medicines)
+        {
+            var medicineDto = new MedicineWithStockDto
+            {
+                Name = medicine.Name,
+                Stock = medicine.Stock
+            };
 
+            medicineQuantities.Add(medicineDto);
+        }
 
+        var providerWithCant = new ProviderWithTotalQuantityStockDto
+        {
+            Name = provider.Name,
+            MedicinesList = medicineQuantities,
+            TotalStockCant = totalMedicine
+        };
 
+        result.Add(providerWithCant);
+    }
 
-
+    return result;
+}
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

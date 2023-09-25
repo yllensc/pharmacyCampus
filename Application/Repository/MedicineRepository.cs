@@ -138,12 +138,6 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         return listMedicines;
         
     }
-    public async Task<IEnumerable<Provider>> GetProvidersInfoWithMedicines()
-    {
-          return await this._context.Providers
-            .Include(d => d.Medicines)
-            .ToListAsync();
-    }
     public override async Task<Medicine> GetByIdAsync(int id)
     {
         return await _context.Medicines
@@ -151,9 +145,8 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
                     .FirstOrDefaultAsync(p=>p.Id == id);
     }
 
-    public async Task<int> CalculateTotalQuantity(Provider provider)
+    public async Task<int> CalculateTotalPurchaseQuantity(Provider provider)
     {
-    
     var totalQuantity = provider.Medicines
         .SelectMany(m => m.PurchasedMedicines)
         .Sum(pm => pm.CantPurchased);
@@ -162,6 +155,12 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
     return  totalQuantity;
     }
 
-
+    public async Task<int> CalculateTotalStockQuantity(Provider provider)
+    {
+    var totalQuantity = provider.Medicines
+        .Sum(m => m.Stock);
+    await _context.SaveChangesAsync();
+    return  totalQuantity;
+    }
 }
 
