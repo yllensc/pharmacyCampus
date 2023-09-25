@@ -208,12 +208,8 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         return totalSales;
     }
 
-    public async Task<IEnumerable<Medicine>> GetUnsoldMedicines2023()
+    public async Task<IEnumerable<Medicine>> GetUnsoldMedicine()
     {
-        DateTime init2023 = new(2023,1,1);
-        DateTime init2024 = new(2024,1,1);
-        var sales = await _context.Sales
-                                    .Where(u=> u.DateSale>= init2023 && u.DateSale< init2024).ToListAsync();
         var medicines = await _context.Medicines.ToListAsync();
        
         List<Medicine> unsoldMed = new();
@@ -227,7 +223,36 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                 unsoldMed.Add(med);
             } 
         }
+        return unsoldMed;
+    }
 
+      public async Task<IEnumerable<Medicine>> GetUnsoldMedicines2023()
+    {
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+        var sales = await _context.Sales
+                                    .Where(u=> u.DateSale>= init2023 && u.DateSale< init2024).ToListAsync();
+        var medicines = await _context.Medicines.ToListAsync();
+       
+        List<Medicine> unsoldMed = new();
+        foreach (var sale in sales)
+        {
+            var listSales = await _context.SaleMedicines
+                                        .Where(u=> u.SaleId == sale.Id)
+                                        .ToListAsync();
+            foreach(var med in medicines)
+            {
+                var existMed =  listSales
+                                    .Where(u=> u.MedicineId == med.Id)
+                                    .FirstOrDefault();
+                if(existMed == null && !unsoldMed.Contains(med))
+                {
+                    unsoldMed.Add(med);
+                }
+            }
+
+             
+        }
         return unsoldMed;
     }
 }
