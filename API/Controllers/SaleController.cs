@@ -107,6 +107,15 @@ public class SaleController : ApiBaseController
         var result = await _unitOfWork.Sales.GetGainSales();
         return  Ok(result);
     }
+
+    [HttpGet("unsoldMedicines2023")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetUnsoldMedicines2023()
+    {
+        var result = await _unitOfWork.Sales.GetUnsoldMedicines2023();
+        return  Ok(_mapper.Map<List<MedicinePDto>>(result));
+    }
     
 }
     

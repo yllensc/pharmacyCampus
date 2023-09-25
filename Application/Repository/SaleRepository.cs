@@ -207,4 +207,27 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         };
         return totalSales;
     }
+
+    public async Task<IEnumerable<Medicine>> GetUnsoldMedicines2023()
+    {
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+        var sales = await _context.Sales
+                                    .Where(u=> u.DateSale>= init2023 && u.DateSale< init2024).ToListAsync();
+        var medicines = await _context.Medicines.ToListAsync();
+       
+        List<Medicine> unsoldMed = new();
+        foreach (var med in medicines)
+        {
+            var existMed = await _context.SaleMedicines
+                                        .Where(u=> u.MedicineId == med.Id)
+                                        .FirstOrDefaultAsync();
+            if(existMed == null)
+            {
+                unsoldMed.Add(med);
+            } 
+        }
+
+        return unsoldMed;
+    }
 }
