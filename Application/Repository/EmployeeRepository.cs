@@ -24,7 +24,7 @@ public class EmployeeRepository : GenericRepository<Employee>, IEmployee
 
     public async Task<string> UpdateAsync(Employee model)
     {
-        var existingEmployee = await _context.Employees.Where(e=> e.Id == model.Id).FirstOrDefaultAsync();  
+        var existingEmployee = await _context.Employees.Where(e => e.Id == model.Id).FirstOrDefaultAsync();
         if (existingEmployee == null)
         {
             return "Empleado no encontrado, sorry";
@@ -53,4 +53,26 @@ public class EmployeeRepository : GenericRepository<Employee>, IEmployee
             return $"La fecha proporcionada no es válida.";
         }
     }
+    public async Task<IEnumerable<Employee>> EmployeesMoreThanxSales(int numSales)
+    {
+        var Employees = await _context.Employees
+            .Where(e => e.Sales
+                .Where(s => s.SaleMedicines
+                    .Any(sm => sm.SaleQuantity > 0))
+                .Count() > numSales)
+            .ToListAsync();
+
+        return Employees;
+    }
+    public async Task<IEnumerable<Employee>> EmployeesLessThanxSalesInxYear(int numSales, int year)
+    {
+        var Employees = await _context.Employees
+            .Where(e => e.Sales
+                .Where(s => s.DateSale.Year == year)
+                .Count() < 5)
+            .ToListAsync();
+
+        return Employees;
+    }
+
 }

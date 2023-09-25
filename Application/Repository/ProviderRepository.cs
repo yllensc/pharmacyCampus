@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Repository;
-    public class ProviderRepository: GenericRepository<Provider>, IProvider
+public class ProviderRepository : GenericRepository<Provider>, IProvider
 {
     private readonly PharmacyDbContext _context;
 
@@ -17,18 +17,18 @@ namespace Application.Repository;
         _context = context;
 
     }
-     public override async Task<IEnumerable<Provider>> GetAllAsync()
+    public override async Task<IEnumerable<Provider>> GetAllAsync()
     {
         return await _context.Providers
-            .Include(p=>p.Purchases).ThenInclude(p=>p.PurchasedMedicines).ThenInclude(p=>p.Medicine)
+            .Include(p => p.Purchases).ThenInclude(p => p.PurchasedMedicines).ThenInclude(p => p.Medicine)
             .ToListAsync();
     }
 
     public override async Task<Provider> GetByIdAsync(int id)
     {
         return await _context.Providers
-            .Include(p=>p.Purchases).ThenInclude(p=>p.PurchasedMedicines)
-            .FirstOrDefaultAsync(p=>p.Id == id);
+            .Include(p => p.Purchases).ThenInclude(p => p.PurchasedMedicines)
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<string> RegisterAsync(Provider model)
@@ -44,7 +44,7 @@ namespace Application.Repository;
         var existingID = _context.Providers
                                 .Where(u => u.IdenNumber.ToLower() == model.IdenNumber.ToLower())
                                 .FirstOrDefault();
-        
+
         if (existingID == null)
         {
             try
@@ -59,15 +59,18 @@ namespace Application.Repository;
                 var message = ex.Message;
                 return $"Error: {message}";
             }
-        }else{
+        }
+        else
+        {
             return $"Provider with Identifaction Number {model.IdenNumber} alredy register ";
         }
-    
+
     }
 
-    public async Task<string> UpdateAsync(Provider model){
-        
-        var provider = await _context.Providers.Where(u=> u.Id == model.Id).FirstOrDefaultAsync();
+    public async Task<string> UpdateAsync(Provider model)
+    {
+
+        var provider = await _context.Providers.Where(u => u.Id == model.Id).FirstOrDefaultAsync();
 
         provider.Name = model.Name;
         provider.Email = model.Email;
@@ -82,35 +85,35 @@ namespace Application.Repository;
     public async Task<IEnumerable<Provider>> GetProvidersWithMedicines()
     {
         return await _context.Providers
-            .Include(p=>p.Medicines)
+            .Include(p => p.Medicines)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Provider>> GetCantPurchasedMedicineByProvider()
     {
-       var providers = await _context.Providers
-        .Include(p => p.Medicines)
-        .ThenInclude(m => m.PurchasedMedicines)
-        .ToListAsync();
+        var providers = await _context.Providers
+         .Include(p => p.Medicines)
+         .ThenInclude(m => m.PurchasedMedicines)
+         .ToListAsync();
 
-    return providers;
+        return providers;
     }
-public async Task<IEnumerable<Provider>> GetProvidersWithMedicinesUnder50()
-{
-    var providersWithMedicinesUnder50 = await _context.Providers
-        .Where(p => p.Medicines.Any(m => m.Stock < 50))
-        .Select(p => new Provider
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Email = p.Email,
-            Address = p.Address,
-            Medicines = p.Medicines.Where(m => m.Stock < 50).ToList()
-        })
-        .ToListAsync();
+    public async Task<IEnumerable<Provider>> GetProvidersWithMedicinesUnderx(int cant)
+    {
+        var providersWithMedicinesUnder50 = await _context.Providers
+            .Where(p => p.Medicines.Any(m => m.Stock < cant))
+            .Select(p => new Provider
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Email = p.Email,
+                Address = p.Address,
+                Medicines = p.Medicines.Where(m => m.Stock < 50).ToList()
+            })
+            .ToListAsync();
 
-    return providersWithMedicinesUnder50;
-}
+        return providersWithMedicinesUnder50;
+    }
 
     public async Task<IEnumerable<Provider>> GetCantMedicineByProvider()
     {

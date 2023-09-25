@@ -63,11 +63,11 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
                 }
             }catch(Exception ex){
-                return ex.Message;
+                return $"{ex.Message}. Details: {ex.Data}";
             } 
         }catch(Exception ex)
         {
-            return ex.Message;
+            return $"{ex.Message}. Details: {ex.Data}";
         }
         
         return "Sale made successfully!!";

@@ -8,4 +8,6 @@ namespace Domain.Interfaces;
     public interface IEmployee : IGenericRepository<Employee>
     {
         Task<string> UpdateAsync(Employee model);
+        Task<IEnumerable<Employee>> EmployeesMoreThanxSales(int numSales);
+        Task<IEnumerable<Employee>> EmployeesLessThanxSalesInxYear(int numSales, int year);
     }

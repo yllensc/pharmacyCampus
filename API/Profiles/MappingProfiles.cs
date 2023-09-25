@@ -22,6 +22,8 @@ public class MappingProfiles : Profile
             .ReverseMap();
         CreateMap<Employee, EmployeeAllDto>()
             .ReverseMap();
+        CreateMap<Employee, EmployeeGetIdNameDto>()
+            .ReverseMap();
         CreateMap<Employee, EmployeeGetDto>()
             .ReverseMap()
             .ForMember(o => o.PositionId, d => d.Ignore());

@@ -10,11 +10,11 @@ public interface IMedicineRepository : IGenericRepository<Medicine>
 {
     Task<string> RegisterAsync(Medicine model);
     Task<string> UpdateAsync(Medicine model);
-    Task<IEnumerable<Medicine>> GetUnder50();
-    Task<IEnumerable<Medicine>> GetExpireUnder2024();
-    Task<IEnumerable<Medicine>> GetExpireIn2024();
+    Task<IEnumerable<Medicine>> GetUnderCant(int cant);
+    Task<IEnumerable<Medicine>> GetExpireUnderxYear(int year);
+    Task<IEnumerable<Medicine>> GetExpireInxYear(int year);
     Task<IEnumerable<Medicine>> GetMoreExpensive();
-    Task<IEnumerable<Medicine>> GetRangePriceStockPredeterminated();
+    Task<IEnumerable<Medicine>> GetRangePriceStockPredeterminated(double price, int stock);
     Task<int> CalculateTotalPurchaseQuantity(Provider provider);  
     Task<int> CalculateTotalStockQuantity(Provider provider);
     

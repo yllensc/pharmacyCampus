@@ -9,6 +9,6 @@ public interface IProvider: IGenericRepository<Provider>
     Task<IEnumerable<Provider>> GetProvidersWithMedicines();
     Task<IEnumerable<Provider>> GetCantMedicineByProvider();
     Task<IEnumerable<Provider>> GetCantPurchasedMedicineByProvider();
-    Task<IEnumerable<Provider>> GetProvidersWithMedicinesUnder50();
+    Task<IEnumerable<Provider>> GetProvidersWithMedicinesUnderx(int cant);
     
 }

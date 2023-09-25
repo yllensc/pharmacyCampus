@@ -39,12 +39,12 @@ public class ProviderController : ApiBaseController
         var providers = await _unitOfWork.Providers.GetProvidersWithMedicines();
         return _mapper.Map<List<ProviderWithListMedicinesDto>>(providers);
     }
-    [HttpGet("providersWithMedicinesUnder50")]
+    [HttpGet("providersWithMedicinesUnder{cant}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<ProviderWithMedicineUnder50>>> GetProvidersWithMedicinesUnder50()
+    public async Task<ActionResult<IEnumerable<ProviderWithMedicineUnder50>>> GetProvidersWithMedicinesUnderx(int cant)
     {
-        var providers = await _unitOfWork.Providers.GetProvidersWithMedicinesUnder50();
+        var providers = await _unitOfWork.Providers.GetProvidersWithMedicinesUnderx(cant);
         return _mapper.Map<List<ProviderWithMedicineUnder50>>(providers);
     }
     [HttpGet("getProvidersWithCantMedicines")]

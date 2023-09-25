@@ -31,6 +31,22 @@ public class EmployeeController : ApiBaseController
         var employees = await _unitOfWork.Employees.GetAllAsync();
         return _mapper.Map<List<EmployeeGetDto>>(employees);
     }
+    [HttpGet("moreThan{numSales}Sales")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<EmployeeGetIdNameDto>>> EmployeesMoreThanxSales(int numSales)
+    {
+        var employees = await _unitOfWork.Employees.EmployeesMoreThanxSales(numSales);
+        return _mapper.Map<List<EmployeeGetIdNameDto>>(employees);
+    }
+    [HttpGet("lessThan{numSales}Sales{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<EmployeeGetIdNameDto>>> EmployeesLessThanxSalesInxYear(int numSales, int year)
+    {
+        var employees = await _unitOfWork.Employees.EmployeesLessThanxSalesInxYear(numSales, year);
+        return _mapper.Map<List<EmployeeGetIdNameDto>>(employees);
+    }
 
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
