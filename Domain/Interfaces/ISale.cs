@@ -17,6 +17,7 @@ public interface ISale : IGenericRepository<Sale>
     Task<object> GetGainSales();
     Task<IEnumerable<Medicine>> GetUnsoldMedicines2023();
     Task<IEnumerable<Medicine>> GetUnsoldMedicine();
+    Task<IEnumerable<Patient>> GetPatients(string nameMedicine);
 
 
 }

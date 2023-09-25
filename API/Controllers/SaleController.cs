@@ -125,6 +125,16 @@ public class SaleController : ApiBaseController
         var result = await _unitOfWork.Sales.GetUnsoldMedicine();
         return  Ok(_mapper.Map<List<MedicinePDto>>(result));
     }
+
+    [HttpGet("patientsByMedicine")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetPatients([FromBody] MedicineOnlyDto medicineDto)
+    {
+        var medicine = _mapper.Map<Medicine>(medicineDto);
+        var result = await _unitOfWork.Sales.GetPatients(medicine.Name);
+        return  Ok(_mapper.Map<List<PatientOnlyDto>>(result));
+    }
     
 }
     

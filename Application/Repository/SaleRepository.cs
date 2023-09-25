@@ -250,9 +250,30 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                     unsoldMed.Add(med);
                 }
             }
-
-             
         }
         return unsoldMed;
+    }
+
+    public async Task<IEnumerable<Patient>> GetPatients(string nameMedicine)
+    {
+        var existMedicine = await _context.Medicines
+                                    .Where(u=>u.Name.ToLower()== nameMedicine.ToLower())
+                                    .FirstOrDefaultAsync();
+        if(existMedicine == null)
+        { 
+            return null;
+        }
+        var patients = await _context.Patients.ToListAsync();
+        var sales = await _context.Sales.ToListAsync();
+        var salesMedicines = await _context.SaleMedicines.ToListAsync();
+        var medicines = await _context.Medicines.ToListAsync();
+
+        var patientsPurchasedMedicine = (from patient in patients
+                                        join sale in sales on patient.Id equals sale.PatientId
+                                        join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
+                                        join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
+                                        where medicine.Name  == nameMedicine
+                                        select patient).Distinct();
+        return patientsPurchasedMedicine;
     }
 }

@@ -45,6 +45,9 @@ public class MappingProfiles: Profile
         CreateMap<Patient,PatientDto>()
             .ReverseMap()
             .ForMember(o=> o.Sales, d => d.Ignore());
+        CreateMap<Patient,PatientOnlyDto>()
+            .ReverseMap()
+            .ForMember(o=> o.Sales, d => d.Ignore());
         CreateMap<Patient,PatientPutDto>()
             .ReverseMap();
         CreateMap<Sale,SaleDto>()
