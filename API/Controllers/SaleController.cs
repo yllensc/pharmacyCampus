@@ -135,6 +135,25 @@ public class SaleController : ApiBaseController
         var result = await _unitOfWork.Sales.GetPatients(medicine.Name);
         return  Ok(_mapper.Map<List<PatientOnlyDto>>(result));
     }
+
+    [HttpGet("patientsByMedicine2023")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetPatients2023([FromBody] MedicineOnlyDto medicineDto)
+    {
+        var medicine = _mapper.Map<Medicine>(medicineDto);
+        var result = await _unitOfWork.Sales.GetPatients2023(medicine.Name);
+        return  Ok(_mapper.Map<List<PatientOnlyDto>>(result));
+    }
+
+    [HttpGet("lessSoldMedicine")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetlessSoldMedicine()
+    {
+        var result = await _unitOfWork.Sales.GetlessSoldMedicine();
+        return  Ok(result);
+    }
     
 }
     

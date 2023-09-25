@@ -276,4 +276,71 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                         select patient).Distinct();
         return patientsPurchasedMedicine;
     }
+
+    public async Task<IEnumerable<Patient>> GetPatients2023(string nameMedicine)
+    {
+        var existMedicine = await _context.Medicines
+                                    .Where(u=>u.Name.ToLower()== nameMedicine.ToLower())
+                                    .FirstOrDefaultAsync();
+        if(existMedicine == null)
+        { 
+            return null;
+        }
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+        var sales = await _context.Sales
+                                    .Where(u=> u.DateSale>= init2023 && u.DateSale< init2024).ToListAsync();
+        
+        var patients = await _context.Patients.ToListAsync();
+        var salesMedicines = await _context.SaleMedicines.ToListAsync();
+        var medicines = await _context.Medicines.ToListAsync();
+
+        var patientsPurchasedMedicine = (from patient in patients
+                                        join sale in sales on patient.Id equals sale.PatientId
+                                        join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
+                                        join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
+                                        where medicine.Name  == nameMedicine
+                                        select patient).Distinct();
+        return patientsPurchasedMedicine;
+    }
+
+    public async Task<IEnumerable<object>> GetlessSoldMedicine()
+    {
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+        var sales = await _context.Sales
+                                    .Where(u=> u.DateSale>= init2023 && u.DateSale< init2024).ToListAsync();
+        
+        var patients = await _context.Patients.ToListAsync();
+        var salesMedicines = await _context.SaleMedicines.ToListAsync();
+        var medicines = await _context.Medicines.ToListAsync();
+
+        var groupMedicine = (from medicine in medicines
+                                    join saleMedicine in salesMedicines on medicine.Id equals saleMedicine.MedicineId
+                                    select medicine).GroupBy(u=> u.Id);
+        Dictionary<int,int> cantMedicines = new();
+        foreach(var group in groupMedicine)
+        {
+            cantMedicines.Add(group.Key, group.Count());
+        }
+        int lessQuantity = cantMedicines.Values.Min();
+        List<object>lessSoldMedicine = new();
+
+        foreach(var dic in cantMedicines)
+        {
+            if(lessQuantity == dic.Value){
+                var medicine = await _context.Medicines.Where(u=>u.Id == dic.Key).FirstOrDefaultAsync();
+                object objecResult = new{
+                    medicine.Id,
+                    medicine.Name,
+                    medicine.Stock,
+                    LessQuantity = dic.Value
+                };
+
+                lessSoldMedicine.Add(objecResult);
+            };
+        };
+
+        return lessSoldMedicine;
+    }
 }

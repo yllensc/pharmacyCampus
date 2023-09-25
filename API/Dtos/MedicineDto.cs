@@ -32,4 +32,13 @@ namespace API.Dtos
         [Required]
         public string Name { get; set; }
     }
+
+     public class MedicineCantDto
+    {
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public int Stock { get; set; }
+        public int LessQuantity { get; set; }
+
+    }
 }
