@@ -97,6 +97,16 @@ public class SaleController : ApiBaseController
         var result = await _unitOfWork.Sales.GetTotalSalesOneMedicine(medicine.Name);
         return  Ok(result);
     }
+
+    
+    [HttpGet("gainSales")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetGainSales()
+    {
+        var result = await _unitOfWork.Sales.GetGainSales();
+        return  Ok(result);
+    }
     
 }
     

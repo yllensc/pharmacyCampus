@@ -196,4 +196,15 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         };
         return totalSales;
     }
+
+    public async Task<object> GetGainSales()
+    {
+        var totalGain = await _context.SaleMedicines.SumAsync(u=> u.Price);
+
+        object totalSales = new
+        {
+            TotalSales = totalGain
+        };
+        return totalSales;
+    }
 }

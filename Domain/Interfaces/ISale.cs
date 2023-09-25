@@ -14,4 +14,6 @@ public interface ISale : IGenericRepository<Sale>
     Task<IEnumerable<Sale>> GetSaleMonthly(int parameter);
     // Task<IEnumerable<object>> GetAverage();
     Task<object> GetTotalSalesOneMedicine(string medicine);
+    Task<object> GetGainSales();
+
 }
