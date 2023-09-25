@@ -8,5 +8,7 @@ public interface IProvider: IGenericRepository<Provider>
     Task<string> UpdateAsync(Provider model);
     Task<IEnumerable<Provider>> GetProvidersWithMedicines();
     Task<IEnumerable<Provider>> GetCantMedicineByProvider();
+    Task<IEnumerable<Provider>> GetCantPurchasedMedicineByProvider();
+    Task<IEnumerable<Provider>> GetProvidersWithMedicinesUnder50();
     
 }
