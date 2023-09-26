@@ -12,5 +12,5 @@ public class SaleMedicinePostDto
     public int MedicineId {get; set;}
     [Required]
     public int SaleQuantity { get; set;}
-    
+    public double Price { get; set;}
 }

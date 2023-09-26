@@ -17,6 +17,7 @@ public interface IMedicineRepository : IGenericRepository<Medicine>
     Task<IEnumerable<Medicine>> GetRangePriceStockPredeterminated(double price, int stock);
     Task<int> CalculateTotalPurchaseQuantity(Provider provider);  
     Task<int> CalculateTotalStockQuantity(Provider provider);
+    Task<Dictionary<string, List<object>>> GetMedicineSoldonYear(int year);
     
     
 }

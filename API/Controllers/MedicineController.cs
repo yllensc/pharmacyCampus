@@ -71,6 +71,15 @@ namespace API.Controllers;
         var medicines = await _unitOfWork.Providers.GetCantMedicineByProvider();
         return _mapper.Map<List<ProviderDto>>(medicines);
     }
+    [HttpGet("salesIn{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Dictionary<string, List<object>>>> GetMedicineSoldonYear(int year)
+    {
+        var medicines = await _unitOfWork.Medicines.GetMedicineSoldonYear(year);
+        return medicines;
+    }
+    
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
