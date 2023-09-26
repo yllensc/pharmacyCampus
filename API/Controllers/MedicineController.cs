@@ -23,28 +23,28 @@ namespace API.Controllers;
         var result = await _unitOfWork.Medicines.RegisterAsync(medicine);
         return Ok(result);
     }
-    [HttpGet("under50")]
+    [HttpGet("underStock{cant}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetUnder50()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetUnderCant(int cant)
     {
-        var medicines = await _unitOfWork.Medicines.GetUnder50();
+        var medicines = await _unitOfWork.Medicines.GetUnderCant(cant);
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
-    [HttpGet("ExpiresUnder2024")]
+    [HttpGet("ExpiresUnder{year}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireUnder2024()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireUnderxYear(int year)
     {
-        var medicines = await _unitOfWork.Medicines.GetExpireUnder2024();
+        var medicines = await _unitOfWork.Medicines.GetExpireUnderxYear(year);
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
-    [HttpGet("ExpiresUntil2024")]
+    [HttpGet("ExpiresIn{year}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireIn2024()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireInxYear(int year)
     {
-        var medicines = await _unitOfWork.Medicines.GetExpireIn2024();
+        var medicines = await _unitOfWork.Medicines.GetExpireInxYear(year);
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("moreExpensive")]
@@ -55,12 +55,12 @@ namespace API.Controllers;
         var medicines = await _unitOfWork.Medicines.GetMoreExpensive();
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
-    [HttpGet("getRangePriceStock")]
+    [HttpGet("getRangePrice{price}Stock{stock}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetRangePriceStockPredeterminated()
+    public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetRangePriceStockPredeterminated(double price, int stock)
     {
-        var medicines = await _unitOfWork.Medicines.GetRangePriceStockPredeterminated();
+        var medicines = await _unitOfWork.Medicines.GetRangePriceStockPredeterminated(price,stock);
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("GetProvidersInfoWithMedicines")]

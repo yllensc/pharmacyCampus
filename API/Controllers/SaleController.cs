@@ -99,6 +99,93 @@ public class SaleController : ApiBaseController
         var sales = await _unitOfWork.Sales.GetSaleQuantityAsync();
         return Ok(sales);
     }
+    // [HttpGet("average")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult<IEnumerable<object>>> GetAverage()
+    // {
+    //     var sales = await _unitOfWork.Sales.GetAverage();
+    //     return Ok(sales);
+    // }
+
+    [HttpGet("totalSaleOneMedicine")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetTotalSalesOneMedicine([FromBody] MedicineOnlyDto medicineDto)
+    {
+        var medicine = _mapper.Map<Medicine>(medicineDto);
+        var result = await _unitOfWork.Sales.GetTotalSalesOneMedicine(medicine.Name);
+        return  Ok(result);
+    }
+
+    
+    [HttpGet("gainSales")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetGainSales()
+    {
+        var result = await _unitOfWork.Sales.GetGainSales();
+        return  Ok(result);
+    }
+
+    [HttpGet("unsoldMedicines2023")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetUnsoldMedicines2023()
+    {
+        var result = await _unitOfWork.Sales.GetUnsoldMedicines2023();
+        return  Ok(_mapper.Map<List<MedicinePDto>>(result));
+    }
+
+    [HttpGet("unsoldMedicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetUnsoldMedicine()
+    {
+        var result = await _unitOfWork.Sales.GetUnsoldMedicine();
+        return  Ok(_mapper.Map<List<MedicinePDto>>(result));
+    }
+
+    [HttpGet("patientsByMedicine")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetPatients([FromBody] MedicineOnlyDto medicineDto)
+    {
+        var medicine = _mapper.Map<Medicine>(medicineDto);
+        var result = await _unitOfWork.Sales.GetPatients(medicine.Name);
+        return  Ok(_mapper.Map<List<PatientOnlyDto>>(result));
+    }
+
+    [HttpGet("patientsByMedicine2023")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetPatients2023([FromBody] MedicineOnlyDto medicineDto)
+    {
+        var medicine = _mapper.Map<Medicine>(medicineDto);
+        var result = await _unitOfWork.Sales.GetPatients2023(medicine.Name);
+        return  Ok(_mapper.Map<List<PatientOnlyDto>>(result));
+    }
+
+    [HttpGet("lessSoldMedicine")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetlessSoldMedicine()
+    {
+        var result = await _unitOfWork.Sales.GetlessSoldMedicine();
+        return  Ok(result);
+    }
+
+    [HttpGet("patientTotalSpent")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetPatientTotalSpent()
+    {
+        var result = await _unitOfWork.Sales.GetPatientTotalSpent();
+        return  Ok(result);
+    }
+
+    
+    
 }
 
 

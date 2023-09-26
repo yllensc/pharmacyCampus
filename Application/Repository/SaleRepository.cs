@@ -72,15 +72,12 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                     return "No hay tantos medicamentos";
 
                 }
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-        catch (Exception ex)
+            }catch(Exception ex){
+                return $"{ex.Message}. Details: {ex.Data}";
+            } 
+        }catch(Exception ex)
         {
-            return ex.Message;
+            return $"{ex.Message}. Details: {ex.Data}";
         }
         return "Sale made successfully!!";
     }

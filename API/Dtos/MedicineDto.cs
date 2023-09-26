@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace API.Dtos
 {
+    public class MedicineDto
+    {
+        public string Name { get; set; }
+
+    }
     public class MedicinePutDto
     {
 
@@ -42,6 +47,30 @@ namespace API.Dtos
     {
         public int ProviderId { get; set; }
         public string ProviderName { get; set; }
+
+    }
+
+    public class MedicinePDto
+    {
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public double Price { get; set; }
+        [Required]
+        public int Stock { get; set; }
+    }
+
+    public class MedicineOnlyDto{
+        [Required]
+        public string Name { get; set; }
+    }
+
+     public class MedicineCantDto
+    {
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public int Stock { get; set; }
+        public int LessQuantity { get; set; }
 
     }
 }

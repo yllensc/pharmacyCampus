@@ -5,24 +5,32 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Dtos;
-    public class EmployeeGetDto
-    {
-        public int Id { get; set;}
-        [Required]
-        public string Name { get; set; }
-        public string PositionName { get; set; }
-        [Required]
-        public DateTime DateContract { get; set; }
-    }
-    public class EmployeeAllDto
-    {
-        public int Id { get; set;}
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public int PositionId { get; set; }
-        public PositionDto Position { get; set; }
-        [Required]
-        public DateTime DateContract { get; set; }
-        
-    }
+public class EmployeeGetIdNameDto
+{
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; }
+}
+public class EmployeeGetSalesDto : EmployeeGetIdNameDto
+{
+    public int CantTypesMedicines {get; set;}
+    public int CantSales { get; set; }
+}
+public class EmployeeGetDto : EmployeeGetIdNameDto
+{
+    public string PositionName { get; set; }
+    [Required]
+    public DateTime DateContract { get; set; }
+}
+public class EmployeeAllDto
+{
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; }
+    [Required]
+    public int PositionId { get; set; }
+    public PositionDto Position { get; set; }
+    [Required]
+    public DateTime DateContract { get; set; }
+
+}

@@ -170,5 +170,73 @@ namespace Application.Repository;
         return "Purchase made successfully!!";
     }
 
+    public async Task<IEnumerable<Provider>> GetProvidersWithoutPurchases()
+    {
+        DateTime date = DateTime.UtcNow.AddYears(-1);
+        var purchases = await _context.Purchases
+                            .Where(u=> u.DatePurchase > date)
+                            .ToListAsync();
+        
+        var providers = _context.Providers;
+
+        List<Provider> result = new();
+        foreach(var provider in providers)
+        {
+            var existProvider = purchases
+                                    .Where(u=> u.ProviderId == provider.Id)
+                                    .FirstOrDefault();
+            if(existProvider == null)
+            {
+                result.Add(provider);
+            }
+        }
+
+       return result;
+    }
+
     
+    public async Task<IEnumerable<Medicine>> GetMedicinesPurchasedByProvider(string provider)
+    {
+        List<Medicine> medicinesProvider = new();
+
+        var providerM = await _context.Providers
+                                .Where(u=>u.Name.ToLower() == provider.ToLower())
+                                .FirstOrDefaultAsync();
+        if(providerM == null)
+        {
+            return null;
+        }
+        
+        var existPurchase = await _context.Purchases
+                                            .Where(u=> u.ProviderId == providerM.Id)
+                                          .ToListAsync();
+        
+        List<int> IdsMedicine = new();
+        if(existPurchase != null)
+        {
+            foreach(var purchase in existPurchase)
+            {
+                var purMedicines = await _context.PurchasedMedicines
+                                                .Where(u=> u.PurchasedId == purchase.Id)
+                                                .ToListAsync();
+                foreach(var pMed in purMedicines)
+                {
+                    int idMedicine = pMed.MedicineId;
+                    if(!IdsMedicine.Contains(idMedicine))
+                    {
+                        IdsMedicine.Add(idMedicine);
+                    }
+                }   
+            }
+
+            foreach(var id in IdsMedicine)
+            {
+                var medicine =await _context.Medicines.Where(u=>u.Id == id).FirstOrDefaultAsync();
+                medicinesProvider.Add(medicine);
+            }
+        }
+        
+        return medicinesProvider;
+    }
 }
+
