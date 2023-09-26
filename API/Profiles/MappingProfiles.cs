@@ -70,6 +70,9 @@ public class MappingProfiles : Profile
         CreateMap<Patient, PatientDto>()
             .ReverseMap()
             .ForMember(o => o.Sales, d => d.Ignore());
+        CreateMap<Patient, PatientSpentDto>()
+            .ReverseMap()
+            .ForMember(o => o.Sales, d => d.Ignore());
         CreateMap<Patient, PatientPutDto>()
             .ReverseMap();
         CreateMap<Sale, SaleDto>()

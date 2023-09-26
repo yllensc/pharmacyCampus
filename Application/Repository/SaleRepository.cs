@@ -478,32 +478,70 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         return totalSpent;
     }
 
-    public Task<IEnumerable<object>> GetPatientMoreSpent(IEnumerable<object> totalsSpent)
+    public async Task<IEnumerable<object>> GetPatientMoreSpent()
     {//2023
+        DateTime init2023 = new(2023,1,1);
+        DateTime init2024 = new(2024,1,1);
+        var sales = await _context.Sales
+                                    .Where(u=> u.DateSale>= init2023 && u.DateSale< init2024).ToListAsync();
+
+        var medicines = await _context.Medicines.ToListAsync();
+        var patients = await _context.Patients.ToListAsync();
+        var salesMedicines = await _context.SaleMedicines.ToListAsync();
+        var groupSalesMedicine = (
+                        from sale in sales
+                        join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
+                        join medicine in medicines on saleMedicine.Id equals medicine.Id
+                        select saleMedicine).GroupBy(u=> u.SaleId);
+
+        Dictionary<int,double> spentPatient = new();
+        foreach(var group in groupSalesMedicine)
+        {
+            double spentSale = 0;
+            foreach(var saleMedicine in group)
+            {
+                 spentSale += saleMedicine.Price;
+            }
+
+            int idPatient = sales.Where(u=>u.Id == group.Key).FirstOrDefault().PatientId;
+            Console.WriteLine(idPatient);
+
+            if(spentPatient.ContainsKey(idPatient)){
+                
+                spentPatient[idPatient] += spentSale;
+            }else{
+                spentPatient.Add(idPatient,spentSale);
+            }
+        }
+
+        foreach(var patient in patients)
+        {
+            if(!spentPatient.ContainsKey(patient.Id))
+            {
+                spentPatient.Add(patient.Id,0);
+            }
+        }
         
-        double moreSpent = 0;
-        foreach( object patient in totalsSpent)
-        {
-            Type type = patient.GetType();
-            PropertyInfo  spent = type.GetProperty("TotalSpent");
+        double maxSpent = spentPatient.Max(patient => patient.Value);
 
-            if((double)spent.GetValue(type)>moreSpent)
-            {
-                moreSpent = (double)spent.GetValue(type);
-            }
-        }
-        List<object> MoreSpent = new();
-        foreach(object patient in totalsSpent)
+        List<object>totalSpent = new();
+
+        foreach(var dic in spentPatient)
         {
-            Type type = patient.GetType();
-            PropertyInfo  spent = type.GetProperty("TotalSpent");
-            if((double)spent.GetValue(type) == moreSpent)
+            if(dic.Value == maxSpent)
             {
-                MoreSpent.Add(patient);
+            var patient = patients.Where(u=> u.Id == dic.Key).FirstOrDefault();
+            object objecResult = new{
+                patient.Id,
+                patient.Name,
+                TotalSpent = dic.Value
+            };
+            totalSpent.Add(objecResult);
             }
+            
         }
 
-        return MoreSpent;
+        return totalSpent;
     }
 
     

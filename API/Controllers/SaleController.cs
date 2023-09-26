@@ -170,7 +170,7 @@ public class SaleController : ApiBaseController
     public async Task<ActionResult> GetTotalMedicinesQuarter(int quarter)
     {
         var result = await _unitOfWork.Sales.GetTotalMedicinesQuarter(quarter);
-        return  Ok(result);
+        return  Ok(_mapper.Map<List<PatientSpentDto>>(result));
     }
 
     [HttpGet("patientMoreSpent")]
@@ -178,9 +178,7 @@ public class SaleController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetPatientMoreSpent()
     {
-        var patientTotal = await _unitOfWork.Sales.GetPatientTotalSpent();
-
-        var result = await _unitOfWork.Sales.GetPatientMoreSpent(patientTotal);
+        var result = await _unitOfWork.Sales.GetPatientMoreSpent();
         return  Ok(result);
     }
 
