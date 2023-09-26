@@ -167,13 +167,13 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
     {
         var providers = await _context.Providers.ToListAsync();
         Dictionary<int,int> cantMedicines = new();
-        DateTime init2023 = new(2023,1,1);
-        DateTime init2024 = new(2024,1,1);
+        DateTime initStart = new(2023,1,1);
+        DateTime initEnd = new(2024,1,1);
 
         foreach(var p in providers)
         {
             var existPurchase = await _context.Purchases
-                                            .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
+                                            .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= initStart && u.DatePurchase< initEnd )
                                            .ToListAsync();
             List<int> IdsMedicine = new();
             int cant = 0;
@@ -191,7 +191,10 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
                         if(!IdsMedicine.Contains(idMedicine))
                         {
                             IdsMedicine.Add(idMedicine);
-                            cant +=1;
+                            cant +=pMed.CantPurchased;
+                        }else
+                        {
+                            cant +=pMed.CantPurchased;
                         }
                     }   
                 }
@@ -207,8 +210,7 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
                 object objecResult = new{
                     provider.Id,
                     provider.Name,
-                    MoreQuantity = dic.Value
-                };
+                    MoreQuantity = dic.Value                };
 
                 providerWithMoreMed.Add(objecResult);
             };
