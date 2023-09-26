@@ -401,7 +401,80 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         }
 
         return totalSpent;
-
-
     }
+    public async Task<IEnumerable<object>> GetTotalMedicinesQuarter(int quarterM)
+    {
+        if(quarterM<= 0 || quarterM>=5)
+        {
+            return null;
+        }
+        int init  =1;
+        switch(quarterM)
+        {
+            case 1: init = 1; break;
+            case 2: init = 4; break;
+            case 3: init = 7; break;
+            case 4: init = 10; break;
+            default:
+                break;
+        }
+        DateTime dateStart = new(2023,init,1);
+        DateTime dateEnd = dateStart.AddMonths(3);
+
+        var sales = await _context.Sales
+                            .Where(u=> u.DateSale>= dateStart && u.DateSale<= dateEnd)
+                            .ToListAsync();
+        var saleMedicines =await _context.SaleMedicines.ToListAsync();
+        var medicines = await _context.Medicines.ToListAsync();
+        
+        var groupMedicines = (from sale in sales 
+                             join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
+                             join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
+                             select saleMedicine).GroupBy(u=> u.MedicineId);
+        
+        Dictionary<int,int> cantMedicines = new();
+
+        foreach(var group in groupMedicines)
+        {
+            int cantMed = 0;
+            foreach(var saleMedicine in group)
+            {
+                cantMed += saleMedicine.SaleQuantity;
+            }
+
+            int idMedicine = saleMedicines.Where(u=>u.MedicineId == group.Key).FirstOrDefault().MedicineId;
+
+            if(cantMedicines.ContainsKey(idMedicine)){
+                
+                cantMedicines[idMedicine] += cantMed;
+            }else{
+                cantMedicines.Add(idMedicine,cantMed);
+            }
+        }
+        foreach(var medicine in medicines)
+        {
+            if(!cantMedicines.ContainsKey(medicine.Id))
+            {
+                cantMedicines.Add(medicine.Id,0);
+            }
+        }
+        List<object>totalSpent = new();
+
+        foreach(var dic in cantMedicines)
+        {
+            var medicine = medicines.Where(u=> u.Id == dic.Key).FirstOrDefault();
+            object objecResult = new{
+                medicine.Id,
+                medicine.Name,
+                TotalQuantity = dic.Value
+            };
+            totalSpent.Add(objecResult);
+
+        }
+
+
+        return totalSpent;
+    }
+
+    
 }

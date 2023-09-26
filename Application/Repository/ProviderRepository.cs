@@ -176,9 +176,10 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
                                             .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
                                            .ToListAsync();
             List<int> IdsMedicine = new();
-            if(existPurchase !=  null)
+            int cant = 0;
+
+            if(existPurchase.Any())
             {   
-                int cant = 0;
                 foreach(var purchase in existPurchase)
                 {
                     var purMedicines = await _context.PurchasedMedicines
