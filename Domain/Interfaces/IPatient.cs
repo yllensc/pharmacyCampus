@@ -10,4 +10,5 @@ public interface IPatient : IGenericRepository<Patient>
 {
     Task<string> RegisterAsync(Patient model);
     Task<string> UpdateAsync(Patient model);
+    Task<IEnumerable<Patient>> GetPatientWithNoSalesInxYear(int year);
 }

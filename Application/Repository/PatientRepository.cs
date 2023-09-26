@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
+using iText.Svg.Renderers.Path.Impl;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -69,6 +70,10 @@ public class PatientRepository : GenericRepository<Patient>, IPatient
 
     }
 
+    public async Task<IEnumerable<Patient>> GetPatientWithNoSalesInxYear(int year){
+        return await _context.Patients
+                .Where(p => !p.Sales.Any(s=> s.DateSale.Year == year)).ToListAsync();
+    }
 
 
 }
