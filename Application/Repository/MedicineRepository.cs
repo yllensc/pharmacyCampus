@@ -172,41 +172,58 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         return totalQuantity;
     }
 
-    public async Task<Dictionary<string, List<object>>> GetMedicineSoldonYear(int year){
-        Dictionary<string, List<object>> salesInaYear = new();
-        List<object> medicineInfo = new();
-        for (int i = 0; i < 12; i++){
-            MesesSpanish month = (MesesSpanish)i;
-            var monthlySales = await _context.Sales
-                .Where(s => s.DateSale.Year == year && s.DateSale.Month == i)
-                .ToListAsync();
+    public async Task<Dictionary<string, List<object>>> GetMedicineSoldonYear(int year)
+{
+    Dictionary<string, List<object>> salesInaYear = new();
+
+    for (int i = 1; i <= 12; i++)
+    {
+        MesesSpanish month = (MesesSpanish)i;
+        var monthlySales = await _context.Sales
+            .Include(s=>s.SaleMedicines).ThenInclude(sm=>sm.Medicine)
+            .Where(s => s.DateSale.Year == year && s.DateSale.Month == i)
+            .ToListAsync();
+
+        if (monthlySales.Any())
+        {
             var monthlyMedicineSales = monthlySales
                 .SelectMany(s => s.SaleMedicines)
                 .GroupBy(sm => sm.Medicine.Name)
-                .Select(group => new KeyValuePair<string, int>(group.Key, group.Sum(sm => sm.SaleQuantity)))
+                .Select(group => new
+                {
+                    MedicineName = group.Key,
+                    QuantitySold = group.Sum(sm => sm.SaleQuantity)
+                })
                 .ToList();
+
             salesInaYear[month.ToString()] = monthlyMedicineSales.Cast<object>().ToList();
+        }
+        else
+        {
+            salesInaYear[month.ToString()] = new List<object>();
+        }
     }
 
     return salesInaYear;
 }
 
-  
-  public enum MesesSpanish {
-    Enero = 1,
-    Febrero = 2,
-    Marzo = 3,
-    Abril = 4,
-    Mayo = 5,
-    Junio = 6,
-    Julio = 7,
-    Agosto = 8,
-    Septiembre = 9,
-    Octubre = 10,
-    Noviembre = 11,
-    Diciembre = 12
-}
 
-  }
+    public enum MesesSpanish
+    {
+        Enero = 1,
+        Febrero = 2,
+        Marzo = 3,
+        Abril = 4,
+        Mayo = 5,
+        Junio = 6,
+        Julio = 7,
+        Agosto = 8,
+        Septiembre = 9,
+        Octubre = 10,
+        Noviembre = 11,
+        Diciembre = 12
+    }
+
+}
 
 
