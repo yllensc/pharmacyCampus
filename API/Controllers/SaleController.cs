@@ -173,6 +173,17 @@ public class SaleController : ApiBaseController
         return  Ok(result);
     }
 
+    [HttpGet("patientMoreSpent")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetPatientMoreSpent()
+    {
+        var patientTotal = await _unitOfWork.Sales.GetPatientTotalSpent();
+
+        var result = await _unitOfWork.Sales.GetPatientMoreSpent(patientTotal);
+        return  Ok(result);
+    }
+
     
     
 }

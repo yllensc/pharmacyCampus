@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
+using iText.Layout.Element;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Reflection;
 
 namespace Application.Repository;
 
@@ -474,6 +476,34 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
 
         return totalSpent;
+    }
+
+    public Task<IEnumerable<object>> GetPatientMoreSpent(IEnumerable<object> totalsSpent)
+    {//2023
+        
+        double moreSpent = 0;
+        foreach( object patient in totalsSpent)
+        {
+            Type type = patient.GetType();
+            PropertyInfo  spent = type.GetProperty("TotalSpent");
+
+            if((double)spent.GetValue(type)>moreSpent)
+            {
+                moreSpent = (double)spent.GetValue(type);
+            }
+        }
+        List<object> MoreSpent = new();
+        foreach(object patient in totalsSpent)
+        {
+            Type type = patient.GetType();
+            PropertyInfo  spent = type.GetProperty("TotalSpent");
+            if((double)spent.GetValue(type) == moreSpent)
+            {
+                MoreSpent.Add(patient);
+            }
+        }
+
+        return MoreSpent;
     }
 
     
