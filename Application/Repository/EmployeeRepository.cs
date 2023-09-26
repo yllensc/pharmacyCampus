@@ -118,10 +118,9 @@ public async Task<int> SalesByEmployee(int id)
 }
 public async Task<IEnumerable<Employee>> EmployeesWithNoSalesInMonth(int month, int year)
 {
-    var result = await _context.Employees
+    return await _context.Employees
         .Where(e => !e.Sales.Any(s => s.DateSale.Year == year && s.DateSale.Month == month))
         .ToListAsync();
-    return result;
 }
 
 

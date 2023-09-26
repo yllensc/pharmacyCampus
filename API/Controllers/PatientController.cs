@@ -32,6 +32,15 @@ public class PatientController : ApiBaseController
         return _mapper.Map<List<PatientDto>>(patients);
     }
 
+    [HttpGet("patientsWithNoSalesIn{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientWithNoSalesInxYear(int year)
+    {
+        var patients = await _unitOfWork.Patients.GetPatientWithNoSalesInxYear(year);
+        return _mapper.Map<List<PatientDto>>(patients);
+    }
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
