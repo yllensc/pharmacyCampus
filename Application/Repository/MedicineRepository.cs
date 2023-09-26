@@ -171,5 +171,42 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         await _context.SaveChangesAsync();
         return totalQuantity;
     }
+
+    public async Task<Dictionary<string, List<object>>> GetMedicineSoldonYear(int year){
+        Dictionary<string, List<object>> salesInaYear = new();
+        List<object> medicineInfo = new();
+        for (int i = 0; i < 12; i++){
+            MesesSpanish month = (MesesSpanish)i;
+            var monthlySales = await _context.Sales
+                .Where(s => s.DateSale.Year == year && s.DateSale.Month == i)
+                .ToListAsync();
+            var monthlyMedicineSales = monthlySales
+                .SelectMany(s => s.SaleMedicines)
+                .GroupBy(sm => sm.Medicine.Name)
+                .Select(group => new KeyValuePair<string, int>(group.Key, group.Sum(sm => sm.SaleQuantity)))
+                .ToList();
+            salesInaYear[month.ToString()] = monthlyMedicineSales.Cast<object>().ToList();
+    }
+
+    return salesInaYear;
 }
+
+  
+  public enum MesesSpanish {
+    Enero = 1,
+    Febrero = 2,
+    Marzo = 3,
+    Abril = 4,
+    Mayo = 5,
+    Junio = 6,
+    Julio = 7,
+    Agosto = 8,
+    Septiembre = 9,
+    Octubre = 10,
+    Noviembre = 11,
+    Diciembre = 12
+}
+
+  }
+
 
