@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Collections;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +13,8 @@ public class SaleRepository : GenericRepository<Sale>, ISale
     public SaleRepository(PharmacyDbContext context) : base(context)
     {
         _context = context;
-
     }
+
     public async Task<string> RegisterAsync(Sale modelSale, SaleMedicine modelSaleMedicine)
     {
         var newSale = new Sale
@@ -29,53 +25,67 @@ public class SaleRepository : GenericRepository<Sale>, ISale
             Prescription = modelSale.Prescription
         };
 
-        try{
+        try
+        {
             _context.Sales.Add(newSale);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
             var saleCreated = await _context.Sales
-                                    .Where(u=> u.Id == newSale.Id)
+                                    .Where(u => u.Id == newSale.Id)
                                     .FirstOrDefaultAsync();
+
             var medicine = await _context.Medicines
-                                        .Where(u=> u.Id == modelSaleMedicine.MedicineId)
+                                        .Where(u => u.Id == modelSaleMedicine.MedicineId)
                                         .FirstOrDefaultAsync();
+
             var newSaleMedicine = new SaleMedicine
             {
                 SaleId = saleCreated.Id,
                 MedicineId = modelSaleMedicine.MedicineId,
-                SaleQuantity= modelSaleMedicine.SaleQuantity,
-                Price = medicine.Price*modelSaleMedicine.SaleQuantity
+                SaleQuantity = modelSaleMedicine.SaleQuantity,
+                Price = medicine.Price * modelSaleMedicine.SaleQuantity
             };
-            try{
-                
+
+            try
+            {
+                var lot = await _context.PurchasedMedicines
+                                        .Where(u => u.MedicineId == medicine.Id)
+                                        .FirstOrDefaultAsync();
+
                 if (medicine.Stock >= newSaleMedicine.SaleQuantity)
                 {
                     medicine.Stock -= modelSaleMedicine.SaleQuantity;
-                
+                    lot.Stock -= modelSaleMedicine.SaleQuantity;
+
                     _context.SaleMedicines.Add(newSaleMedicine);
                     _context.Medicines.Update(medicine);
+                    _context.PurchasedMedicines.Update(lot);
+
                     await _context.SaveChangesAsync();
-                }else{
+                }
+                else
+                {
                     _context.Sales.Remove(newSale);
                     _context.Sales.Remove(saleCreated);
+
                     await _context.SaveChangesAsync();
                     return "No hay tantos medicamentos";
 
                 }
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 return ex.Message;
-            } 
-        }catch(Exception ex)
+            }
+        }
+        catch (Exception ex)
         {
             return ex.Message;
         }
-        
         return "Sale made successfully!!";
-        
-        
-       
     }
-    public async Task<string> RegisterManyMedicinesAsync(Sale modelSale,  List<SaleMedicine> list)
+
+    public async Task<string> RegisterManyMedicinesAsync(Sale modelSale, List<SaleMedicine> list)
     {
         var newSale = new Sale
         {
@@ -85,63 +95,73 @@ public class SaleRepository : GenericRepository<Sale>, ISale
             Prescription = modelSale.Prescription
         };
 
-        try{
+        try
+        {
             _context.Sales.Add(newSale);
             await _context.SaveChangesAsync();
 
             var saleCreated = await _context.Sales
-                                        .Where(u=> u.Id == newSale.Id)
+                                        .Where(u => u.Id == newSale.Id)
                                         .FirstOrDefaultAsync();
 
-            List<SaleMedicine> newSaleMedicines = new(); 
+            List<SaleMedicine> newSaleMedicines = new();
 
-            foreach(var saleMedicine in list)
+            foreach (var saleMedicine in list)
             {
                 var medicine = await _context.Medicines
-                                    .Where(u=>u.Id == saleMedicine.MedicineId)
+                                    .Where(u => u.Id == saleMedicine.MedicineId)
                                     .FirstOrDefaultAsync();
-                
-                
+
+
                 newSaleMedicines.Add(new SaleMedicine
                 {
                     SaleId = saleCreated.Id,
                     MedicineId = saleMedicine.MedicineId,
-                    SaleQuantity= saleMedicine.SaleQuantity,
-                    Price = medicine.Price*saleMedicine.SaleQuantity,
+                    SaleQuantity = saleMedicine.SaleQuantity,
+                    Price = medicine.Price * saleMedicine.SaleQuantity,
                 });
+
+                var lot = await _context.PurchasedMedicines
+                                        .Where(u => u.MedicineId == medicine.Id)
+                                        .FirstOrDefaultAsync();
 
                 if (medicine.Stock >= saleMedicine.SaleQuantity)
                 {
                     medicine.Stock -= saleMedicine.SaleQuantity;
-                    
+                    // lot.Stock -= saleMedicine.SaleQuantity;
+
                     _context.Medicines.Update(medicine);
                     await _context.SaveChangesAsync();
-                }else{
+                }
+                else
+                {
                     _context.Sales.Remove(newSale);
                     _context.Sales.Remove(saleCreated);
                     await _context.SaveChangesAsync();
-                    Console.WriteLine("medicamento creado");
                     return "No hay tantos medicamentos";
                 }
-            } 
-            try{
+            }
+            try
+            {
                 _context.SaleMedicines.AddRange(newSaleMedicines);
                 await _context.SaveChangesAsync();
 
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 return ex.Message;
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return ex.Message;
         }
-        
         return "Sale made successfully!!";
     }
     public async Task<IEnumerable<Sale>> GetAllRecipesAsync()
     {
-        DateTime sice2023 = new(2023,1,1);
-        return await _context.Sales.Where(m => m.Prescription == true && m.DateSale >= sice2023).ToListAsync();
+        DateTime sice2023 = new(2023, 1, 1);
+        return await _context.Sales.Where(m => m.Prescription == true && m.DatePrescription >= sice2023).ToListAsync();
     }
     public async Task<IEnumerable<Sale>> GetSaleMonthly(int parameter)
     {
@@ -153,25 +173,34 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         return registros;
     }
 
-    //Promedio de medicamentos comprados por venta
-    // public async Task<IEnumerable<object>> GetAverage()
-    // {
-    //     var sales = await _context.Sales.ToListAsync();
+    // Promedio de medicamentos comprados por venta
+    public async Task<object> GetAverage()
+    {
+        var sales = await _context.Sales.ToListAsync();
 
-    //     var promedioVentasPorVenta = sales.Select(sale => new
-    //     {
-            
-    //         SaleId = sale.Id,
-    //         PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
-    //     });
+        // var promedioVentasPorVenta = sales.Select(sale => new
+        // {
+        //     SaleId = sale.Id,
+        //     PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
+        // });
 
-    //     var prom = sales
-    //             .SelectMany(sale => sale.SaleMedicines, (sale, medicine) => new
-    //             {
-    //                 SaleId = sale.Id,
-    //                 MedicineId = medicine.MedicineId,
-    //                 PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
-    //             });
-    //     return prom;
-    // }
+        var prom = sales
+                .SelectMany(sale => sale.SaleMedicines, (sale, medicine) => new
+                {
+                    SaleId = sale.Id,
+                    MedicineId = medicine.MedicineId,
+                    PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
+                });
+        return prom;
+    }
+
+    // Cantidad de ventas realizadas por cada empleado en 2023
+    public async Task<object> GetSaleQuantityAsync()
+    {
+
+        var employees = await _context.Employees.ToListAsync();  
+        var quantity = employees.Select(u=> new {u.Name, u.Sales.Count});
+
+        return quantity;
+    }
 }

@@ -17,6 +17,7 @@ public class SaleConfiguration : IEntityTypeConfiguration<Sale>
         .IsRequired();
         builder.Property(p=> p.Prescription)
         .IsRequired();
+        builder.Property(p=>p.DatePrescription);
         builder.HasOne(p=> p.Employee)
         .WithMany(p=> p.Sales)
         .HasForeignKey(p=>p.EmployeeId)
