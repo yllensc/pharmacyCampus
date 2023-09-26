@@ -85,7 +85,7 @@ public class SaleController : ApiBaseController
     [HttpGet("average")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<object>>> GetAverage()
+    public async Task<ActionResult<object>> GetAverage()
     {
         var sales = await _unitOfWork.Sales.GetAverage();
         return Ok(sales);

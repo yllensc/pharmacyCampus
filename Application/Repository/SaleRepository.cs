@@ -178,6 +178,16 @@ public class SaleRepository : GenericRepository<Sale>, ISale
     {
         var sales = await _context.Sales.ToListAsync();
 
+//         var promedioVentasPorVenta = Enumerable.Empty<object>();
+
+// if (sales != null && sales.Any())
+// {
+//     promedioVentasPorVenta = sales.Select(sale => new
+//     {
+//         SaleId = sale.Id,
+//         PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
+//     });
+// }
         // var promedioVentasPorVenta = sales.Select(sale => new
         // {
         //     SaleId = sale.Id,
@@ -185,12 +195,21 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         // });
 
         var prom = sales
-                .SelectMany(sale => sale.SaleMedicines, (sale, medicine) => new
-                {
-                    SaleId = sale.Id,
-                    MedicineId = medicine.MedicineId,
-                    PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
-                });
+    .Where(sale => sale != null && sale.SaleMedicines != null)
+    .SelectMany(sale => sale.SaleMedicines, (sale, medicine) => new
+    {
+        SaleId = sale.Id,
+        MedicineId = medicine.MedicineId,
+        SaleQuantity = medicine.SaleQuantity
+    })
+    .GroupBy(item => new { item.SaleId, item.MedicineId })
+    .Select(group => new
+    {
+        SaleId = group.Key.SaleId,
+        MedicineId = group.Key.MedicineId,
+        PromedioVenta = group.Average(item => item.SaleQuantity)
+    });
+
         return prom;
     }
 
