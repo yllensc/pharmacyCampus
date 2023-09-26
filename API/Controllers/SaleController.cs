@@ -184,6 +184,24 @@ public class SaleController : ApiBaseController
         return  Ok(result);
     }
 
+    [HttpGet("totalMedicinesQuarter/{quarter}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetTotalMedicinesQuarter(int quarter)
+    {
+        var result = await _unitOfWork.Sales.GetTotalMedicinesQuarter(quarter);
+        return  Ok(_mapper.Map<List<PatientSpentDto>>(result));
+    }
+
+    [HttpGet("patientMoreSpent")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetPatientMoreSpent()
+    {
+        var result = await _unitOfWork.Sales.GetPatientMoreSpent();
+        return  Ok(result);
+    }
+
     
     
 }
