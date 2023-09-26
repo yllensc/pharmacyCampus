@@ -13,6 +13,7 @@ namespace Domain.Entities;
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public bool Prescription { get; set; } = false;
+        public DateTime DatePrescription { get; set; }
         public ICollection<SaleMedicine> SaleMedicines{ get; set; }
 
     }

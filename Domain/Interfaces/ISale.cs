@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ public interface ISale : IGenericRepository<Sale>
     Task<string> RegisterManyMedicinesAsync(Sale modelSale , List<SaleMedicine> list);
     Task<IEnumerable<Sale>> GetAllRecipesAsync();
     Task<IEnumerable<Sale>> GetSaleMonthly(int parameter);
+    Task<object> GetAverage();
+    Task<object> GetSaleQuantityAsync();
     // Task<IEnumerable<object>> GetAverage();
     Task<object> GetTotalSalesOneMedicine(string medicine);
     Task<object> GetGainSales();

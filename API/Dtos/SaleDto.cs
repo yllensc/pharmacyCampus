@@ -14,9 +14,9 @@ public class SaleDto
     public int EmployeeId { get; set; }
     [Required]
     public bool Prescription { get; set; }
+    public DateTime DatePrescription { get; set; }
     [Required]
-    public int MedicineId {get; set;}
+    public int MedicineId { get; set; }
     [Required]
-    public int SaleQuantity { get; set;}
-
+    public int SaleQuantity { get; set; }
 }
