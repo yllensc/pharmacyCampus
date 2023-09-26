@@ -36,6 +36,13 @@ namespace API.Dtos
         public int PurchaseCant { get; set; }
         
     }
+    public class MedicineWithQuantitySoldDto
+    {
+        [Required]
+        public string Name { get; set; }
+        public int SoldCant { get; set; }
+        
+    }
     public class MedicineWithStockDto
     {
         [Required]
