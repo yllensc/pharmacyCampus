@@ -232,7 +232,7 @@ public class UserService : IUserService
             return new RefreshToken
             {
                 Token = Convert.ToBase64String(randomNumber),
-                Expires = DateTime.UtcNow.AddMinutes(2),
+                Expires = DateTime.UtcNow.AddDays(10),
                 Created = DateTime.UtcNow
             };
         }
@@ -259,7 +259,7 @@ public class UserService : IUserService
             issuer: _jwt.Issuer,
             audience: _jwt.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwt.DurationOnMinutes),
+            expires: DateTime.UtcNow.AddMinutes(_jwt.DurationInMinutes),
             signingCredentials: signingCredentials);
         return jwtSecurityToken;
     }

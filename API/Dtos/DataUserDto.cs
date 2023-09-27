@@ -11,7 +11,6 @@ namespace API.Dtos;
     public List<string> Roles { get; set; }
     public string Token { get; set; }
 
-    [JsonIgnore]
     public string RefreshToken { get; set; }
     public DateTime RefreshTokenExpiration { get; set; }        
     }

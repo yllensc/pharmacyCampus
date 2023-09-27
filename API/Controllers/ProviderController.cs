@@ -8,6 +8,7 @@ using API.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -23,7 +24,9 @@ public class ProviderController : ApiBaseController
         _mapper = mapper;
     }
 
+    
     [HttpGet("getProviders")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderDto>>> GetProviders()
