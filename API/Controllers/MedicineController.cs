@@ -3,6 +3,7 @@ using API.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -24,6 +25,7 @@ namespace API.Controllers;
         return Ok(result);
     }
     [HttpGet("underStock{cant}")]
+    [Authorize(Roles = "Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetUnderCant(int cant)
