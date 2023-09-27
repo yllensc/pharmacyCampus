@@ -102,7 +102,7 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
     }
     public async Task<IEnumerable<Provider>> GetProvidersWithMedicinesUnderx(int cant)
     {
-        var providersWithMedicinesUnder50 = await _context.Providers
+        var providersWithMedicinesUnderxCant= await _context.Providers
             .Where(p => p.Medicines.Any(m => m.Stock < cant))
             .Select(p => new Provider
             {
@@ -110,11 +110,11 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
                 Name = p.Name,
                 Email = p.Email,
                 Address = p.Address,
-                Medicines = p.Medicines.Where(m => m.Stock < 50).ToList()
+                Medicines = p.Medicines.Where(m => m.Stock < cant).ToList()
             })
             .ToListAsync();
 
-        return providersWithMedicinesUnder50;
+        return providersWithMedicinesUnderxCant;
     }
 
     public async Task<IEnumerable<Provider>> GetCantMedicineByProvider()
@@ -123,45 +123,6 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
         .Include(p => p.Medicines)
         .ToListAsync();
     }
-    /*public async Task<Dictionary<string, double> > GetGainsByProviders()
-    {
-        List<double> gainsProvider = new();
-        Dictionary<string, double> gainsProviders =new();
-        var providers = await _context.Providers.ToListAsync();
-    
-        foreach(var p in providers)
-        {
-            var existPurchase = await _context.Purchases
-                                            .Where(u=> u.ProviderId == p.Id)
-                                            .ToListAsync();
-            
-            if(existPurchase !=  null)
-            {
-
-                double gains = 0;
-                foreach(var purchase in existPurchase)
-                {
-                    var purMedicines = await _context.PurchasedMedicines
-                                                    .Where(u=> u.PurchasedId == purchase.Id)
-                                                    .ToListAsync();
-                    foreach(var pMed in purMedicines)
-                    {
-                        gains += pMed.PricePurchase;
-                    }
-                }
-                gainsProvider.Add(gains);
-                gainsProviders.Add(p.Name,gains);
-                
-            }else
-            {
-                gainsProvider.Add(0);
-                gainsProviders.Add(p.Name,0);
-
-            }
-        }
-
-        return gainsProviders;
-    } */
 
     public async Task<IEnumerable<object>> GetProviderWithMoreMedicines()
     {
