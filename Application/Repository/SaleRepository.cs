@@ -430,59 +430,31 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var patients = await _context.Patients.ToListAsync();
         var salesMedicines = await _context.SaleMedicines.ToListAsync();
 
-        var groupSalesMedicine = (
-                        from sale in sales
-                        join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
-                        join medicine in medicines on saleMedicine.Id equals medicine.Id
-                        select saleMedicine).GroupBy(u => u.SaleId);
+        var patientsSales = (from patient in patients
+                            join sale in sales on patient.Id equals sale.PatientId
+                            join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
+                            select sale).Distinct()
+                            .Select(s => new
+                            {
+                                IdPatient = s.Patient.Id,
+                                s.Patient.Name,
+                                subSpent = s.SaleMedicines.Select(u=> u.Price).Sum(),
+                                s.DateSale
+                            }).GroupBy(g=> g.Name)
+                            .Select(u=> new
+                            {
+                                Name = u.Key,
+                                TotalSpent = u.Sum(a=> a.subSpent)
+                            });
 
-
-        Dictionary<int, double> spentPatient = new();
-        foreach (var group in groupSalesMedicine)
-        {
-            double spentSale = 0;
-            foreach (var saleMedicine in group)
-            {
-                spentSale += saleMedicine.Price;
-            }
-
-            int idPatient = sales.Where(u => u.Id == group.Key).FirstOrDefault().PatientId;
-            Console.WriteLine(idPatient);
-
-            if (spentPatient.ContainsKey(idPatient))
-            {
-
-                spentPatient[idPatient] += spentSale;
-            }
-            else
-            {
-                spentPatient.Add(idPatient, spentSale);
-            }
-        }
-
-        foreach (var patient in patients)
-        {
-            if (!spentPatient.ContainsKey(patient.Id))
-            {
-                spentPatient.Add(patient.Id, 0);
-            }
-        }
-        List<object> totalSpent = new();
-
-        foreach (var dic in spentPatient)
-        {
-            var patient = patients.Where(u => u.Id == dic.Key).FirstOrDefault();
-            object objecResult = new
-            {
-                patient.Id,
-                patient.Name,
-                TotalSpent = dic.Value
-            };
-            totalSpent.Add(objecResult);
-
-        }
-
-        return totalSpent;
+        var patientWithoutSales = patients.Where(u=> !sales.Any(s=> s.PatientId == u.Id))
+                                    .Select(u=> new
+                                        {
+                                            u.Name,
+                                            TotalSpent = 0.0
+                                        });
+        
+        return patientsSales.Concat(patientWithoutSales);
 
 
     }
