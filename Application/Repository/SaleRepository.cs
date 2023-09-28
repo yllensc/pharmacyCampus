@@ -284,19 +284,19 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
     public async Task<IEnumerable<Medicine>> GetUnsoldMedicine()
     {
-        var medicines = await _context.Medicines.ToListAsync();
+        var sales = await _context.Sales.ToListAsync();
 
-        List<Medicine> unsoldMed = new();
-        foreach (var med in medicines)
-        {
-            var existMed = await _context.SaleMedicines
-                                        .Where(u => u.MedicineId == med.Id)
-                                        .FirstOrDefaultAsync();
-            if (existMed == null)
-            {
-                unsoldMed.Add(med);
-            }
-        }
+        var medicines = await _context.Medicines.ToListAsync();
+        var saleMedicines = await _context.SaleMedicines.ToListAsync();
+        
+        var salesMed = (from sale in sales 
+                        join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
+                        select saleMedicine.MedicineId)
+                        .Distinct()
+                        .ToList();
+                        
+        var unsoldMed =  medicines.Where(u=> !salesMed.Any(s=> s == u.Id));
+        
         return unsoldMed;
     }
 
@@ -307,24 +307,16 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var sales = await _context.Sales
                                     .Where(u => u.DateSale >= init2023 && u.DateSale < init2024).ToListAsync();
         var medicines = await _context.Medicines.ToListAsync();
-
-        List<Medicine> unsoldMed = new();
-        foreach (var sale in sales)
-        {
-            var listSales = await _context.SaleMedicines
-                                        .Where(u => u.SaleId == sale.Id)
-                                        .ToListAsync();
-            foreach (var med in medicines)
-            {
-                var existMed = listSales
-                                    .Where(u => u.MedicineId == med.Id)
-                                    .FirstOrDefault();
-                if (existMed == null && !unsoldMed.Contains(med))
-                {
-                    unsoldMed.Add(med);
-                }
-            }
-        }
+        var saleMedicines = await _context.SaleMedicines.ToListAsync();
+        
+        var salesMed = (from sale in sales 
+                        join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
+                        select saleMedicine)
+                        .Distinct()
+                        .ToList();
+                        
+        var unsoldMed =  medicines.Where(u=> !salesMed.Any(s=> s.MedicineId == u.Id));
+        
         return unsoldMed;
     }
 
