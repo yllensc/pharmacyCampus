@@ -202,6 +202,14 @@ public class SaleController : ApiBaseController
         return  Ok(result);
     }
 
+    [HttpGet("batchOfMedicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetBatchOfMedicines()
+    {
+        var result = await _unitOfWork.Sales.GetBatchOfMedicines();
+        return  Ok(result);
+    }
     
     
 }

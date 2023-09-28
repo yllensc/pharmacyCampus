@@ -54,7 +54,7 @@ public class UserController : ApiBaseController
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Expires = DateTime.UtcNow.AddMinutes(2),
+            Expires = DateTime.UtcNow.AddMinutes(10),
         };
         Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
