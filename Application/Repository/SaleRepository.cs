@@ -381,33 +381,23 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var salesMedicines = await _context.SaleMedicines.ToListAsync();
         var medicines = await _context.Medicines.ToListAsync();
 
-        var groupMedicine = (from medicine in medicines
-                             join saleMedicine in salesMedicines on medicine.Id equals saleMedicine.MedicineId
-                             select medicine).GroupBy(u => u.Id);
-        Dictionary<int, int> cantMedicines = new();
-        foreach (var group in groupMedicine)
-        {
-            cantMedicines.Add(group.Key, group.Count());
-        }
-        int lessQuantity = cantMedicines.Values.Min();
-        List<object> lessSoldMedicine = new();
-
-        foreach (var dic in cantMedicines)
-        {
-            if (lessQuantity == dic.Value)
-            {
-                var medicine = await _context.Medicines.Where(u => u.Id == dic.Key).FirstOrDefaultAsync();
-                object objecResult = new
-                {
-                    medicine.Id,
-                    medicine.Name,
-                    medicine.Stock,
-                    LessQuantity = dic.Value
-                };
-
-                lessSoldMedicine.Add(objecResult);
-            };
-        };
+        var soldMedicine = (from medicine in medicines
+                                join saleMedicine in salesMedicines on medicine.Id equals saleMedicine.MedicineId
+                                join sale in sales on saleMedicine.SaleId equals sale.Id
+                                select saleMedicine)
+                                .Select(s=> new {
+                                    NameMedicine = s.Medicine.Name,
+                                    Quantity = s.SaleQuantity
+                                })
+                                .GroupBy(u => u.NameMedicine)
+                                .Select(u=> new{
+                                    idMedicine = u.Key,
+                                    TotalQuantity = u.Sum(s=> s.Quantity)
+                                }).OrderBy(o=> o.TotalQuantity).ToList();
+        
+        int min = soldMedicine.Min(a=> a.TotalQuantity);
+        var lessSoldMedicine = soldMedicine.Where(a=> a.TotalQuantity == min).ToList();
+        
 
         return lessSoldMedicine;
     }
