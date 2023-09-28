@@ -516,53 +516,21 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var saleMedicines =await _context.SaleMedicines.ToListAsync();
         var medicines = await _context.Medicines.ToListAsync();
         
-        var groupMedicines = (from sale in sales 
+        var totalSold = (from sale in sales 
                              join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
                              join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
-                             select saleMedicine).GroupBy(u=> u.MedicineId);
-        
-        Dictionary<int,int> cantMedicines = new();
+                             select saleMedicine)
+                             .Select(s=> new {
+                                Name = s.Medicine.Name,
+                                subQuantity = s.SaleQuantity
+                             }).GroupBy(g=> g.Name)
+                             .Select(u=> new{
+                                NameMedicine = u.Key,
+                                TotalQuantity = u.Sum(a=> a.subQuantity)
+                             });
+    
 
-        foreach(var group in groupMedicines)
-        {
-            int cantMed = 0;
-            foreach(var saleMedicine in group)
-            {
-                cantMed += saleMedicine.SaleQuantity;
-            }
-
-            int idMedicine = saleMedicines.Where(u=>u.MedicineId == group.Key).FirstOrDefault().MedicineId;
-
-            if(cantMedicines.ContainsKey(idMedicine)){
-                
-                cantMedicines[idMedicine] += cantMed;
-            }else{
-                cantMedicines.Add(idMedicine,cantMed);
-            }
-        }
-        foreach(var medicine in medicines)
-        {
-            if(!cantMedicines.ContainsKey(medicine.Id))
-            {
-                cantMedicines.Add(medicine.Id,0);
-            }
-        }
-        List<object>totalSpent = new();
-
-        foreach(var dic in cantMedicines)
-        {
-            var medicine = medicines.Where(u=> u.Id == dic.Key).FirstOrDefault();
-            object objecResult = new{
-                medicine.Id,
-                medicine.Name,
-                TotalQuantity = dic.Value
-            };
-            totalSpent.Add(objecResult);
-
-        }
-
-
-        return totalSpent;
+        return totalSold;
     }
 
     public async Task<IEnumerable<object>> GetPatientMoreSpent()

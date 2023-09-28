@@ -190,7 +190,7 @@ public class SaleController : ApiBaseController
     public async Task<ActionResult> GetTotalMedicinesQuarter(int quarter)
     {
         var result = await _unitOfWork.Sales.GetTotalMedicinesQuarter(quarter);
-        return  Ok(_mapper.Map<List<PatientSpentDto>>(result));
+        return  Ok(result);
     }
 
     [HttpGet("patientMoreSpent")]
