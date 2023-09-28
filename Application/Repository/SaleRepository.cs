@@ -52,6 +52,40 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
                 if (medicine.Stock >= newSaleMedicine.SaleQuantity)
                 {
+                    int quantity =  modelSaleMedicine.SaleQuantity;
+                    
+                    while (quantity != 0)
+                    {
+                        var nearestExpirationDate =await _context.PurchasedMedicines
+                                                    .Where(u=> u.MedicineId ==  modelSaleMedicine.MedicineId && u.Stock>0)
+                                                    .OrderBy(o=> o.ExpirationDate).FirstAsync();
+                        if(nearestExpirationDate == null)
+                        {
+                            quantity = 0;
+                        }else{
+                            var purchasedMedicine = await _context.PurchasedMedicines.Where(u => u.Id == nearestExpirationDate.Id).FirstOrDefaultAsync();
+
+                            if(nearestExpirationDate.Stock>= quantity)
+                            {
+                                //Stock Lote por fecha de vencimiento
+                                purchasedMedicine.Stock -= quantity;
+                                                                Console.WriteLine(purchasedMedicine.Stock +"dfgdfg  " +quantity +"  fdgdsfg");
+
+                                _context.PurchasedMedicines.Update(purchasedMedicine);
+                                await _context.SaveChangesAsync();
+                                quantity = 0;
+
+                            }else
+                            {
+                                quantity -=  purchasedMedicine.Stock ;
+                                purchasedMedicine.Stock =0;
+                                _context.PurchasedMedicines.Update(purchasedMedicine);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+
+
                     medicine.Stock -= modelSaleMedicine.SaleQuantity;
 
                     _context.SaleMedicines.Add(newSaleMedicine);
