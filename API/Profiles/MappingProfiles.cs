@@ -20,11 +20,12 @@ public class MappingProfiles : Profile
             .ForMember(o => o.Medicines, d => d.Ignore());
         CreateMap<Provider, ProviderPutDto>()
             .ReverseMap();
+        CreateMap<Provider, ProviderNameOnlyDto>()
+            .ReverseMap();
         CreateMap<Employee, EmployeeAllDto>()
             .ReverseMap();
         CreateMap<Employee, EmployeeGetIdNameDto>()
             .ReverseMap();
-
         CreateMap<Employee,EmployeeGetDto>()
             .ReverseMap()
             .ForMember(o=> o.PositionId, d => d.Ignore());

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace API.Dtos
 {
+    public class ProviderNameOnlyDto{
+        public string Name { get; set; }
+
+    }
     public class ProviderPutDto
     {
         public int Id { get; set; }
