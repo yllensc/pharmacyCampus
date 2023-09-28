@@ -28,6 +28,8 @@ public interface ISale : IGenericRepository<Sale>
 
     Task<IEnumerable<object>> GetPatientMoreSpent();
 
+    Task<IEnumerable<object>> GetBatchOfMedicines();
+
 
 
 

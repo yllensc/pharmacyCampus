@@ -52,6 +52,38 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
                 if (medicine.Stock >= newSaleMedicine.SaleQuantity)
                 {
+                    int quantity =  modelSaleMedicine.SaleQuantity;
+                    
+                    while (quantity != 0)
+                    {
+                        var nearestExpirationDate =await _context.PurchasedMedicines
+                                                    .Where(u=> u.MedicineId ==  modelSaleMedicine.MedicineId && u.Stock>0)
+                                                    .OrderBy(o=> o.ExpirationDate).FirstAsync();
+                        if(nearestExpirationDate == null)
+                        {
+                            quantity = 0;
+                        }else{
+                            var purchasedMedicine = await _context.PurchasedMedicines.Where(u => u.Id == nearestExpirationDate.Id).FirstOrDefaultAsync();
+
+                            if(nearestExpirationDate.Stock>= quantity)
+                            {
+                                //Stock Lote por fecha de vencimiento
+                                purchasedMedicine.Stock -= quantity;
+                                _context.PurchasedMedicines.Update(purchasedMedicine);
+                                await _context.SaveChangesAsync();
+                                quantity = 0;
+
+                            }else
+                            {
+                                quantity -=  purchasedMedicine.Stock ;
+                                purchasedMedicine.Stock =0;
+                                _context.PurchasedMedicines.Update(purchasedMedicine);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+
+
                     medicine.Stock -= modelSaleMedicine.SaleQuantity;
 
                     _context.SaleMedicines.Add(newSaleMedicine);
@@ -120,6 +152,37 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
                 if (medicine.Stock >= saleMedicine.SaleQuantity)
                 {
+                    int quantity =  saleMedicine.SaleQuantity;
+                    
+                    while (quantity != 0)
+                    {
+                        var nearestExpirationDate =await _context.PurchasedMedicines
+                                                    .Where(u=> u.MedicineId ==  saleMedicine.MedicineId && u.Stock>0)
+                                                    .OrderBy(o=> o.ExpirationDate).FirstAsync();
+                        if(nearestExpirationDate == null)
+                        {
+                            quantity = 0;
+                        }else{
+                            var purchasedMedicine = await _context.PurchasedMedicines.Where(u => u.Id == nearestExpirationDate.Id).FirstOrDefaultAsync();
+
+                            if(nearestExpirationDate.Stock>= quantity)
+                            {
+                                //Stock Lote por fecha de vencimiento
+                                purchasedMedicine.Stock -= quantity;
+                                _context.PurchasedMedicines.Update(purchasedMedicine);
+                                await _context.SaveChangesAsync();
+                                quantity = 0;
+
+                            }else
+                            {
+                                quantity -=  purchasedMedicine.Stock ;
+                                purchasedMedicine.Stock =0;
+                                _context.PurchasedMedicines.Update(purchasedMedicine);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+
                     medicine.Stock -= saleMedicine.SaleQuantity;
 
                     _context.Medicines.Update(medicine);
@@ -130,7 +193,6 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                     _context.Sales.Remove(newSale);
                     _context.Sales.Remove(saleCreated);
                     await _context.SaveChangesAsync();
-                    Console.WriteLine("medicamento creado");
                     return "No hay tantos medicamentos";
                 }
             }
@@ -613,6 +675,26 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         }
 
         return totalSpent;
+    }
+
+    public async Task<IEnumerable<object>> GetBatchOfMedicines()
+    {
+        var medicines = await _context.Medicines.ToListAsync();
+
+        var purchasedmeds =  await _context.PurchasedMedicines.ToListAsync();
+
+        var prueba = (from medicine in medicines 
+                        join purchasedmed in purchasedmeds on medicine.Id equals purchasedmed.MedicineId
+                        select purchasedmed).Select(s=> new
+                        {
+                            idMedicine = s.Medicine.Name,
+                            Lote = s.Stock,
+                            ExpirationDate = s.ExpirationDate
+                        }).ToList();
+                                   
+
+        return prueba; 
+        
     }
 
 }

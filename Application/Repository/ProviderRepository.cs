@@ -263,9 +263,6 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
             var existPurchase = await _context.Purchases
                                             .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
                                            .ToListAsync();
-            
-
-            
             if(existPurchase.Any())
             {
 
