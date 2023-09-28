@@ -190,7 +190,7 @@ public class SaleController : ApiBaseController
     public async Task<ActionResult> GetTotalMedicinesQuarter(int quarter)
     {
         var result = await _unitOfWork.Sales.GetTotalMedicinesQuarter(quarter);
-        return  Ok(_mapper.Map<List<PatientSpentDto>>(result));
+        return  Ok(result);
     }
 
     [HttpGet("patientMoreSpent")]
@@ -202,6 +202,14 @@ public class SaleController : ApiBaseController
         return  Ok(result);
     }
 
+    [HttpGet("batchOfMedicines")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetBatchOfMedicines()
+    {
+        var result = await _unitOfWork.Sales.GetBatchOfMedicines();
+        return  Ok(result);
+    }
     
     
 }
