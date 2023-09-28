@@ -7,6 +7,7 @@ using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Globalization;
+using System.util.zlib;
 
 
 namespace Application.Repository;
@@ -186,22 +187,19 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
         var providers = await _context.Providers.ToListAsync();
         DateTime init2023 = new(2023,1,1);
         DateTime init2024 = new(2024,1,1);
-        int totalProviders = 0;
-        foreach(var p in providers)
-        {
-            var existPurchase = await _context.Purchases
-                                            .Where(u=> u.ProviderId == p.Id && u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
+       
+        var purchases = await _context.Purchases
+                                            .Where(u=> u.DatePurchase>= init2023 && u.DatePurchase< init2024 )
                                            .ToListAsync();
-            if(existPurchase.Any() )
-            {   
-                 totalProviders += 1;   
-            }
-        }
 
-        object total = new{
-            TotalProviders = totalProviders
+
+        object totalProvider = new {
+             
+             ProvidersList = purchases.Select(s=> s.Provider.Name).ToList().Distinct(),
+             TotalProviders = purchases.Select(s=> s.Provider.Name).ToList().Distinct().Count()
         };
-        return total;
+
+        return totalProvider;
     }
 
     public async Task<IEnumerable<Provider>> GetProvidersWithDiferentMedicines()
