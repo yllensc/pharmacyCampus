@@ -72,13 +72,12 @@ public class PurchaseController : ApiBaseController
         return Ok(_mapper.Map<List<ProviderDto>>(result));
     }
 
-    [HttpGet("medicinesPurchased")]
+    [HttpGet("medicinesPurchased/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> GetMedicinesPurchasedByProvider([FromBody] ProviderNameOnlyDto providerDto)
+    public async Task<ActionResult> GetMedicinesPurchasedByProvider(int id)
     {
-        var provider = _mapper.Map<Provider>(providerDto);
-        var result = await _unitOfWork.Purchases.GetMedicinesPurchasedByProvider(provider.Name);
+        var result = await _unitOfWork.Purchases.GetMedicinesPurchasedByProvider(id);
         return  Ok(_mapper.Map<List<MedicinePDto>>(result));
     }
 }

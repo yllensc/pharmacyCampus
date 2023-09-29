@@ -11,7 +11,7 @@ public interface IPurchase: IGenericRepository<Purchase>
     Task<string> RegisterManyMedicinesAsync(Purchase modelPurchase , List<PurchasedMedicine> list);
     
     //Ennpoints
-    Task<IEnumerable<Medicine>>GetMedicinesPurchasedByProvider(string provider);
+    Task<IEnumerable<Medicine>>GetMedicinesPurchasedByProvider(int idprovider);
     Task<IEnumerable<Provider>> GetProvidersWithoutPurchases();
 
 }

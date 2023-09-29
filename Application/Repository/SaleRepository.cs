@@ -250,10 +250,10 @@ public class SaleRepository : GenericRepository<Sale>, ISale
     //             });
     //     return prom;
     // }
-    public async Task<object> GetTotalSalesOneMedicine(string nameMedicine)
+    public async Task<object> GetTotalSalesOneMedicine(int id)
     {
         var existMedicine = await _context.Medicines
-                                    .Where(u => u.Name.ToLower() == nameMedicine.ToLower())
+                                    .Where(u => u.Id == id)
                                     .FirstOrDefaultAsync();
         if (existMedicine == null)
         {
@@ -266,7 +266,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         object totalSales = new
         {
-            TotalSales = salesMedicine.Count
+            TotalSales = salesMedicine.Select(u=> u.SaleQuantity).Sum()
         };
         return totalSales;
     }
@@ -607,13 +607,22 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         var prueba = (from medicine in medicines 
                         join purchasedmed in purchasedmeds on medicine.Id equals purchasedmed.MedicineId
-                        select purchasedmed).Select(s=> new
+                        select purchasedmed)
+                        .Select(s=> new
                         {
-                            idMedicine = s.Medicine.Name,
-                            Lote = s.Stock,
+                            NameMedicine = s.Medicine.Name,
+                            IdPurchase = s.PurchasedId,
+                            StockLote = s.Stock,
                             ExpirationDate = s.ExpirationDate
-                        }).ToList();
-                                   
+                        }).GroupBy(g=> g.NameMedicine)
+                        .Select(a=> new{
+                            NameMedicine = a.Key,
+                            ListBatch = a.Select(u=> new{
+                                ExpirationDate = u.ExpirationDate,
+                                StockLote = u.StockLote
+                            }).OrderBy
+                            (o=> o.ExpirationDate)
+                        });
 
         return prueba; 
         
