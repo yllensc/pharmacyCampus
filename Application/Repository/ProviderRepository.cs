@@ -172,7 +172,7 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
                 object objecResult = new{
                     provider.Id,
                     provider.Name,
-                    MoreQuantity = dic.Value                };
+                    MoreQuantity = dic.Value};
 
                 providerWithMoreMed.Add(objecResult);
             };
@@ -279,6 +279,8 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
                 object newObject = new{
                     p.Id,
                     p.Name,
+                    p.IdenNumber,
+                    p.Email,
                     TotalGain2023 = gains
                 };
                 gainsProviders.Add(newObject);
@@ -289,6 +291,8 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
                 object newObject = new{
                     p.Id,
                     p.Name,
+                    p.IdenNumber,
+                    p.Email,
                     TotalGain2023 = 0
                 };
                 gainsProviders.Add(newObject);
