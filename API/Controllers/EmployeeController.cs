@@ -74,6 +74,7 @@ public class EmployeeController : ApiBaseController
             var sales = await _unitOfWork.Employees.SalesByEmployee(employee.Id);
             var typeMedicine = await _unitOfWork.Employees.SalesTypeMedicineByEmployee(employee.Id);
             var employeeSales = new EmployeeGetSalesDto{
+                Id = employee.Id,
                 Name = employee.Name,
                 CantSales = sales,
                 CantTypesMedicines = typeMedicine

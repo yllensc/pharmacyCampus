@@ -3,6 +3,7 @@ using API.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -66,10 +67,10 @@ namespace API.Controllers;
     [HttpGet("GetProvidersInfoWithMedicines")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<ProviderDto>>> GetProvidersInfoWithMedicines()
+    public async Task<ActionResult<IEnumerable<ProviderWithListMedicinesDto>>> GetProvidersInfoWithMedicines()
     {
         var medicines = await _unitOfWork.Providers.GetCantMedicineByProvider();
-        return _mapper.Map<List<ProviderDto>>(medicines);
+        return _mapper.Map<List<ProviderWithListMedicinesDto>>(medicines);
     }
     [HttpGet("salesIn{year}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

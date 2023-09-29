@@ -132,6 +132,19 @@ public class ProviderRepository : GenericRepository<Provider>, IProvider
         DateTime initStart = new(2023,1,1);
         DateTime initEnd = new(2024,1,1);
 
+       var providerTest = await _context.Providers
+        .Where(e => e.Purchases
+            .Where(s => s.DatePurchase >= initStart && s.DatePurchase <= initEnd)
+            .SelectMany(s => s.PurchasedMedicines)
+            .Select(sm => sm.MedicineId)
+            .Count() > 0)
+            .OrderByDescending(e => e.Purchases
+            .Where(s => s.DatePurchase >= initStart && s.DatePurchase <= initEnd)
+            .SelectMany(s => s.PurchasedMedicines)
+            .Select(sm => sm.MedicineId)
+            .Count())
+            .FirstOrDefaultAsync();
+
         foreach(var p in providers)
         {
             var existPurchase = await _context.Purchases
