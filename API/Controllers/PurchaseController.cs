@@ -75,9 +75,8 @@ public class PurchaseController : ApiBaseController
     [HttpGet("medicinesPurchased/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> GetMedicinesPurchasedByProvider([FromQuery] int id)
+    public async Task<ActionResult> GetMedicinesPurchasedByProvider(int id)
     {
-        
         var result = await _unitOfWork.Purchases.GetMedicinesPurchasedByProvider(id);
         return  Ok(_mapper.Map<List<MedicinePDto>>(result));
     }
