@@ -195,20 +195,25 @@ namespace Application.Repository;
     }
 
     
-    public async Task<IEnumerable<Medicine>> GetMedicinesPurchasedByProvider(string provider)
+    public async Task<IEnumerable<Medicine>> GetMedicinesPurchasedByProvider(int idprovider)
     {
         List<Medicine> medicinesProvider = new();
+                            Console.WriteLine("idddd",idprovider);
 
         var providerM = await _context.Providers
-                                .Where(u=>u.Name.ToLower() == provider.ToLower())
+                                .Where(u=>u.Id == idprovider)
                                 .FirstOrDefaultAsync();
         if(providerM == null)
         {
+                            Console.WriteLine("      what;",idprovider);
+
             return null;
         }
         
+                Console.WriteLine("holaaa;",idprovider);
+
         var existPurchase = await _context.Purchases
-                                            .Where(u=> u.ProviderId == providerM.Id)
+                                            .Where(u=> u.ProviderId == idprovider)
                                           .ToListAsync();
         
         List<int> IdsMedicine = new();

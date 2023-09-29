@@ -624,8 +624,6 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                             (o=> o.ExpirationDate)
                         });
 
-                                   
-
         return prueba; 
         
     }

@@ -26,7 +26,6 @@ public class ProviderController : ApiBaseController
 
     
     [HttpGet("getProviders")]
-    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderDto>>> GetProviders()
@@ -133,6 +132,15 @@ public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityStockDto>>> 
     {
         var providersAll = await _unitOfWork.Providers.GetAllAsync();
         return _mapper.Map<List<ProviderxPurchaseDto>>(providersAll);
+    }
+
+    [HttpGet("onlyProviders")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProviderDto>>> Get2()
+    {
+        var providersAll = await _unitOfWork.Providers.GetAllAsync();
+        return _mapper.Map<List<ProviderDto>>(providersAll);
     }
 
     [HttpPost]
