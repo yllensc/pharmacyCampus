@@ -138,7 +138,7 @@ public class MedicineRepository : GenericRepository<Medicine>, IMedicineReposito
         List<Medicine> listMedicines = new();
         foreach (var m in _context.Medicines.Include(d => d.Provider))
         {
-            if (m.Price >= priceInput && m.Stock > stockInput)
+            if (m.Price >= priceInput && m.Stock < stockInput)
             {
                 listMedicines.Add(m);
             }
