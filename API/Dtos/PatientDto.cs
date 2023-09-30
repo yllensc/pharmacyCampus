@@ -9,6 +9,8 @@ namespace API.Dtos;
 public class PatientDto
 {
     [Required]
+    public int Id { get; set; }
+    [Required]
     public string IdenNumber { get; set;}
     [Required]
     public string Name { get; set; }
