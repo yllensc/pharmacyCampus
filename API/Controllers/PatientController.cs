@@ -46,12 +46,9 @@ public class PatientController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
     public async Task<ActionResult> Post([FromBody] PatientDto patientDto){
-
         var patient =  _mapper.Map<Patient>(patientDto);
         var result = await _unitOfWork.Patients.RegisterAsync(patient);
-
         return Ok(result);
-
     }
 
     [HttpPut]
@@ -61,9 +58,7 @@ public class PatientController : ApiBaseController
     public async Task<ActionResult> Put([FromBody] PatientPutDto patientPutDto)
     {
         if(patientPutDto == null){return NotFound();}
-
         var patient = _mapper.Map<Patient>(patientPutDto);
-        
         var result = await _unitOfWork.Patients.UpdateAsync(patient);
         return Ok(result);
     }
@@ -75,9 +70,7 @@ public class PatientController : ApiBaseController
     public async Task<IActionResult> Delete(int id)
     {
         var patient = await _unitOfWork.Patients.GetByIdAsync(id);
-
         if(patient == null) {return NotFound();}
-
         this._unitOfWork.Patients.Remove(patient);
         await this._unitOfWork.SaveAsync();
         return NoContent();
