@@ -28,6 +28,5 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
          builder.Property(p => p.IdenNumber)
         .IsRequired()
         .HasMaxLength(25);
-
     }
 }

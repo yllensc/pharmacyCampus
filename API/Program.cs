@@ -20,8 +20,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.ConfigureCors();
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
+builder.Services.ConfigureCors();
 
 builder.Services.AddAplicacionServices();
 builder.Services.AddJwt(builder.Configuration);
@@ -49,8 +49,8 @@ using (var scope = app.Services.CreateScope())
 	{
 		var context = services.GetRequiredService<PharmacyDbContext>();
 		await context.Database.MigrateAsync();
-		//await PharmacyContextSeed.SeedAsync(context,loggerFactory);
-		await PharmacyContextSeed.SeedRolesAsync(context,loggerFactory);
+		await PharmacyContextSeed.SeedAsync(context,loggerFactory);
+		// await PharmacyContextSeed.SeedRolesAsync(context,loggerFactory);
 	}
 	catch (Exception ex)
 	{
