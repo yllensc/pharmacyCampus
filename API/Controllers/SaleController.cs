@@ -67,10 +67,10 @@ public class SaleController : ApiBaseController
     [HttpGet("recipes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<SaleDto>>> GetRecipes()
+    public async Task<ActionResult<object>> GetRecipes()
     {
         var sales = await _unitOfWork.Sales.GetAllRecipesAsync();
-        return _mapper.Map<List<SaleDto>>(sales);
+        return sales;
     }
 
     [HttpGet("month")]
@@ -121,7 +121,7 @@ public class SaleController : ApiBaseController
     [HttpGet("gainSales")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> GetGainSales()
+    public async Task<ActionResult<object>> GetGainSales()
     {
         var result = await _unitOfWork.Sales.GetGainSales();
         return  Ok(result);
