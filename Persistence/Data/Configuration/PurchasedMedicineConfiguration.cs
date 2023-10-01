@@ -13,12 +13,10 @@ public class PurchasedMedicineConfiguration : IEntityTypeConfiguration<Purchased
         .IsRequired();
         builder.HasOne(m => m.Purchase)
         .WithMany(m => m.PurchasedMedicines)
-        .HasForeignKey(m => m.PurchasedId)
-        .IsRequired();
+        .HasForeignKey(m => m.PurchasedId);
         builder.HasOne(m => m.Medicine)
         .WithMany(m => m.PurchasedMedicines)
-        .HasForeignKey(m => m.MedicineId)
-        .IsRequired();
+        .HasForeignKey(m => m.MedicineId);
         builder.Property(p => p.CantPurchased)
         .IsRequired();
         builder.Property(p => p.PricePurchase)
