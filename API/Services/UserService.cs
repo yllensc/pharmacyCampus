@@ -116,11 +116,6 @@ public class UserService : IUserService
         {
             return $"User {model.UserName} does not exists.";
         }
-
-        var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
-
-        if (result == PasswordVerificationResult.Success)
-        {
             var rolExists = _unitOfWork.Roles
                                         .Find(u => u.Name.ToLower() == model.Role.ToLower())
                                         .FirstOrDefault();
@@ -173,13 +168,6 @@ public class UserService : IUserService
             {
                 return $"Role {model.Role} was not found.";
             }
-
-        }
-        else
-        {
-            return $"Invalid Credentials";
-        }
-
     }
     public async Task<DataUserDto> RefreshTokenAsync(string refreshToken)
     {
@@ -263,26 +251,5 @@ public class UserService : IUserService
             signingCredentials: signingCredentials);
         return jwtSecurityToken;
     }
-
-    private User CreateUser(string email, string username, string password, string idenNumber)
-    {
-        var user = new User
-        {
-            Email = email,
-            UserName = username,
-            IdenNumber = idenNumber
-        };
-
-        user.Password = _passwordHasher.HashPassword(user, password); //Encrypt password
-
-        var existUser = _unitOfWork.Users
-                                    .Find(u => u.UserName.ToLower() == username.ToLower() || u.IdenNumber == idenNumber)
-                                    .FirstOrDefault();
-        if (existUser != null)
-        {
-            return null;
-        }
-        return user;
-    }
-
+ 
 }
