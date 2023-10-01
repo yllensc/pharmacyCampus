@@ -418,13 +418,13 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                             select sale).Distinct()
                             .Select(s => new
                             {
-                                IdPatient = s.Patient.Id,
+                                IdenNumber = s.Patient.IdenNumber,
                                 s.Patient.Name,
                                 subSpent = s.SaleMedicines.Select(u=> u.Price).Sum(),
-                                s.DateSale
                             }).GroupBy(g=> g.Name)
                             .Select(u=> new
                             {
+                                IdenNumber = u.Select(a=> a.IdenNumber).FirstOrDefault(),
                                 Name = u.Key,
                                 TotalSpent = u.Sum(a=> a.subSpent)
                             });
@@ -432,6 +432,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var patientWithoutSales = patients.Where(u=> !sales.Any(s=> s.PatientId == u.Id))
                                     .Select(u=> new
                                         {
+                                            IdenNumber = u.IdenNumber,
                                             u.Name,
                                             TotalSpent = 0.0
                                         });
@@ -491,7 +492,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         return quantity;
     }
-     public async Task<IEnumerable<object>> GetTotalMedicinesQuarter(int quarterM)
+     public async Task<object> GetTotalMedicinesQuarter(int quarterM)
     {
         if(quarterM<= 0 || quarterM>=5)
         {
@@ -528,9 +529,13 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                 NameMedicine = u.Key,
                                 TotalQuantity = u.Sum(a=> a.subQuantity)
                              });
-    
+        var total = totalSold.Sum(s=> s.TotalQuantity);
+        object objecResult = new{
+                Total = total,
+                listMedicines = totalSold
+            };
 
-        return totalSold;
+        return objecResult;
     }
 
     public async Task<IEnumerable<object>> GetPatientMoreSpent()
