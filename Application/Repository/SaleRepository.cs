@@ -40,6 +40,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
             var medicine = await _context.Medicines
                                         .Where(u => u.Id == modelSaleMedicine.MedicineId)
                                         .FirstOrDefaultAsync();
+            Console.WriteLine(medicine);
             var newSaleMedicine = new SaleMedicine
             {
                 SaleId = saleCreated.Id,
@@ -220,10 +221,22 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         return "Sale made successfully!!";
     }
-    public async Task<IEnumerable<Sale>> GetAllRecipesAsync()
+    public async Task<object> GetAllRecipesAsync()
     {
-        DateTime sice2023 = new(2023, 1, 1);
-        return await _context.Sales.Where(m => m.Prescription == true && m.DateSale >= sice2023).ToListAsync();
+        DateTime fechaDeseada = new DateTime(2023, 1, 1); // Reemplaza esta fecha por la fecha deseada
+
+        var result = from sale in _context.Sales
+                     join saleMedicine in _context.SaleMedicines on sale.Id equals saleMedicine.SaleId
+                     join medicine in _context.Medicines on saleMedicine.MedicineId equals medicine.Id
+                     where sale.Prescription && sale.DatePrescription >= fechaDeseada
+                     select new
+                     {
+                         SaleId = sale.Id,
+                         MedicineName = medicine.Name,
+                         Quantity = saleMedicine.SaleQuantity
+                     };
+
+        return await result.ToListAsync();
     }
     public async Task<IEnumerable<Sale>> GetSaleMonthly(int parameter)
     {
@@ -254,7 +267,6 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         };
         return totalSales;
     }
-
     public async Task<object> GetGainSales()
     {
         var totalGain = await _context.SaleMedicines.SumAsync(u => u.Price);
@@ -329,9 +341,9 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
     public async Task<IEnumerable<Patient>> GetPatients2023(int id)
     {
-       var existMedicine = await _context.Medicines
-                                    .Where(u => u.Id == id)
-                                    .FirstOrDefaultAsync();
+        var existMedicine = await _context.Medicines
+                                     .Where(u => u.Id == id)
+                                     .FirstOrDefaultAsync();
         if (existMedicine == null)
         {
             return null;
