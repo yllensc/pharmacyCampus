@@ -320,10 +320,10 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         return unsoldMed;
     }
 
-    public async Task<IEnumerable<Patient>> GetPatients(string nameMedicine)
+    public async Task<IEnumerable<Patient>> GetPatients(int id)
     {
         var existMedicine = await _context.Medicines
-                                    .Where(u => u.Name.ToLower() == nameMedicine.ToLower())
+                                    .Where(u => u.Id == id)
                                     .FirstOrDefaultAsync();
         if (existMedicine == null)
         {
@@ -338,7 +338,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                          join sale in sales on patient.Id equals sale.PatientId
                                          join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
                                          join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
-                                         where medicine.Name == nameMedicine
+                                         where medicine.Id == id
                                          select patient).Distinct();
         return patientsPurchasedMedicine;
     }

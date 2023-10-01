@@ -20,8 +20,11 @@ public class PatientDto
 
 public class PatientOnlyDto
 {
+    public string IdenNumber { get; set;}
     public string Id { get; set; }
     public string Name { get; set; }
+    public string PhoneNumber { get; set; }   
+
 }
 
 public class PatientSpentDto
