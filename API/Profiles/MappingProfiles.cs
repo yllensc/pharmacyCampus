@@ -96,7 +96,8 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.MedicinesList, opt => opt.MapFrom(src => src.Medicines.Select(medicine => new MedicineBaseDto
             {
                 Name = medicine.Name,
-                Price = medicine.Price
+                Price = medicine.Price,
+                Stock = medicine.Stock
             })))
             .ReverseMap();
         CreateMap<Provider, ProviderWithTotalQuantityDto>()
