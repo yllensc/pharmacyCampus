@@ -6,16 +6,23 @@ using API.Dtos;
 using API.Services;
 using API.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Interfaces;
+using AutoMapper;
+using Domain.Entities;
 
 namespace API.Controllers;
 
 public class UserController : ApiBaseController
 {
     private readonly IUserService _userService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IUnitOfWork unitOfWork, IMapper mapper)
     {
         _userService = userService;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
         [HttpPost("register")]
     public async Task<ActionResult> RegisterAsync(RegisterDto model)
@@ -47,6 +54,22 @@ public class UserController : ApiBaseController
         if (!string.IsNullOrEmpty(response.RefreshToken))
             SetRefreshTokenInCookie(response.RefreshToken);
         return Ok(response);
+    }
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<UserWithRolDto>>> GetUserWithRol()
+    {
+        var user = await _unitOfWork.Users.GetAllRolesAsync();
+        return _mapper.Map<List<UserWithRolDto>>(user);
+    }
+    [HttpGet("roles")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<Rol>>> GetRoles()
+    {
+        var roles = await _unitOfWork.Roles.GetAllAsync();
+        return _mapper.Map<List<Rol>>(roles);
     }
 
     private void SetRefreshTokenInCookie(string refreshToken)

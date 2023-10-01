@@ -14,6 +14,8 @@ public class MappingProfiles : Profile
 
     public MappingProfiles()
     {
+        CreateMap<User, UserWithRolDto>()
+        .ForMember(dest => dest.RolName, opt => opt.MapFrom(src => src.Roles.FirstOrDefault().Name));
         CreateMap<Provider, ProviderDto>()
             .ReverseMap()
             .ForMember(o => o.Purchases, d => d.Ignore())

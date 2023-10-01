@@ -37,4 +37,17 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 
     
     }
+    public async Task<IEnumerable<User>> GetAllRolesAsync()
+    {
+    var users = await _context.Users
+        .Select(u => new User
+        {
+            Id = u.Id,
+            UserName = u.UserName,
+            Roles = u.Roles.FirstOrDefault() != null ? new List<Rol> { u.Roles.First() } : new List<Rol>()
+        })
+        .ToListAsync();
+    return users;
+}
+
 }
