@@ -492,7 +492,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         return quantity;
     }
-     public async Task<IEnumerable<object>> GetTotalMedicinesQuarter(int quarterM)
+     public async Task<object> GetTotalMedicinesQuarter(int quarterM)
     {
         if(quarterM<= 0 || quarterM>=5)
         {
@@ -529,9 +529,13 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                 NameMedicine = u.Key,
                                 TotalQuantity = u.Sum(a=> a.subQuantity)
                              });
-    
+        var total = totalSold.Sum(s=> s.TotalQuantity);
+        object objecResult = new{
+                Total = total,
+                listMedicines = totalSold
+            };
 
-        return totalSold;
+        return objecResult;
     }
 
     public async Task<IEnumerable<object>> GetPatientMoreSpent()
