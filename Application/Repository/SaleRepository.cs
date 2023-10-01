@@ -418,13 +418,13 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                             select sale).Distinct()
                             .Select(s => new
                             {
-                                IdPatient = s.Patient.Id,
+                                IdenNumber = s.Patient.IdenNumber,
                                 s.Patient.Name,
                                 subSpent = s.SaleMedicines.Select(u=> u.Price).Sum(),
-                                s.DateSale
                             }).GroupBy(g=> g.Name)
                             .Select(u=> new
                             {
+                                IdenNumber = u.Select(a=> a.IdenNumber).FirstOrDefault(),
                                 Name = u.Key,
                                 TotalSpent = u.Sum(a=> a.subSpent)
                             });
@@ -432,6 +432,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var patientWithoutSales = patients.Where(u=> !sales.Any(s=> s.PatientId == u.Id))
                                     .Select(u=> new
                                         {
+                                            IdenNumber = u.IdenNumber,
                                             u.Name,
                                             TotalSpent = 0.0
                                         });
