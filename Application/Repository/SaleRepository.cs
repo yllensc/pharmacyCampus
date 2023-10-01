@@ -52,20 +52,22 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
                 if (medicine.Stock >= newSaleMedicine.SaleQuantity)
                 {
-                    int quantity =  modelSaleMedicine.SaleQuantity;
-                    
+                    int quantity = modelSaleMedicine.SaleQuantity;
+
                     while (quantity != 0)
                     {
-                        var nearestExpirationDate =await _context.PurchasedMedicines
-                                                    .Where(u=> u.MedicineId ==  modelSaleMedicine.MedicineId && u.Stock>0)
-                                                    .OrderBy(o=> o.ExpirationDate).FirstAsync();
-                        if(nearestExpirationDate == null)
+                        var nearestExpirationDate = await _context.PurchasedMedicines
+                                                    .Where(u => u.MedicineId == modelSaleMedicine.MedicineId && u.Stock > 0)
+                                                    .OrderBy(o => o.ExpirationDate).FirstAsync();
+                        if (nearestExpirationDate == null)
                         {
                             quantity = 0;
-                        }else{
+                        }
+                        else
+                        {
                             var purchasedMedicine = await _context.PurchasedMedicines.Where(u => u.Id == nearestExpirationDate.Id).FirstOrDefaultAsync();
 
-                            if(nearestExpirationDate.Stock>= quantity)
+                            if (nearestExpirationDate.Stock >= quantity)
                             {
                                 //Stock Lote por fecha de vencimiento
                                 purchasedMedicine.Stock -= quantity;
@@ -73,10 +75,11 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                 await _context.SaveChangesAsync();
                                 quantity = 0;
 
-                            }else
+                            }
+                            else
                             {
-                                quantity -=  purchasedMedicine.Stock ;
-                                purchasedMedicine.Stock =0;
+                                quantity -= purchasedMedicine.Stock;
+                                purchasedMedicine.Stock = 0;
                                 _context.PurchasedMedicines.Update(purchasedMedicine);
                                 await _context.SaveChangesAsync();
                             }
@@ -152,20 +155,22 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
                 if (medicine.Stock >= saleMedicine.SaleQuantity)
                 {
-                    int quantity =  saleMedicine.SaleQuantity;
-                    
+                    int quantity = saleMedicine.SaleQuantity;
+
                     while (quantity != 0)
                     {
-                        var nearestExpirationDate =await _context.PurchasedMedicines
-                                                    .Where(u=> u.MedicineId ==  saleMedicine.MedicineId && u.Stock>0)
-                                                    .OrderBy(o=> o.ExpirationDate).FirstAsync();
-                        if(nearestExpirationDate == null)
+                        var nearestExpirationDate = await _context.PurchasedMedicines
+                                                    .Where(u => u.MedicineId == saleMedicine.MedicineId && u.Stock > 0)
+                                                    .OrderBy(o => o.ExpirationDate).FirstAsync();
+                        if (nearestExpirationDate == null)
                         {
                             quantity = 0;
-                        }else{
+                        }
+                        else
+                        {
                             var purchasedMedicine = await _context.PurchasedMedicines.Where(u => u.Id == nearestExpirationDate.Id).FirstOrDefaultAsync();
 
-                            if(nearestExpirationDate.Stock>= quantity)
+                            if (nearestExpirationDate.Stock >= quantity)
                             {
                                 //Stock Lote por fecha de vencimiento
                                 purchasedMedicine.Stock -= quantity;
@@ -173,10 +178,11 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                 await _context.SaveChangesAsync();
                                 quantity = 0;
 
-                            }else
+                            }
+                            else
                             {
-                                quantity -=  purchasedMedicine.Stock ;
-                                purchasedMedicine.Stock =0;
+                                quantity -= purchasedMedicine.Stock;
+                                purchasedMedicine.Stock = 0;
                                 _context.PurchasedMedicines.Update(purchasedMedicine);
                                 await _context.SaveChangesAsync();
                             }
@@ -228,28 +234,6 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                 .ToListAsync();
         return registros;
     }
-
-    //Promedio de medicamentos comprados por venta
-    // public async Task<IEnumerable<object>> GetAverage()
-    // {
-    //     var sales = await _context.Sales.ToListAsync();
-
-    //     var promedioVentasPorVenta = sales.Select(sale => new
-    //     {
-
-    //         SaleId = sale.Id,
-    //         PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
-    //     });
-
-    //     var prom = sales
-    //             .SelectMany(sale => sale.SaleMedicines, (sale, medicine) => new
-    //             {
-    //                 SaleId = sale.Id,
-    //                 MedicineId = medicine.MedicineId,
-    //                 PromedioVenta = sale.SaleMedicines.Average(sm => sm.SaleQuantity)
-    //             });
-    //     return prom;
-    // }
     public async Task<object> GetTotalSalesOneMedicine(int id)
     {
         var existMedicine = await _context.Medicines
@@ -266,7 +250,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         object totalSales = new
         {
-            TotalSales = salesMedicine.Select(u=> u.SaleQuantity).Sum()
+            TotalSales = salesMedicine.Select(u => u.SaleQuantity).Sum()
         };
         return totalSales;
     }
@@ -288,15 +272,15 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         var medicines = await _context.Medicines.ToListAsync();
         var saleMedicines = await _context.SaleMedicines.ToListAsync();
-        
-        var salesMed = (from sale in sales 
+
+        var salesMed = (from sale in sales
                         join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
                         select saleMedicine.MedicineId)
                         .Distinct()
                         .ToList();
-                        
-        var unsoldMed =  medicines.Where(u=> !salesMed.Any(s=> s == u.Id));
-        
+
+        var unsoldMed = medicines.Where(u => !salesMed.Any(s => s == u.Id));
+
         return unsoldMed;
     }
 
@@ -308,15 +292,15 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                                     .Where(u => u.DateSale >= init2023 && u.DateSale < init2024).ToListAsync();
         var medicines = await _context.Medicines.ToListAsync();
         var saleMedicines = await _context.SaleMedicines.ToListAsync();
-        
-        var salesMed = (from sale in sales 
+
+        var salesMed = (from sale in sales
                         join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
                         select saleMedicine)
                         .Distinct()
                         .ToList();
-                        
-        var unsoldMed =  medicines.Where(u=> !salesMed.Any(s=> s.MedicineId == u.Id));
-        
+
+        var unsoldMed = medicines.Where(u => !salesMed.Any(s => s.MedicineId == u.Id));
+
         return unsoldMed;
     }
 
@@ -382,22 +366,24 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var medicines = await _context.Medicines.ToListAsync();
 
         var soldMedicine = (from medicine in medicines
-                                join saleMedicine in salesMedicines on medicine.Id equals saleMedicine.MedicineId
-                                join sale in sales on saleMedicine.SaleId equals sale.Id
-                                select saleMedicine)
-                                .Select(s=> new {
+                            join saleMedicine in salesMedicines on medicine.Id equals saleMedicine.MedicineId
+                            join sale in sales on saleMedicine.SaleId equals sale.Id
+                            select saleMedicine)
+                                .Select(s => new
+                                {
                                     NameMedicine = s.Medicine.Name,
                                     Quantity = s.SaleQuantity
                                 })
                                 .GroupBy(u => u.NameMedicine)
-                                .Select(u=> new{
+                                .Select(u => new
+                                {
                                     idMedicine = u.Key,
-                                    TotalQuantity = u.Sum(s=> s.Quantity)
-                                }).OrderBy(o=> o.TotalQuantity).ToList();
-        
-        int min = soldMedicine.Min(a=> a.TotalQuantity);
-        var lessSoldMedicine = soldMedicine.Where(a=> a.TotalQuantity == min).ToList();
-        
+                                    TotalQuantity = u.Sum(s => s.Quantity)
+                                }).OrderBy(o => o.TotalQuantity).ToList();
+
+        int min = soldMedicine.Min(a => a.TotalQuantity);
+        var lessSoldMedicine = soldMedicine.Where(a => a.TotalQuantity == min).ToList();
+
 
         return lessSoldMedicine;
     }
@@ -413,29 +399,29 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var salesMedicines = await _context.SaleMedicines.ToListAsync();
 
         var patientsSales = (from patient in patients
-                            join sale in sales on patient.Id equals sale.PatientId
-                            join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
-                            select sale).Distinct()
+                             join sale in sales on patient.Id equals sale.PatientId
+                             join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
+                             select sale).Distinct()
                             .Select(s => new
                             {
                                 IdPatient = s.Patient.Id,
                                 s.Patient.Name,
-                                subSpent = s.SaleMedicines.Select(u=> u.Price).Sum(),
+                                subSpent = s.SaleMedicines.Select(u => u.Price).Sum(),
                                 s.DateSale
-                            }).GroupBy(g=> g.Name)
-                            .Select(u=> new
+                            }).GroupBy(g => g.Name)
+                            .Select(u => new
                             {
                                 Name = u.Key,
-                                TotalSpent = u.Sum(a=> a.subSpent)
+                                TotalSpent = u.Sum(a => a.subSpent)
                             });
 
-        var patientWithoutSales = patients.Where(u=> !sales.Any(s=> s.PatientId == u.Id))
-                                    .Select(u=> new
-                                        {
-                                            u.Name,
-                                            TotalSpent = 0.0
-                                        });
-        
+        var patientWithoutSales = patients.Where(u => !sales.Any(s => s.PatientId == u.Id))
+                                    .Select(u => new
+                                    {
+                                        u.Name,
+                                        TotalSpent = 0.0
+                                    });
+
         return patientsSales.Concat(patientWithoutSales);
 
 
@@ -491,14 +477,14 @@ public class SaleRepository : GenericRepository<Sale>, ISale
 
         return quantity;
     }
-     public async Task<IEnumerable<object>> GetTotalMedicinesQuarter(int quarterM)
+    public async Task<IEnumerable<object>> GetTotalMedicinesQuarter(int quarterM)
     {
-        if(quarterM<= 0 || quarterM>=5)
+        if (quarterM <= 0 || quarterM >= 5)
         {
             return null;
         }
-        int init  =1;
-        switch(quarterM)
+        int init = 1;
+        switch (quarterM)
         {
             case 1: init = 1; break;
             case 2: init = 4; break;
@@ -507,38 +493,40 @@ public class SaleRepository : GenericRepository<Sale>, ISale
             default:
                 break;
         }
-        DateTime dateStart = new(2023,init,1);
+        DateTime dateStart = new(2023, init, 1);
         DateTime dateEnd = dateStart.AddMonths(3);
 
         var sales = await _context.Sales
-                            .Where(u=> u.DateSale>= dateStart && u.DateSale<= dateEnd)
+                            .Where(u => u.DateSale >= dateStart && u.DateSale <= dateEnd)
                             .ToListAsync();
-        var saleMedicines =await _context.SaleMedicines.ToListAsync();
+        var saleMedicines = await _context.SaleMedicines.ToListAsync();
         var medicines = await _context.Medicines.ToListAsync();
-        
-        var totalSold = (from sale in sales 
-                             join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
-                             join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
-                             select saleMedicine)
-                             .Select(s=> new {
-                                Name = s.Medicine.Name,
-                                subQuantity = s.SaleQuantity
-                             }).GroupBy(g=> g.Name)
-                             .Select(u=> new{
-                                NameMedicine = u.Key,
-                                TotalQuantity = u.Sum(a=> a.subQuantity)
+
+        var totalSold = (from sale in sales
+                         join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
+                         join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
+                         select saleMedicine)
+                             .Select(s => new
+                             {
+                                 Name = s.Medicine.Name,
+                                 subQuantity = s.SaleQuantity
+                             }).GroupBy(g => g.Name)
+                             .Select(u => new
+                             {
+                                 NameMedicine = u.Key,
+                                 TotalQuantity = u.Sum(a => a.subQuantity)
                              });
-    
+
 
         return totalSold;
     }
 
     public async Task<IEnumerable<object>> GetPatientMoreSpent()
     {//2023
-        DateTime init2023 = new(2023,1,1);
-        DateTime init2024 = new(2024,1,1);
+        DateTime init2023 = new(2023, 1, 1);
+        DateTime init2024 = new(2024, 1, 1);
         var sales = await _context.Sales
-                                    .Where(u=> u.DateSale>= init2023 && u.DateSale< init2024).ToListAsync();
+                                    .Where(u => u.DateSale >= init2023 && u.DateSale < init2024).ToListAsync();
 
         var medicines = await _context.Medicines.ToListAsync();
         var patients = await _context.Patients.ToListAsync();
@@ -547,53 +535,57 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                         from sale in sales
                         join saleMedicine in salesMedicines on sale.Id equals saleMedicine.SaleId
                         join medicine in medicines on saleMedicine.Id equals medicine.Id
-                        select saleMedicine).GroupBy(u=> u.SaleId);
+                        select saleMedicine).GroupBy(u => u.SaleId);
 
-        Dictionary<int,double> spentPatient = new();
-        foreach(var group in groupSalesMedicine)
+        Dictionary<int, double> spentPatient = new();
+        foreach (var group in groupSalesMedicine)
         {
             double spentSale = 0;
-            foreach(var saleMedicine in group)
+            foreach (var saleMedicine in group)
             {
-                 spentSale += saleMedicine.Price;
+                spentSale += saleMedicine.Price;
             }
 
-            int idPatient = sales.Where(u=>u.Id == group.Key).FirstOrDefault().PatientId;
+            int idPatient = sales.Where(u => u.Id == group.Key).FirstOrDefault().PatientId;
             Console.WriteLine(idPatient);
 
-            if(spentPatient.ContainsKey(idPatient)){
-                
+            if (spentPatient.ContainsKey(idPatient))
+            {
+
                 spentPatient[idPatient] += spentSale;
-            }else{
-                spentPatient.Add(idPatient,spentSale);
+            }
+            else
+            {
+                spentPatient.Add(idPatient, spentSale);
             }
         }
 
-        foreach(var patient in patients)
+        foreach (var patient in patients)
         {
-            if(!spentPatient.ContainsKey(patient.Id))
+            if (!spentPatient.ContainsKey(patient.Id))
             {
-                spentPatient.Add(patient.Id,0);
+                spentPatient.Add(patient.Id, 0);
             }
         }
-        
+
         double maxSpent = spentPatient.Max(patient => patient.Value);
 
-        List<object>totalSpent = new();
+        List<object> totalSpent = new();
 
-        foreach(var dic in spentPatient)
+        foreach (var dic in spentPatient)
         {
-            if(dic.Value == maxSpent)
+            if (dic.Value == maxSpent)
             {
-            var patient = patients.Where(u=> u.Id == dic.Key).FirstOrDefault();
-            object objecResult = new{
-                patient.Id,
-                patient.Name,
-                TotalSpent = dic.Value
-            };
-            totalSpent.Add(objecResult);
+                var patient = patients.Where(u => u.Id == dic.Key).FirstOrDefault();
+                object objecResult = new
+                {
+                    patient.Id,
+                    patient.Name,
+                    TotalSpent = dic.Value
+                };
+                totalSpent.Add(objecResult);
             }
-            
+
         }
 
         return totalSpent;
@@ -603,29 +595,56 @@ public class SaleRepository : GenericRepository<Sale>, ISale
     {
         var medicines = await _context.Medicines.ToListAsync();
 
-        var purchasedmeds =  await _context.PurchasedMedicines.ToListAsync();
+        var purchasedmeds = await _context.PurchasedMedicines.ToListAsync();
 
-        var prueba = (from medicine in medicines 
-                        join purchasedmed in purchasedmeds on medicine.Id equals purchasedmed.MedicineId
-                        select purchasedmed)
-                        .Select(s=> new
+        var prueba = (from medicine in medicines
+                      join purchasedmed in purchasedmeds on medicine.Id equals purchasedmed.MedicineId
+                      select purchasedmed)
+                        .Select(s => new
                         {
                             NameMedicine = s.Medicine.Name,
                             IdPurchase = s.PurchasedId,
                             StockLote = s.Stock,
                             ExpirationDate = s.ExpirationDate
-                        }).GroupBy(g=> g.NameMedicine)
-                        .Select(a=> new{
+                        }).GroupBy(g => g.NameMedicine)
+                        .Select(a => new
+                        {
                             NameMedicine = a.Key,
-                            ListBatch = a.Select(u=> new{
+                            ListBatch = a.Select(u => new
+                            {
                                 ExpirationDate = u.ExpirationDate,
                                 StockLote = u.StockLote
                             }).OrderBy
-                            (o=> o.ExpirationDate)
+                            (o => o.ExpirationDate)
                         });
 
-        return prueba; 
-        
+        return prueba;
+
     }
 
+    public async Task<object> GetAllSales()
+    {
+        var sales = await _context.Sales.ToListAsync();
+        var patients = await _context.Patients.ToListAsync();
+        var employees = await _context.Employees.ToListAsync();
+        var medicines = await _context.Medicines.ToListAsync();
+        var saleMedicines = await _context.SaleMedicines.ToListAsync();
+
+        var result = from sale in sales
+                     join employee in employees on sale.EmployeeId equals employee.Id
+                     join patient in patients on sale.PatientId equals patient.Id
+                     join saleMedicine in saleMedicines on sale.Id equals saleMedicine.SaleId
+                     join medicine in medicines on saleMedicine.MedicineId equals medicine.Id
+                     select new
+                     {
+                         SaleId = sale.Id,
+                         EmployeeName = employee.Name,
+                         PatientName = patient.Name,
+                         MedicineName = medicine.Name,
+                         Quantity = saleMedicine.SaleQuantity,
+                         Prescription = sale.Prescription,
+                         DatePrescription = sale.DatePrescription
+                     };
+        return result;
+    }
 }

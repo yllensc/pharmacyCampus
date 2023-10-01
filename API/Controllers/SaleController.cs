@@ -22,10 +22,10 @@ public class SaleController : ApiBaseController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<SaleDto>>> Get()
+    public async Task<ActionResult<object>> Get()
     {
-        var sales = await _unitOfWork.Sales.GetAllAsync();
-        return _mapper.Map<List<SaleDto>>(sales);
+        var sales = await _unitOfWork.Sales.GetAllSales();
+        return sales;
     }
 
     [HttpGet("{id}")]
