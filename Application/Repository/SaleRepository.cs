@@ -187,7 +187,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         }
         return "Sale made successfully!!";
     }
-    public async Task<object> GetAllRecipesAsync()
+    public async Task<IEnumerable<object>> GetAllRecipesAsync()
     {
         DateTime fechaDeseada = new DateTime(2023, 1, 1); // Reemplaza esta fecha por la fecha deseada
         var result = from sale in _context.Sales
