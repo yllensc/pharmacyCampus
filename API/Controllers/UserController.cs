@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -56,6 +57,7 @@ public class UserController : ApiBaseController
         return Ok(response);
     }
     [HttpGet]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<UserWithRolDto>>> GetUserWithRol()
@@ -64,6 +66,7 @@ public class UserController : ApiBaseController
         return _mapper.Map<List<UserWithRolDto>>(user);
     }
     [HttpGet("roles")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<Rol>>> GetRoles()

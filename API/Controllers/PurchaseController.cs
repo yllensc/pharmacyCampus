@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.Services;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -30,6 +31,7 @@ public class PurchaseController : ApiBaseController
         return _mapper.Map<List<PurchaseMedicineDto>>(purchases);
     }*/
     [HttpGet]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<PurchaseDto>>> Get()
@@ -39,6 +41,7 @@ public class PurchaseController : ApiBaseController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterAsync([FromBody] PurchasePostDto purchasePostDto){
@@ -52,6 +55,7 @@ public class PurchaseController : ApiBaseController
 
     }
     [HttpPost("range")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] PurchaseManyPostDto purchasePostDto){
@@ -64,6 +68,7 @@ public class PurchaseController : ApiBaseController
 
     }
     [HttpGet("providersWithoutPurchases")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetProvidersWithoutPurchases()
@@ -73,6 +78,7 @@ public class PurchaseController : ApiBaseController
     }
 
     [HttpGet("medicinesPurchased/{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetMedicinesPurchasedByProvider(int id)

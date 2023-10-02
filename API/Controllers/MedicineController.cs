@@ -18,6 +18,7 @@ namespace API.Controllers;
         _mapper = mapper;
     }
     [HttpPost("register")]
+    [Authorize(Roles = "Administrator, Employee")]
     public async Task<ActionResult> RegisterAsync(MedicineAllDto model)
     {
         var medicine = _mapper.Map<Medicine>(model);
@@ -25,7 +26,7 @@ namespace API.Controllers;
         return Ok(result);
     }
     [HttpGet("underStock{cant}")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetUnderCant(int cant)
@@ -34,6 +35,7 @@ namespace API.Controllers;
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("ExpiresUnder{year}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireUnderxYear(int year)
@@ -42,6 +44,7 @@ namespace API.Controllers;
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("ExpiresIn{year}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetExpireInxYear(int year)
@@ -50,6 +53,7 @@ namespace API.Controllers;
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("moreExpensive")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetMoreExpensive()
@@ -58,6 +62,7 @@ namespace API.Controllers;
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("getRangePrice{price}Stock{stock}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetRangePriceStockPredeterminated(double price, int stock)
@@ -66,6 +71,7 @@ namespace API.Controllers;
         return _mapper.Map<List<MedicineAllDto>>(medicines);
     }
     [HttpGet("GetProvidersInfoWithMedicines")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderWithListMedicinesDto>>> GetProvidersInfoWithMedicines()
@@ -74,6 +80,7 @@ namespace API.Controllers;
         return _mapper.Map<List<ProviderWithListMedicinesDto>>(medicines);
     }
     [HttpGet("salesIn{year}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Dictionary<string, List<object>>>> GetMedicineSoldonYear(int year)
@@ -84,6 +91,7 @@ namespace API.Controllers;
     
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> Get()
@@ -93,6 +101,7 @@ namespace API.Controllers;
     }
 
     [HttpPut]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateAsync([FromBody] MedicinePutDto MedicineAllDto)
@@ -104,13 +113,13 @@ namespace API.Controllers;
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
     public async Task<IActionResult> Delete(int id)
     {
         var medicine = await _unitOfWork.Medicines.GetByIdAsync(id);
-
         if(medicine == null) {return NotFound();}
         this._unitOfWork.Medicines.Remove(medicine);
         await this._unitOfWork.SaveAsync();
