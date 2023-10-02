@@ -401,7 +401,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var quantity = employees.Select(u => new { u.Name, u.Sales.Count });
         return quantity;
     }
-     public async Task<object> GetTotalMedicinesQuarter(int quarterM)
+    public async Task<object> GetTotalMedicinesQuarter(int quarterM)
     {
         if (quarterM <= 0 || quarterM >= 5)
         {
@@ -516,11 +516,13 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                             IdPurchase = s.PurchasedId,
                             StockLote = s.Stock,
                             ExpirationDate = s.ExpirationDate
-                        }).GroupBy(g=> g.Id)
-                        .Select(a=> new{
+                        }).GroupBy(g => g.Id)
+                        .Select(a => new
+                        {
                             Id = a.Key,
-                            NameMedicine = medicines.Where(u=> u.Id == a.Key).Select(u=> u.Name).FirstOrDefault(),
-                            ListBatch = a.Select(u=> new{
+                            NameMedicine = medicines.Where(u => u.Id == a.Key).Select(u => u.Name).FirstOrDefault(),
+                            ListBatch = a.Select(u => new
+                            {
                                 ExpirationDate = u.ExpirationDate,
                                 StockLote = u.StockLote
                             }).OrderBy
@@ -552,4 +554,34 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                      };
         return result;
     }
+    public async Task<object> GetSalesWithPagination(int pageNumber, int pageSize)
+    {
+        // Calcular el índice de inicio en base al número de página y tamaño de página.
+        int startIndex = (pageNumber - 1) * pageSize;
+
+        var salesQuery = from sale in _context.Sales
+                         join employee in _context.Employees on sale.EmployeeId equals employee.Id
+                         join patient in _context.Patients on sale.PatientId equals patient.Id
+                         join saleMedicine in _context.SaleMedicines on sale.Id equals saleMedicine.SaleId
+                         join medicine in _context.Medicines on saleMedicine.MedicineId equals medicine.Id
+                         select new
+                         {
+                             SaleId = sale.Id,
+                             EmployeeName = employee.Name,
+                             PatientName = patient.Name,
+                             MedicineName = medicine.Name,
+                             Quantity = saleMedicine.SaleQuantity,
+                             Prescription = sale.Prescription,
+                             DatePrescription = sale.DatePrescription
+                         };
+
+        // Aplicar la paginación a la consulta.
+        var paginatedSales = await salesQuery
+            .Skip(startIndex)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return paginatedSales;
+    }
+
 }
