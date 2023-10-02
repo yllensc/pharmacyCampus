@@ -25,6 +25,7 @@ namespace API.Controllers;
         return Ok(result);
     }
     [HttpGet("underStock{cant}")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<MedicineAllDto>>> GetUnderCant(int cant)
