@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -24,6 +25,7 @@ public class EmployeeController : ApiBaseController
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<EmployeeGetDto>>> Get()
@@ -32,6 +34,7 @@ public class EmployeeController : ApiBaseController
         return _mapper.Map<List<EmployeeGetDto>>(employees);
     }
     [HttpGet("moreThan{numSales}Sales")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<EmployeeGetIdNameDto>>> EmployeesMoreThanxSales(int numSales)
@@ -40,6 +43,7 @@ public class EmployeeController : ApiBaseController
         return _mapper.Map<List<EmployeeGetIdNameDto>>(employees);
     }
     [HttpGet("lessThan{numSales}Sales{year}")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<EmployeeGetIdNameDto>>> EmployeesLessThanxSalesInxYear(int numSales, int year)
@@ -48,6 +52,7 @@ public class EmployeeController : ApiBaseController
         return _mapper.Map<List<EmployeeGetIdNameDto>>(employees);
     }
     [HttpGet("noSalesIn{year}")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<EmployeeGetIdNameDto>>> EmployeesWithNoSalesInxYear(int year)
@@ -56,6 +61,7 @@ public class EmployeeController : ApiBaseController
         return _mapper.Map<List<EmployeeGetIdNameDto>>(employees);
     }
     [HttpGet("noSalesInMonth/{month}/InYear/{year}")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<EmployeeGetIdNameDto>>> EmployeesWithNoSalesInMonth(int month,int year)
@@ -65,6 +71,7 @@ public class EmployeeController : ApiBaseController
     }
 
     [HttpGet("mostDistinctMedicinesSoldIn{year}")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<EmployeeGetSalesDto>> EmployeeWithMostDistinctMedicinesSoldInxYear(int year)
@@ -85,6 +92,7 @@ public class EmployeeController : ApiBaseController
     }
 
     [HttpPut]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateAsync([FromBody] EmployeeAllDto EmployeeAllDto)
@@ -97,6 +105,7 @@ public class EmployeeController : ApiBaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 

@@ -3,6 +3,7 @@ using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -17,6 +18,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> Get()
@@ -26,6 +28,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<SaleDto>> Get(int id)
@@ -35,6 +38,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post([FromBody] SaleDto saleDto)
@@ -46,6 +50,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpPost("range")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterManyMedicinesAsync([FromBody] SaleManyPostDto saleManyDto)
@@ -57,6 +62,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("recipes")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> GetRecipes()
@@ -66,6 +72,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("month")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<SaleDto>>> GetSaleMonthly([FromQuery] Params parameter)
@@ -75,6 +82,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("average")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> GetAverage()
@@ -84,6 +92,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("getSaleQuantityAsync")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> GetSaleQuantityAsync()
@@ -93,6 +102,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("totalSaleOneMedicine/{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetTotalSalesOneMedicine(int id)
@@ -102,6 +112,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("gainSales")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> GetGainSales()
@@ -111,6 +122,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("unsoldMedicines2023")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetUnsoldMedicines2023()
@@ -120,6 +132,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("unsoldMedicines")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetUnsoldMedicine()
@@ -129,6 +142,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("patientsByMedicine/{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetPatients(int id)
@@ -138,6 +152,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("patientsByMedicine2023/{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetPatients2023(int id)
@@ -147,6 +162,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("lessSoldMedicine")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetlessSoldMedicine()
@@ -156,6 +172,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("patientTotalSpent")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetPatientTotalSpent()
@@ -165,6 +182,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("totalMedicinesQuarter/{quarter}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetTotalMedicinesQuarter(int quarter)
@@ -174,6 +192,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("patientMoreSpent")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetPatientMoreSpent()
@@ -183,6 +202,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet("batchOfMedicines")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> GetBatchOfMedicines()

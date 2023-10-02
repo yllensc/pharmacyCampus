@@ -26,6 +26,7 @@ public class ProviderController : ApiBaseController
 
     
     [HttpGet("getProviders")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderDto>>> GetProviders()
@@ -34,6 +35,7 @@ public class ProviderController : ApiBaseController
         return _mapper.Map<List<ProviderDto>>(providers);
     }
     [HttpGet("providersWithMedicines")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderWithListMedicinesDto>>> GetProvidersWithMedicines()
@@ -42,6 +44,7 @@ public class ProviderController : ApiBaseController
         return _mapper.Map<List<ProviderWithListMedicinesDto>>(providers);
     }
     [HttpGet("providersWithMedicinesUnder{cant}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderWithMedicineUnder50>>> GetProvidersWithMedicinesUnderx(int cant)
@@ -50,6 +53,7 @@ public class ProviderController : ApiBaseController
         return _mapper.Map<List<ProviderWithMedicineUnder50>>(providers);
     }
     [HttpGet("getProvidersWithCantMedicines")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityDto>>> GetProvidersWithTotalPurchasedMedicines()
@@ -82,6 +86,7 @@ public class ProviderController : ApiBaseController
         return result;
     }
     [HttpGet("getProvidersWithCantTotalMedicines")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderWithTotalQuantityStockDto>>> GetProvidersWithTotalMedicines()
@@ -113,6 +118,7 @@ public class ProviderController : ApiBaseController
         return result;
     }
     [HttpGet]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderxPurchaseDto>>> Get()
@@ -122,6 +128,7 @@ public class ProviderController : ApiBaseController
     }
 
     [HttpGet("onlyProviders")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProviderDto>>> Get2()
@@ -131,6 +138,7 @@ public class ProviderController : ApiBaseController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post([FromBody] ProviderDto providerDto)
@@ -144,6 +152,7 @@ public class ProviderController : ApiBaseController
     }
 
     [HttpPut]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateAsync([FromBody] ProviderPutDto providerPutDto)
@@ -156,6 +165,7 @@ public class ProviderController : ApiBaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 

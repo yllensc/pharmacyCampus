@@ -7,6 +7,7 @@ using API.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -24,6 +25,7 @@ public class PatientController : ApiBaseController
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<PatientDto>>> Get()
@@ -33,6 +35,7 @@ public class PatientController : ApiBaseController
     }
 
     [HttpGet("patientsWithNoSalesIn{year}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientWithNoSalesInxYear(int year)
@@ -42,6 +45,7 @@ public class PatientController : ApiBaseController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -52,6 +56,7 @@ public class PatientController : ApiBaseController
     }
 
     [HttpPut]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -64,6 +69,7 @@ public class PatientController : ApiBaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
