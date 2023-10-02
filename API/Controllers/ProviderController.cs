@@ -72,6 +72,7 @@ public class ProviderController : ApiBaseController
             }
             var providerWithCant = new ProviderWithTotalQuantityDto
             {
+                Id = provider.Id,
                 Name = provider.Name,
                 MedicinesList = medicineQuantities,
                 TotalPurchaseCant = totalMedicine
@@ -102,6 +103,7 @@ public class ProviderController : ApiBaseController
             }
             var providerWithCant = new ProviderWithTotalQuantityStockDto
             {
+                Id = provider.Id,
                 Name = provider.Name,
                 MedicinesList = medicineQuantities,
                 TotalStockCant = totalMedicine

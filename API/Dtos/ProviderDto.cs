@@ -37,11 +37,13 @@ namespace API.Dtos
     public class ProviderWithTotalQuantityDto
     {
     public string Name { get; set; }
+    public int Id { get; set;}
     public ICollection<MedicineWithQuantityDto> MedicinesList { get; set; }
     public int TotalPurchaseCant { get; set; }
     }
     public class ProviderWithTotalQuantityStockDto
     {
+    public int Id { get; set; }
     public string Name { get; set; }
     public ICollection<MedicineWithStockDto> MedicinesList { get; set; }
     public int TotalStockCant { get; set; }

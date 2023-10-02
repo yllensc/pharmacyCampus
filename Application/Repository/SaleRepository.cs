@@ -615,13 +615,14 @@ public class SaleRepository : GenericRepository<Sale>, ISale
                         select purchasedmed)
                         .Select(s=> new
                         {
-                            NameMedicine = s.Medicine.Name,
+                            Id = s.Medicine.Id,
                             IdPurchase = s.PurchasedId,
                             StockLote = s.Stock,
                             ExpirationDate = s.ExpirationDate
-                        }).GroupBy(g=> g.NameMedicine)
+                        }).GroupBy(g=> g.Id)
                         .Select(a=> new{
-                            NameMedicine = a.Key,
+                            Id = a.Key,
+                            NameMedicine = medicines.Where(u=> u.Id == a.Key).Select(u=> u.Name).FirstOrDefault(),
                             ListBatch = a.Select(u=> new{
                                 ExpirationDate = u.ExpirationDate,
                                 StockLote = u.StockLote
