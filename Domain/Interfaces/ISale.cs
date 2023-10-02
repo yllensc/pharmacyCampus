@@ -11,7 +11,7 @@ public interface ISale : IGenericRepository<Sale>
 {
     Task<string> RegisterAsync(Sale modelSale, SaleMedicine modelSaleMedicine);
     Task<string> RegisterManyMedicinesAsync(Sale modelSale , List<SaleMedicine> list);
-    Task<IEnumerable<Sale>> GetAllRecipesAsync();
+    Task<object> GetAllRecipesAsync();
     Task<IEnumerable<Sale>> GetSaleMonthly(int parameter);
     Task<object> GetAverage();
     Task<object> GetSaleQuantityAsync();
@@ -24,7 +24,7 @@ public interface ISale : IGenericRepository<Sale>
     Task<IEnumerable<Patient>> GetPatients2023(int id);
     Task<IEnumerable<object>> GetlessSoldMedicine();    
     Task<IEnumerable<object>> GetPatientTotalSpent();
-    Task<IEnumerable<object>> GetTotalMedicinesQuarter(int quarter);
+    Task<object> GetTotalMedicinesQuarter(int quarter);
 
     Task<IEnumerable<object>> GetPatientMoreSpent();
 
