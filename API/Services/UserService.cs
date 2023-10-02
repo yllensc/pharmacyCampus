@@ -220,7 +220,7 @@ public class UserService : IUserService
             return new RefreshToken
             {
                 Token = Convert.ToBase64String(randomNumber),
-                Expires = DateTime.UtcNow.AddDays(10),
+                Expires = DateTime.UtcNow.AddMinutes(3),
                 Created = DateTime.UtcNow
             };
         }
