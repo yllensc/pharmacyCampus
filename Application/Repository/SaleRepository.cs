@@ -401,7 +401,7 @@ public class SaleRepository : GenericRepository<Sale>, ISale
         var quantity = employees.Select(u => new { u.Name, u.Sales.Count });
         return quantity;
     }
-     public async Task<object> GetTotalMedicinesQuarter(int quarterM)
+    public async Task<object> GetTotalMedicinesQuarter(int quarterM)
     {
         if (quarterM <= 0 || quarterM >= 5)
         {
