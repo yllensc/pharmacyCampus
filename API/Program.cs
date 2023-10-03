@@ -1,6 +1,7 @@
 using System.Reflection;
 using API.Extension;
 using API.Helpers;
+using AspNetCoreRateLimit;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Serilog;
@@ -15,11 +16,18 @@ var logger = new LoggerConfiguration()
 builder.Logging.AddSerilog(logger);
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.RespectBrowserAcceptHeader = true;
+    options.ReturnHttpNotAcceptable = true;
+}).AddXmlSerializerFormatters();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen(c => 
+{c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); });
+builder.Services.ConfigureRateLimiting();
+builder.Services.ConfigureApiVersioning();
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 builder.Services.ConfigureCors();
 
@@ -61,6 +69,7 @@ using (var scope = app.Services.CreateScope())
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
+app.UseIpRateLimiting();
 
 app.UseAuthentication();
 app.UseAuthorization();
