@@ -18,7 +18,7 @@ public class SaleMedicineConfiguration : IEntityTypeConfiguration<SaleMedicine>
         .HasColumnType("int");
         builder.Property(p => p.Price)
         .IsRequired()
-        .HasColumnType("decimal");
+        .HasColumnType("double");
         builder.HasOne(d => d.Sale)
         .WithMany(p => p.SaleMedicines)
         .HasForeignKey(d => d.SaleId);
