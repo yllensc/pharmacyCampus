@@ -21,6 +21,7 @@ public class SaleController : ApiBaseController
 
     [HttpGet]
     [MapToApiVersion("1.0")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> Get()
@@ -31,6 +32,7 @@ public class SaleController : ApiBaseController
 
     [HttpGet]
     [MapToApiVersion("1.1")]
+    [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> Get([FromQuery] Params saleParams)
