@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+[ApiVersion("1.0")]
+[ApiVersion("1.1")]
 public class SaleController : ApiBaseController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -18,6 +20,7 @@ public class SaleController : ApiBaseController
     }
 
     [HttpGet]
+    [MapToApiVersion("1.0")]
     [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -25,6 +28,17 @@ public class SaleController : ApiBaseController
     {
         var sales = await _unitOfWork.Sales.GetAllSales();
         return sales;
+    }
+
+    [HttpGet]
+    [MapToApiVersion("1.1")]
+    [Authorize(Roles = "Administrator, Employee")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> Get([FromQuery] Params saleParams)
+    {
+        var paginatedSales = await _unitOfWork.Sales.GetSalesWithPagination(saleParams.PageIndex, saleParams.PageSize);
+        return paginatedSales;
     }
 
     [HttpGet("{id}")]

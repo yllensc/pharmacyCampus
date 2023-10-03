@@ -30,7 +30,7 @@ public interface ISale : IGenericRepository<Sale>
 
     Task<IEnumerable<object>> GetBatchOfMedicines();
     Task<object> GetAllSales();
-
+Task<object> GetSalesWithPagination(int pageNumber, int pageSize);
 
 
 
