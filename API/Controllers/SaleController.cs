@@ -60,15 +60,14 @@ public class SaleController : ApiBaseController
         var result = await _unitOfWork.Sales.RegisterManyMedicinesAsync(sale, list);
         return Ok(result);
     }
-
     [HttpGet("recipes")]
     [Authorize(Roles = "Administrator, Employee")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> GetRecipes()
+    public async Task<ActionResult> GetRecipes()
     {
         var sales = await _unitOfWork.Sales.GetAllRecipesAsync();
-        return sales;
+        return Ok(sales);
     }
 
     [HttpGet("month")]
